@@ -1,0 +1,52 @@
+/* ================================================================
+   VERBENA — VARIABLES GLOBALES
+   Tipografía, colores y espaciados base del sistema de diseño.
+   Ver README.txt para la documentación completa de cada decisión.
+================================================================ */
+
+@font-face {
+    font-family: 'AtHaussMono';
+    src: url('../fonts/AtHaussMono-Regular.ttf') format('truetype-variations');
+    font-weight: 100 900; /* Fuente variable: admite cualquier peso en este rango */
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /* Tipografía */
+    --font-mono: 'AtHaussMono', 'Courier New', monospace;
+
+    /* Color base */
+    --color-text: #606060;
+    --color-bg: #ffffff;
+    --color-input-bg: #eaeaea;
+    --color-border: #b0b0b0;
+
+    /* Colores de acento por sección / tipo de proyecto */
+    --color-verde: #75c2a6;     /* 03. Competencia */
+    --color-morado: #9e87d9;    /* 04. Sobre el proyecto / Marca / Web */
+    --color-amarillo: #f5fa4d;  /* 06. Conclusiones / Cartel */
+    --color-azul: #7aadf2;      /* 02. Público objetivo / Naming+Marca */
+    --color-naranja: #ff6e14;   /* Disco */
+    --color-rojo: #f0564c;      /* 00/01. Datos / Redes / Fotografía */
+
+    /* Espaciado */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 2rem;
+    --space-lg: 4rem;
+    --space-xl: 6rem;
+
+    /* Tamaños tipográficos */
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.25rem;
+    --text-xl: 1.75rem;
+    --text-display: 3rem;
+
+    /* Transiciones */
+    --transition-fast: 0.15s ease;
+
+    /* Ancho máximo del contenido de las páginas de formulario */
+    --content-max-width: 1500px;
+}

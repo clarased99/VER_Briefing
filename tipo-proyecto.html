@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — Tipo de proyecto</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">TIPO DE PROYECTO</h1>
+    <p>* Si tienes más de un tipo de proyecto en mente, más tarde podrás añadirlo en el apartado final.</p>
+
+    <div class="confetti-field" id="confetti-field" aria-label="Elige el tipo de proyecto"></div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="js/state.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/footer.js" defer></script>
+<script>
+    /* ============================================================
+       CONFIGURACIÓN DE TIPOS DE PROYECTO (confeti)
+       Archivos reales exportados de Illustrator (sin texto, color
+       y opacidad ya vienen en el propio SVG para el efecto de
+       esquina doblada, pero pintamos vía currentColor + mask para
+       mantener consistencia con el resto del sistema).
+
+       "ratio" es el aspect-ratio real (ancho/alto) de cada SVG,
+       calculado a partir de su viewBox, para que no se deforme.
+       "escala" permite ajustar el tamaño de una pieza concreta
+       respecto al resto (1 = tamaño base, 1.1 = 10% más grande).
+       "destino" es la posición final (left/top en %) dentro del
+       área de confeti, inspirada en la composición del wireframe.
+       "delay" escalona el inicio de la caída de cada pieza.
+    ============================================================ */
+    const TIPOS_PROYECTO = [
+        { id: 'disco',        label: 'DISCO',          color: 'var(--color-naranja)', archivo: 'confeti-disco.svg',         ratio: 1.780, escala: 1,    destino: { left: '58%', top: '6%'  }, rotacionFinal: '-6deg',  delay: 0.0,  href: '01-proyecto.html' },
+        { id: 'redes',        label: 'REDES',          color: 'var(--color-rojo)',    archivo: 'confeti-redes.svg',         ratio: 1.568, escala: 1,    destino: { left: '80%', top: '14%' }, rotacionFinal: '4deg',   delay: 0.15, href: '01-proyecto.html' },
+        { id: 'publicacion',  label: 'PUBLICACIÓN',    color: 'var(--color-verde)',   archivo: 'confeti-publicacion.svg',   ratio: 1.831, escala: 1,    destino: { left: '24%', top: '24%' }, rotacionFinal: '-3deg',  delay: 0.3,  href: '01-proyecto.html' },
+        { id: 'marca',        label: 'MARCA',          color: 'var(--color-morado)',  archivo: 'confeti-marca.svg',         ratio: 1.571, escala: 1,    destino: { left: '4%',  top: '42%' }, rotacionFinal: '8deg',   delay: 0.45, href: '01-proyecto.html' },
+        { id: 'cartel',       label: 'CARTEL',         color: 'var(--color-amarillo)',archivo: 'confeti-cartel.svg',        ratio: 2.042, escala: 1,    destino: { left: '38%', top: '46%' }, rotacionFinal: '-2deg',  delay: 0.6,  href: '01-proyecto.html' },
+        { id: 'web',          label: 'WEB',            color: 'var(--color-morado)',  archivo: 'confeti-web.svg',           ratio: 2.537, escala: 1,    destino: { left: '62%', top: '48%' }, rotacionFinal: '5deg',   delay: 0.75, href: '01-proyecto.html' },
+        { id: 'naming-marca', label: 'NAMING + MARCA', color: 'var(--color-azul)',    archivo: 'confeti-naming-marca.svg',  ratio: 1.859, escala: 1.3,  destino: { left: '8%',  top: '70%' }, rotacionFinal: '-7deg',  delay: 0.9,  href: '01-proyecto.html' },
+        { id: 'fotografia',   label: 'FOTOGRAFÍA',     color: 'var(--color-rojo)',    archivo: 'confeti-fotografia.svg',    ratio: 2.006, escala: 1,    destino: { left: '34%', top: '72%' }, rotacionFinal: '3deg',   delay: 1.05, href: '01-proyecto.html' },
+        { id: 'video',        label: 'VÍDEO',          color: 'var(--color-verde)',   archivo: 'confeti-video.svg',         ratio: 1.542, escala: 1,    destino: { left: '64%', top: '74%' }, rotacionFinal: '-4deg',  delay: 1.2,  href: '01-proyecto.html' },
+    ];
+
+    const field = document.getElementById('confetti-field');
+    const PIECE_WIDTH = 170; // ancho base en px; el alto se deriva del ratio real
+
+    TIPOS_PROYECTO.forEach((tipo) => {
+        const piece = document.createElement('button');
+        piece.type = 'button';
+        piece.className = 'confetti-piece';
+        piece.style.left = tipo.destino.left;
+        piece.style.top = tipo.destino.top;
+        const width = PIECE_WIDTH * tipo.escala;
+        piece.style.width = `${width}px`;
+        piece.style.height = `${width / tipo.ratio}px`;
+        piece.style.color = tipo.color;
+        piece.style.setProperty('--final-rotation', tipo.rotacionFinal);
+        piece.style.animationDelay = `${tipo.delay}s`;
+
+        const shape = document.createElement('div');
+        shape.className = 'confetti-piece__shape';
+        shape.style.webkitMaskImage = `url('assets/confeti/${tipo.archivo}')`;
+        shape.style.maskImage = `url('assets/confeti/${tipo.archivo}')`;
+
+        const label = document.createElement('span');
+        label.className = 'confetti-piece__label';
+        label.textContent = tipo.label;
+
+        piece.appendChild(shape);
+        piece.appendChild(label);
+
+        piece.addEventListener('click', () => {
+            VerbenaState.addTipoProyecto(tipo.label);
+            window.location.href = tipo.href;
+        });
+
+        field.appendChild(piece);
+    });
+</script>
+</body>
+</html>

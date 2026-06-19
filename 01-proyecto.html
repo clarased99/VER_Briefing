@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 01. Datos del proyecto</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">01. DATOS DEL PROYECTO</h1>
+
+    <form class="form-grid" novalidate>
+        <div class="field">
+            <label for="nombre-proyecto">Nombre del proyecto</label>
+            <input type="text" id="nombre-proyecto" name="nombre-proyecto">
+            <div class="checkbox-row">
+                <input type="checkbox" id="sin-nombre" name="sin-nombre">
+                <label for="sin-nombre">Aún no tiene nombre</label>
+            </div>
+        </div>
+
+        <div class="field" id="field-origen-nombre">
+            <label for="origen-nombre">¿De dónde viene el nombre de tu marca o proyecto?</label>
+            <textarea id="origen-nombre" name="origen-nombre"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="negocio">¿Cuál es tu negocio?<br>Definición de actividad y servicios</label>
+            <textarea id="negocio" name="negocio"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="puntos-fuertes">¿Cuáles son los puntos fuertes de tu empresa?<br>¿En qué se distingue de las demás de tu sector?</label>
+            <textarea id="puntos-fuertes" name="puntos-fuertes"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="historia">¿Cuál es la historia de tu proyecto?</label>
+            <textarea id="historia" name="historia"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="cuando-creo">¿Cuándo se creó?</label>
+            <textarea id="cuando-creo" name="cuando-creo"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="filosofia">¿Cuál es la filosofía de tu proyecto?<br>Define cuáles son sus valores</label>
+            <textarea id="filosofia" name="filosofia"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="comunicar">¿Qué quieres comunicar con tu marca o proyecto?</label>
+            <textarea id="comunicar" name="comunicar"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="fecha-entrega">Fecha de entrega</label>
+            <input type="date" id="fecha-entrega" name="fecha-entrega">
+        </div>
+    </form>
+
+    <div class="page-nav-next">
+        <a href="02-publico.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="js/state.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/footer.js" defer></script>
+<script>
+    const checkSinNombre = document.getElementById('sin-nombre');
+    const inputNombreProyecto = document.getElementById('nombre-proyecto');
+    const fieldOrigenNombre = document.getElementById('field-origen-nombre');
+    const textareaOrigenNombre = document.getElementById('origen-nombre');
+
+    function actualizarVisibilidadNombre() {
+        const sinNombre = checkSinNombre.checked;
+        fieldOrigenNombre.hidden = sinNombre;
+        inputNombreProyecto.disabled = sinNombre;
+        if (sinNombre) {
+            inputNombreProyecto.value = '';
+            textareaOrigenNombre.value = '';
+        }
+    }
+
+    checkSinNombre.addEventListener('change', actualizarVisibilidadNombre);
+    actualizarVisibilidadNombre(); // Estado inicial al cargar la página
+
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        const sinNombre = checkSinNombre.checked;
+        const nombreProyecto = sinNombre ? '' : inputNombreProyecto.value.trim();
+        VerbenaState.set(VerbenaState.KEYS.nombreProyecto, nombreProyecto);
+    });
+</script>
+</body>
+</html>

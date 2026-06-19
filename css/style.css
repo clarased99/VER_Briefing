@@ -1,0 +1,237 @@
+/* ================================================================
+   VERBENA — ESTILOS ESPECÍFICOS POR PÁGINA
+================================================================ */
+
+/* ---------- Landing (index.html) ------------------------------ */
+
+body.landing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.landing__shapes {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 320px;
+    overflow: hidden;
+}
+
+.physics-shape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+.landing__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    padding: 0 var(--space-lg) var(--space-xl);
+}
+
+.landing__title {
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 400;
+    color: var(--color-text);
+}
+
+@media (max-width: 768px) {
+    .landing__shapes {
+        height: 50vh;
+    }
+
+    .landing__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 var(--space-md) var(--space-md);
+    }
+}
+
+
+
+/* ---------- Cabecera de formularios (todas las páginas 00-06) - */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+}
+
+.page-main {
+    padding: 0 var(--space-lg) var(--space-lg);
+    max-width: var(--content-max-width);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md) var(--space-lg);
+}
+
+@media (max-width: 768px) {
+    .page-header,
+    .page-main {
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.page-nav-next {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--space-lg);
+}
+
+
+/* ---------- Confeti de selección de tipo de proyecto ----------- */
+
+.confetti-field {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    min-height: 480px;
+    perspective: 1200px;
+}
+
+.confetti-piece {
+    position: absolute;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    opacity: 0;
+    animation: confetti-fall 1.8s cubic-bezier(.21,.98,.32,1.07) forwards;
+}
+
+.confetti-piece__shape {
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.confetti-piece__label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+    text-align: center;
+    padding: var(--space-xs);
+    transition: opacity var(--transition-fast);
+    transform: rotate(var(--final-rotation, 0deg));
+}
+
+.confetti-piece:hover .confetti-piece__label,
+.confetti-piece:focus-visible .confetti-piece__label {
+    opacity: 0.5;
+}
+
+@keyframes confetti-fall {
+    0% {
+        opacity: 0;
+        transform: translate(var(--fall-x, 0), -60vh) rotateX(20deg) rotateY(0deg) rotateZ(0deg);
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) rotateX(0deg) rotateY(0deg) rotateZ(var(--final-rotation, 0deg));
+    }
+}
+
+@media (max-width: 768px) {
+    .confetti-field {
+        height: auto;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+        padding: var(--space-md) 0;
+        perspective: none;
+    }
+
+    .confetti-piece {
+        position: static;
+        width: 100%;
+        height: 110px;
+        animation: confetti-fade-in 0.5s ease forwards;
+    }
+
+    @keyframes confetti-fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+}
+
+
+/* ---------- Footer fijo de marca (todas las páginas, excepto
+   pantallas de carga/transición) -------------------------------- */
+
+#brand-footer-text {
+    position: fixed;
+    left: var(--space-lg);
+    bottom: var(--space-md);
+    z-index: 100;
+    pointer-events: none;
+    font-size: var(--text-sm);
+    line-height: 1;
+    display: flex;
+    align-items: flex-end;
+}
+
+#brand-footer-text .brand-name {
+    font-weight: 600; /* Semibold */
+}
+
+#brand-footer-text .brand-suffix {
+    font-weight: 500; /* Medium */
+    margin-left: 0.35em;
+}
+
+#brand-footer-logo {
+    position: fixed;
+    left: 0;
+    bottom: var(--space-md);
+    z-index: 100;
+    pointer-events: none;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    max-width: var(--content-max-width);
+    padding: 0 var(--space-lg);
+}
+
+@media (max-width: 768px) {
+    #brand-footer-text {
+        left: var(--space-md);
+        bottom: var(--space-sm);
+    }
+
+    #brand-footer-logo {
+        bottom: var(--space-sm);
+        padding: 0 var(--space-md);
+    }
+}
+}

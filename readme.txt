@@ -105,6 +105,11 @@ Lockup:  Isotipo + "Verbena" (bold) + "Colectivo Gráfico" (regular)
             bajo "04." cuando corresponde)
       05. Datos visuales
       06. Conclusiones
+    - NOTA: este listado es el ORDEN DE MENÚ (referencia visual
+      para el usuario), pero no representa el bucle real de
+      navegación cuando hay varios tipos de proyecto — ver
+      sección 6 para el flujo exacto verificado con el diagrama
+      de flujo oficial.
     - Estado "inactivo": texto gris claro
     - Estado "activo/sección actual": fila resaltada con el color
       de acento correspondiente a esa sección, texto en gris oscuro
@@ -143,11 +148,28 @@ b) Sección "04. Sobre el proyecto":
 
 c) Tras completar "04. Sobre el proyecto", pantalla de bifurcación:
    "¿Necesitas añadir otro tipo de proyecto?"
-     - "SÍ" → vuelve a pantalla de Tipo de proyecto (selección 2)
-       → nueva batería de preguntas específicas → 05. Datos
-       visuales → 06. Conclusiones
-     - "NO, ESTÁ BIEN ASÍ" → va directo a 05. Datos visuales →
+     - "SÍ" → vuelve a pantalla de Tipo de proyecto (selección
+       del siguiente tipo) → "04. Sobre el proyecto (tipo 2)" →
+       vuelve a preguntar "¿Necesitas añadir otro tipo de
+       proyecto?" (se repite este ciclo tantas veces como tipos
+       de proyecto adicionales quiera añadir el cliente)
+     - "NO, ESTÁ BIEN ASÍ" → continúa a 05. Datos visuales →
        06. Conclusiones
+
+   IMPORTANTE: "05. Datos visuales" y "06. Conclusiones" se
+   recorren UNA SOLA VEZ al final de todo el ciclo, nunca se
+   repiten por cada tipo de proyecto. El bucle de "¿otro tipo?"
+   solo afecta a la sección 04 (y a la pantalla de selección de
+   tipo de proyecto), no a las secciones posteriores.
+
+   Flujo completo verificado:
+   Briefing → 00.Datos → 01.Datos del proyecto → 02.Público
+   objetivo → 03.Competencia → Tipo de proyecto → 04.Sobre el
+   proyecto (tipo elegido) → ¿Necesitas otro tipo de proyecto?
+     ├─ SÍ → Tipo de proyecto (siguiente) → 04 (tipo siguiente)
+     │       → vuelve a preguntar (bucle)
+     └─ NO → 05.Datos visuales → 06.Conclusiones → Finalizado
+             con éxito
 
 d) Sección "03. Competencia":
    - Estructura base común a todos los proyectos (mapa de área de
@@ -253,7 +275,9 @@ e) Sección "05. Datos visuales":
 - Aclaraciones en los márgenes del PDF original no visibles para
   Claude — pendientes de que la diseñadora las traslade al pasar
   a fase de código.
-- Diagrama de flujo completo del briefing — pendiente de envío.
+- Diagrama de flujo completo del briefing — RECIBIDO Y VERIFICADO
+  (Junio 2026). Flujo documentado en la sección 6.c de este
+  documento.
 - Estilo final de checkboxes y radio buttons (más allá del
   wireframe funcional).
 - Comportamiento exacto de la subida de archivos (tipos permitidos,

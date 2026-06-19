@@ -1,0 +1,62 @@
+/* ================================================================
+   VERBENA — RESET BÁSICO
+================================================================ */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+img, svg {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+/* Respeta la preferencia de movimiento reducido del usuario */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Foco visible accesible en toda la web */
+:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+}

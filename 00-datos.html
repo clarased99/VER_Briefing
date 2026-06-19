@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 00. Datos</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">00. DATOS</h1>
+
+    <form class="form-grid" novalidate>
+        <div class="field">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" autocomplete="name">
+        </div>
+
+        <div class="field">
+            <label for="mail">Mail</label>
+            <input type="email" id="mail" name="mail" autocomplete="email">
+        </div>
+
+        <div class="field">
+            <label for="empresa">Empresa/organización/grupo/colectivo</label>
+            <input type="text" id="empresa" name="empresa">
+        </div>
+
+        <div class="field">
+            <label for="puesto">Puesto en la empresa/organización/grupo/colectivo</label>
+            <input type="text" id="puesto" name="puesto">
+        </div>
+    </form>
+
+    <div class="page-nav-next">
+        <a href="tipo-proyecto.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="js/state.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/footer.js" defer></script>
+<script>
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.set(VerbenaState.KEYS.empresa, document.getElementById('empresa').value.trim());
+    });
+</script>
+</body>
+</html>
