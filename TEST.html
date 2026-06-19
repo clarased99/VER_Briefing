@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — TEST Apps Script</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main class="page-main">
+    <h1 class="section-title">TEST — Conexión Apps Script</h1>
+
+    <form class="form-grid" id="form-test" novalidate>
+        <div class="field">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre">
+        </div>
+
+        <div class="field">
+            <label for="mail">Mail</label>
+            <input type="email" id="mail" name="mail">
+        </div>
+    </form>
+
+    <div class="page-nav-next">
+        <button type="button" class="btn-text" id="btn-enviar">ENVIAR (TEST)</button>
+    </div>
+
+    <p id="resultado" style="margin-top: 2rem;"></p>
+</main>
+
+<script>
+    // URL de la aplicación web del Apps Script desplegado
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPJ1j2HTmENNFaQL3SBwmRiVskGFJfnhZJrTrlHJSauhTf4UaNImYgV3Jna_XSFrZqbg/exec';
+
+    const btnEnviar = document.getElementById('btn-enviar');
+    const resultadoEl = document.getElementById('resultado');
+
+    btnEnviar.addEventListener('click', async () => {
+        const datos = {
+            nombre: document.getElementById('nombre').value.trim(),
+            mail: document.getElementById('mail').value.trim(),
+        };
+
+        resultadoEl.textContent = 'Enviando...';
+        btnEnviar.disabled = true;
+
+        try {
+            // 'no-cors' es necesario porque Apps Script no devuelve
+            // cabeceras CORS; no podremos leer la respuesta JSON real,
+            // pero el envío sí llega y se guarda en la Sheet.
+            await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(datos),
+            });
+
+            resultadoEl.textContent = '✅ Enviado. Revisa la Google Sheet para confirmar que llegó la fila.';
+        } catch (error) {
+            resultadoEl.textContent = '❌ Error al enviar: ' + error.message;
+        } finally {
+            btnEnviar.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

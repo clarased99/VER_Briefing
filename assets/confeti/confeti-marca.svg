@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 252.22 160.58">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: url(#Nueva_muestra_de_motivo_3);
+        opacity: .6;
+      }
+
+      .cls-3 {
+        fill: #9e87d9;
+      }
+    </style>
+    <pattern id="Nueva_muestra_de_motivo_3" data-name="Nueva muestra de motivo 3" x="0" y="0" width="165.85" height="165.85" patternTransform="translate(-2244.2 4832.09)" patternUnits="userSpaceOnUse" viewBox="0 0 165.85 165.85">
+      <g>
+        <rect class="cls-1" width="165.85" height="165.85"/>
+        <rect class="cls-3" x="0" width="165.85" height="165.85"/>
+      </g>
+    </pattern>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <g>
+      <polygon class="cls-2" points="22.69 0 0 66.33 36.65 109.09 228.65 160.58 252.22 67.2 22.69 0"/>
+      <polygon class="cls-2" points="37.53 57.6 0 66.33 36.65 109.09 37.53 57.6"/>
+    </g>
+  </g>
+</svg>
