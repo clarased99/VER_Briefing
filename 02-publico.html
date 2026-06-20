@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 02. Público objetivo</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">02. PÚBLICO OBJETIVO</h1>
+
+    <form class="form-grid" id="form-publico" novalidate>
+
+        <div class="field">
+            <label for="cliente-ideal">¿Cuál es tu cliente ideal?</label>
+            <textarea id="cliente-ideal" name="cliente-ideal"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="necesidad">¿Qué necesidad o problema tiene?</label>
+            <textarea id="necesidad" name="necesidad"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="por-que-ayudar">¿Por qué puedes ayudarles? ¿Qué le puedes ofrecer?</label>
+            <textarea id="por-que-ayudar" name="por-que-ayudar"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="por-que-eligen">¿Qué es lo que hace que tus clientes te compren o elijan a ti y no a otros?</label>
+            <textarea id="por-que-eligen" name="por-que-eligen"></textarea>
+        </div>
+
+        <!-- Género -->
+        <div class="field">
+            <label for="genero">Género (Público objetivo)</label>
+            <select id="genero" name="genero">
+                <option value="">Selecciona...</option>
+                <option value="Hombre">Hombre</option>
+                <option value="Mujer">Mujer</option>
+                <option value="Ambos">Ambos</option>
+                <option value="Otro">Otro</option>
+            </select>
+            <div class="otro-field" id="otro-genero-wrap">
+                <input type="text" id="otro-genero" name="otro-genero" placeholder="Especifica...">
+            </div>
+        </div>
+
+        <!-- Edad: selección MÚLTIPLE (checkboxes), confirmado anteriormente -->
+        <div class="field" style="grid-column: 1 / -1;">
+            <label>Edad (Público objetivo)</label>
+            <div id="edad-checkboxes" style="display: flex; flex-wrap: wrap; gap: var(--space-md);">
+                <div class="checkbox-row">
+                    <input type="checkbox" id="edad-infantil" value="Infantil/adolescente">
+                    <label for="edad-infantil">Infantil/adolescente</label>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="edad-menor25" value="Menor de 25">
+                    <label for="edad-menor25">Menor de 25</label>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="edad-25-35" value="25-35">
+                    <label for="edad-25-35">25-35</label>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="edad-35-50" value="35-50">
+                    <label for="edad-35-50">35-50</label>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="edad-50-65" value="50-65">
+                    <label for="edad-50-65">50-65</label>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="edad-mas65" value="Más de 65">
+                    <label for="edad-mas65">Más de 65</label>
+                </div>
+            </div>
+            <input type="hidden" id="edad-consolidada">
+        </div>
+
+        <!-- Nivel académico -->
+        <div class="field">
+            <label for="nivel-academico">Nivel académico (Público objetivo)</label>
+            <select id="nivel-academico" name="nivel-academico">
+                <option value="">Selecciona...</option>
+                <option value="Estudios universitarios">Estudios universitarios</option>
+                <option value="Formación profesional">Formación profesional</option>
+                <option value="Sin formación específica">Sin formación específica</option>
+                <option value="Otro">Otro</option>
+            </select>
+            <div class="otro-field" id="otro-nivel-academico-wrap">
+                <input type="text" id="otro-nivel-academico" name="otro-nivel-academico" placeholder="Especifica...">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="donde-vive">¿Dónde vive? (Público objetivo)</label>
+            <input type="text" id="donde-vive" name="donde-vive">
+        </div>
+
+        <div class="field">
+            <label for="ocupacion">Ocupación (Público objetivo)</label>
+            <input type="text" id="ocupacion" name="ocupacion">
+        </div>
+
+        <!-- Nivel adquisitivo -->
+        <div class="field">
+            <label for="nivel-adquisitivo">Nivel adquisitivo (Público objetivo)</label>
+            <select id="nivel-adquisitivo" name="nivel-adquisitivo">
+                <option value="">Selecciona...</option>
+                <option value="Alto">Alto</option>
+                <option value="Medio">Medio</option>
+                <option value="Bajo">Bajo</option>
+            </select>
+        </div>
+
+    </form>
+
+    <!-- Moda: marcas dinámicas, empieza con 2, botón + para añadir más -->
+    <div class="field">
+        <label>Moda. Nombra un par de marcas que tu público objetivo utilice en su día a día.</label>
+        <div id="moda-lista" class="dynamic-grid-3">
+            <input type="text" id="moda-1" placeholder="Marca 1">
+            <input type="text" id="moda-2" placeholder="Marca 2">
+            <button type="button" class="btn-add" id="btn-add-moda" aria-label="Añadir otra marca">+</button>
+        </div>
+    </div>
+
+    <!-- Medio de transporte: selección de imágenes -->
+    <div class="field">
+        <label>¿Qué medio de transporte utiliza tu público objetivo?</label>
+        <div class="image-grid" id="grid-transporte" data-field-id="transporte"></div>
+        <div class="checkbox-row has-otro">
+            <input type="checkbox" id="otro-transporte-check">
+            <label for="otro-transporte-check">Otro medio de transporte</label>
+            <div class="otro-field-inline" id="otro-transporte-wrap">
+                <input type="text" id="otro-transporte" placeholder="Especifica...">
+            </div>
+        </div>
+    </div>
+
+    <!-- Dónde trabaja: selección de imágenes -->
+    <div class="field">
+        <label>¿Dónde trabaja tu público objetivo?</label>
+        <div class="image-grid" id="grid-trabajo" data-field-id="trabajo"></div>
+        <div class="checkbox-row has-otro">
+            <input type="checkbox" id="otro-trabajo-check">
+            <label for="otro-trabajo-check">Otro lugar</label>
+            <div class="otro-field-inline" id="otro-trabajo-wrap">
+                <input type="text" id="otro-trabajo" placeholder="Especifica...">
+            </div>
+        </div>
+    </div>
+
+    <!-- Dónde va de vacaciones: selección de imágenes -->
+    <div class="field">
+        <label>¿Dónde va de vacaciones tu público objetivo?</label>
+        <div class="image-grid" id="grid-vacaciones" data-field-id="vacaciones"></div>
+    </div>
+
+    <form class="form-grid" id="form-publico-2" novalidate>
+        <div class="field">
+            <label for="musica">¿Qué tipo de música le gusta? (Público objetivo)</label>
+            <input type="text" id="musica" name="musica">
+        </div>
+
+        <div class="field">
+            <label for="hobbies">¿Qué hobbies tiene tu público objetivo?</label>
+            <input type="text" id="hobbies" name="hobbies">
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="detalle-extra">Si tienes algún detalle más que pueda definir al público objetivo, este es el lugar. Aquí vale todo, anécdotas, ideas, descripciones, referencias...</label>
+            <textarea id="detalle-extra" name="detalle-extra"></textarea>
+        </div>
+    </form>
+
+    <div class="page-nav-next">
+        <a href="03-competencia.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="js/state.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/footer.js" defer></script>
+<script>
+    /* ============================================================
+       SELECTS CON OPCIÓN "OTRO" PERSONALIZABLE
+       Patrón reutilizable: cualquier <select> que tenga una
+       opción value="Otro" y un div#otro-<id>-wrap al lado,
+       muestra/oculta el input según la selección.
+       ============================================================ */
+    function initSelectOtro(selectId) {
+        const select = document.getElementById(selectId);
+        const wrap = document.getElementById(`otro-${selectId}-wrap`);
+        if (!select || !wrap) return;
+
+        select.addEventListener('change', () => {
+            const esOtro = select.value === 'Otro';
+            wrap.classList.toggle('visible', esOtro);
+            if (!esOtro) document.getElementById(`otro-${selectId}`).value = '';
+        });
+    }
+
+    ['genero', 'nivel-academico'].forEach(initSelectOtro);
+
+    /* ============================================================
+       CHECKBOX "OTRO" CON CAMPO DE TEXTO INLINE
+       (medio de transporte, dónde trabaja)
+       ============================================================ */
+    function initCheckboxOtro(checkboxId) {
+        const checkbox = document.getElementById(checkboxId);
+        const wrap = document.getElementById(checkboxId.replace('-check', '-wrap'));
+        if (!checkbox || !wrap) return;
+
+        checkbox.addEventListener('change', () => {
+            wrap.classList.toggle('visible', checkbox.checked);
+            if (!checkbox.checked) wrap.querySelector('input').value = '';
+        });
+    }
+
+    ['otro-transporte-check', 'otro-trabajo-check'].forEach(initCheckboxOtro);
+
+    /* ============================================================
+       MODA: añadir más campos de marca dinámicamente
+       ============================================================ */
+    const modaLista = document.getElementById('moda-lista');
+    const btnAddModa = document.getElementById('btn-add-moda');
+    let modaCount = 2;
+
+    btnAddModa.addEventListener('click', () => {
+        modaCount++;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = `moda-${modaCount}`;
+        input.placeholder = `Marca ${modaCount}`;
+        modaLista.insertBefore(input, btnAddModa);
+        input.focus();
+    });
+
+    /* ============================================================
+       EDAD: checkboxes múltiples consolidados en un solo campo
+       (para que en la Sheet salga una columna "Edad" con los
+       rangos elegidos juntos, en vez de una columna por rango)
+       ============================================================ */
+    const edadCheckboxes = document.querySelectorAll('#edad-checkboxes input[type="checkbox"]');
+    const edadConsolidada = document.getElementById('edad-consolidada');
+
+    function actualizarEdadConsolidada() {
+        const seleccionadas = Array.from(edadCheckboxes)
+            .filter((cb) => cb.checked)
+            .map((cb) => cb.value);
+        edadConsolidada.value = seleccionadas.join(' + ');
+    }
+
+    edadCheckboxes.forEach((cb) => {
+        cb.dataset.vbExclude = 'true'; // Evita que se guarden como campos individuales sueltos
+        cb.addEventListener('change', actualizarEdadConsolidada);
+    });
+    edadConsolidada.id = 'edad'; // Esta sí se guarda, como campo único "edad"
+
+    /* ============================================================
+       GRIDS DE SELECCIÓN DE IMAGEN
+       Cada grid permite una única selección (estilo radio). Al
+       hacer click se marca con borde negro y se desmarca el resto
+       del mismo grid. El hover muestra el texto (ver CSS).
+
+       NOTA: las imágenes son placeholders de color por ahora —
+       cuando la diseñadora tenga las fotos reales, solo hay que
+       cambiar el campo "img" de cada opción por la URL real.
+       ============================================================ */
+    const GRIDS_IMAGEN = {
+        transporte: [
+            { id: 'coche', label: 'Conduce su propio coche', img: '' },
+            { id: 'transporte-publico', label: 'Transporte público', img: '' },
+            { id: 'bicicleta', label: 'Bicicleta', img: '' },
+            { id: 'patinete', label: 'Patinete', img: '' },
+        ],
+        trabajo: [
+            { id: 'oficinas', label: 'Edificio de oficinas', img: '' },
+            { id: 'casa', label: 'En casa', img: '' },
+            { id: 'coworking', label: 'Coworking', img: '' },
+            { id: 'startup', label: 'En una moderna startup', img: '' },
+        ],
+        vacaciones: [
+            { id: 'playa', label: 'Una playa tranquila', img: '' },
+            { id: 'ciudad', label: 'Una ciudad multicultural', img: '' },
+            { id: 'resort', label: 'Un lujoso resort', img: '' },
+            { id: 'montana', label: 'Montaña y aventura', img: '' },
+        ],
+    };
+
+    Object.keys(GRIDS_IMAGEN).forEach((gridKey) => {
+        const container = document.getElementById(`grid-${gridKey}`);
+        if (!container) return;
+
+        GRIDS_IMAGEN[gridKey].forEach((opcion) => {
+            const card = document.createElement('button');
+            card.type = 'button';
+            card.className = 'image-card';
+            card.dataset.value = opcion.label;
+            if (opcion.img) card.style.backgroundImage = `url('${opcion.img}')`;
+
+            const label = document.createElement('span');
+            label.className = 'image-card__label';
+            label.textContent = opcion.label;
+            card.appendChild(label);
+
+            card.addEventListener('click', () => {
+                container.querySelectorAll('.image-card').forEach((c) => c.classList.remove('selected'));
+                card.classList.add('selected');
+                // Guardamos la selección en un input oculto para que
+                // saveAllFieldsOnPage() la recoja junto al resto de campos.
+                document.getElementById(`field-${gridKey}`).value = opcion.label;
+            });
+
+            container.appendChild(card);
+        });
+
+        // Input oculto donde se guarda la opción de imagen elegida
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.id = `field-${gridKey}`;
+        container.after(hiddenInput);
+    });
+
+    /* ============================================================
+       GUARDADO AL AVANZAR
+       ============================================================ */
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
+    });
+</script>
+</body>
+</html>

@@ -162,10 +162,10 @@ c) Tras completar "04. Sobre el proyecto", pantalla de bifurcación:
    solo afecta a la sección 04 (y a la pantalla de selección de
    tipo de proyecto), no a las secciones posteriores.
 
-   Flujo completo verificado:
-   Briefing → 00.Datos → 01.Datos del proyecto → 02.Público
-   objetivo → 03.Competencia → Tipo de proyecto → 04.Sobre el
-   proyecto (tipo elegido) → ¿Necesitas otro tipo de proyecto?
+   Flujo completo verificado (ACTUALIZADO):
+   Briefing → 00.Datos → Tipo de proyecto → 01.Datos del proyecto
+   → 02.Público objetivo → 03.Competencia → 04.Sobre el proyecto
+   (tipo elegido) → ¿Necesitas otro tipo de proyecto?
      ├─ SÍ → Tipo de proyecto (siguiente) → 04 (tipo siguiente)
      │       → vuelve a preguntar (bucle)
      └─ NO → 05.Datos visuales → 06.Conclusiones → Finalizado
@@ -283,6 +283,21 @@ e) Sección "05. Datos visuales":
 - Comportamiento exacto de la subida de archivos (tipos permitidos,
   tamaño máximo, destino de guardado — Google Drive vía Apps Script
   según planteamiento ya discutido).
+- Moodboard de la pantalla final ("¡Muchas gracias!"): PENDIENTE DE
+  DECIDIR cómo se refleja en la Google Sheet. Dos caminos posibles
+  ya explorados (decidir cuando se construya 06-conclusiones.html):
+    a) Collage de enlaces/imágenes individuales (=IMAGE() por cada
+       pieza elegida) — simple, reutiliza el mismo mecanismo que
+       el resto de preguntas de imagen de 05.Datos visuales.
+    b) Captura real del collage tal cual lo ve el cliente en
+       pantalla (vía html2canvas + subida a Drive) — más fiel
+       visualmente, pero bastante más complejo de implementar.
+- Imágenes de opciones en 05.Datos visuales (texturas, formas,
+  paletas, "una imagen vale más..."): decidido que se mostrarán en
+  la Sheet como nombre + imagen incrustada (=IMAGE(url)). Esto
+  requiere que todas esas imágenes de referencia estén alojadas en
+  una URL pública (ej. en el propio repositorio/Vercel) antes de
+  construir esa sección.
 
 
 ----------------------------------------------------------------

@@ -49,17 +49,20 @@
        "destino" es la posición final (left/top en %) dentro del
        área de confeti, inspirada en la composición del wireframe.
        "delay" escalona el inicio de la caída de cada pieza.
+       "slug" identifica el tipo en las URLs de 04-proyecto/ (se
+       usa solo cuando se vuelve por el bucle "¿otro tipo?", ver
+       lógica de navegación más abajo).
     ============================================================ */
     const TIPOS_PROYECTO = [
-        { id: 'disco',        label: 'DISCO',          color: 'var(--color-naranja)', archivo: 'confeti-disco.svg',         ratio: 1.780, escala: 1,    destino: { left: '58%', top: '6%'  }, rotacionFinal: '-6deg',  delay: 0.0,  href: '01-proyecto.html' },
-        { id: 'redes',        label: 'REDES',          color: 'var(--color-rojo)',    archivo: 'confeti-redes.svg',         ratio: 1.568, escala: 1,    destino: { left: '80%', top: '14%' }, rotacionFinal: '4deg',   delay: 0.15, href: '01-proyecto.html' },
-        { id: 'publicacion',  label: 'PUBLICACIÓN',    color: 'var(--color-verde)',   archivo: 'confeti-publicacion.svg',   ratio: 1.831, escala: 1,    destino: { left: '24%', top: '24%' }, rotacionFinal: '-3deg',  delay: 0.3,  href: '01-proyecto.html' },
-        { id: 'marca',        label: 'MARCA',          color: 'var(--color-morado)',  archivo: 'confeti-marca.svg',         ratio: 1.571, escala: 1,    destino: { left: '4%',  top: '42%' }, rotacionFinal: '8deg',   delay: 0.45, href: '01-proyecto.html' },
-        { id: 'cartel',       label: 'CARTEL',         color: 'var(--color-amarillo)',archivo: 'confeti-cartel.svg',        ratio: 2.042, escala: 1,    destino: { left: '38%', top: '46%' }, rotacionFinal: '-2deg',  delay: 0.6,  href: '01-proyecto.html' },
-        { id: 'web',          label: 'WEB',            color: 'var(--color-morado)',  archivo: 'confeti-web.svg',           ratio: 2.537, escala: 1,    destino: { left: '62%', top: '48%' }, rotacionFinal: '5deg',   delay: 0.75, href: '01-proyecto.html' },
-        { id: 'naming-marca', label: 'NAMING + MARCA', color: 'var(--color-azul)',    archivo: 'confeti-naming-marca.svg',  ratio: 1.859, escala: 1.3,  destino: { left: '8%',  top: '70%' }, rotacionFinal: '-7deg',  delay: 0.9,  href: '01-proyecto.html' },
-        { id: 'fotografia',   label: 'FOTOGRAFÍA',     color: 'var(--color-rojo)',    archivo: 'confeti-fotografia.svg',    ratio: 2.006, escala: 1,    destino: { left: '34%', top: '72%' }, rotacionFinal: '3deg',   delay: 1.05, href: '01-proyecto.html' },
-        { id: 'video',        label: 'VÍDEO',          color: 'var(--color-verde)',   archivo: 'confeti-video.svg',         ratio: 1.542, escala: 1,    destino: { left: '64%', top: '74%' }, rotacionFinal: '-4deg',  delay: 1.2,  href: '01-proyecto.html' },
+        { id: 'disco',        label: 'DISCO',          color: 'var(--color-naranja)', archivo: 'confeti-disco.svg',         ratio: 1.780, escala: 1,    destino: { left: '58%', top: '6%'  }, rotacionFinal: '-6deg',  delay: 0.0,  slug: 'disco' },
+        { id: 'redes',        label: 'REDES',          color: 'var(--color-rojo)',    archivo: 'confeti-redes.svg',         ratio: 1.568, escala: 1,    destino: { left: '80%', top: '14%' }, rotacionFinal: '4deg',   delay: 0.15, slug: 'redes' },
+        { id: 'publicacion',  label: 'PUBLICACIÓN',    color: 'var(--color-verde)',   archivo: 'confeti-publicacion.svg',   ratio: 1.831, escala: 1,    destino: { left: '24%', top: '24%' }, rotacionFinal: '-3deg',  delay: 0.3,  slug: 'publicacion' },
+        { id: 'marca',        label: 'MARCA',          color: 'var(--color-morado)',  archivo: 'confeti-marca.svg',         ratio: 1.571, escala: 1,    destino: { left: '4%',  top: '42%' }, rotacionFinal: '8deg',   delay: 0.45, slug: 'marca' },
+        { id: 'cartel',       label: 'CARTEL',         color: 'var(--color-amarillo)',archivo: 'confeti-cartel.svg',        ratio: 2.042, escala: 1,    destino: { left: '38%', top: '46%' }, rotacionFinal: '-2deg',  delay: 0.6,  slug: 'cartel' },
+        { id: 'web',          label: 'WEB',            color: 'var(--color-morado)',  archivo: 'confeti-web.svg',           ratio: 2.537, escala: 1,    destino: { left: '62%', top: '48%' }, rotacionFinal: '5deg',   delay: 0.75, slug: 'web' },
+        { id: 'naming-marca', label: 'NAMING + MARCA', color: 'var(--color-azul)',    archivo: 'confeti-naming-marca.svg',  ratio: 1.859, escala: 1.1,  destino: { left: '8%',  top: '70%' }, rotacionFinal: '-7deg',  delay: 0.9,  slug: 'naming-marca' },
+        { id: 'fotografia',   label: 'FOTOGRAFÍA',     color: 'var(--color-rojo)',    archivo: 'confeti-fotografia.svg',    ratio: 2.006, escala: 1,    destino: { left: '34%', top: '72%' }, rotacionFinal: '3deg',   delay: 1.05, slug: 'fotografia' },
+        { id: 'video',        label: 'VÍDEO',          color: 'var(--color-verde)',   archivo: 'confeti-video.svg',         ratio: 1.542, escala: 1,    destino: { left: '64%', top: '74%' }, rotacionFinal: '-4deg',  delay: 1.2,  slug: 'video' },
     ];
 
     const field = document.getElementById('confetti-field');
@@ -92,7 +95,20 @@
 
         piece.addEventListener('click', () => {
             VerbenaState.addTipoProyecto(tipo.label);
-            window.location.href = tipo.href;
+
+            // Si ya existe un nombre de proyecto guardado, significa que
+            // el cliente ya completó 01-proyecto.html antes (viene del
+            // bucle "¿necesitas otro tipo de proyecto?" tras 03 o 04).
+            // En ese caso saltamos directo a "04. Sobre el proyecto" del
+            // tipo recién elegido, sin repetir 01/02/03.
+            const yaCompletoProyecto = VerbenaState.get(VerbenaState.KEYS.nombreProyecto)
+                || VerbenaState.get('vb_field_sin-nombre') === 'true';
+
+            const destino = yaCompletoProyecto
+                ? `04-proyecto/${tipo.slug}.html`
+                : '01-proyecto.html';
+
+            window.location.href = destino;
         });
 
         field.appendChild(piece);

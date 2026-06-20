@@ -107,6 +107,7 @@
     actualizarVisibilidadNombre(); // Estado inicial al cargar la página
 
     document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
         const sinNombre = checkSinNombre.checked;
         const nombreProyecto = sinNombre ? '' : inputNombreProyecto.value.trim();
         VerbenaState.set(VerbenaState.KEYS.nombreProyecto, nombreProyecto);

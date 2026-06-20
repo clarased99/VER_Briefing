@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 03. Competencia</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Leaflet (mapa) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet.draw (dibujar polígonos sobre el mapa) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    <!-- leaflet-image (capturar el mapa como imagen PNG) -->
+    <script src="https://unpkg.com/leaflet-image@0.0.4/leaflet-image.js"></script>
+</head>
+<body>
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">03. COMPETENCIA</h1>
+
+    <div class="field">
+        <label>¿Cuál es tu área de influencia?</label>
+        <p class="map-helper-text">Dibuja sobre el mapa la zona o zonas que consideres tu área de influencia. Puedes hacer zoom, buscar una dirección, y marcar más de una zona si lo necesitas.</p>
+        <div id="mapa-influencia" class="map-container"></div>
+        <textarea id="area-influencia-texto" placeholder="Si lo prefieres, también puedes describir aquí tu área de influencia con palabras (ej. &quot;Cangas de Onís y alrededores&quot;, &quot;toda España&quot;, &quot;online, sin límite geográfico&quot;...)"></textarea>
+        <input type="hidden" id="area-influencia-mapa">
+    </div>
+
+    <form class="form-grid" novalidate>
+        <div class="field" style="grid-column: 1 / -1;">
+            <label>¿Cuál es tu competencia real?<br>Describe y menciona las empresas que son competencia tuya directa, por tipo de empresa.</label>
+            <div id="competencia-real-lista"></div>
+            <button type="button" class="btn-add-row" data-target="competencia-real-lista" data-prefix="comp-real">+ Añadir competidor</button>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label>¿Y tu competencia aspiracional?<br>Describe la competencia que, ahora mismo NO tienes pero que te gustaría tener.</label>
+            <div id="competencia-aspiracional-lista"></div>
+            <button type="button" class="btn-add-row" data-target="competencia-aspiracional-lista" data-prefix="comp-aspiracional">+ Añadir competidor</button>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label>¿A quién de tus competidores te gustaría parecer y por qué?</label>
+            <div id="competencia-referente-lista"></div>
+            <button type="button" class="btn-add-row" data-target="competencia-referente-lista" data-prefix="comp-referente">+ Añadir competidor</button>
+        </div>
+    </form>
+
+    <!-- ==========================================================
+         BLOQUES CONDICIONALES SEGÚN TIPO DE PROYECTO
+         Se muestran solo si el cliente eligió Publicación, Cartel
+         o Disco en la pantalla de selección de tipo de proyecto.
+         ========================================================== -->
+
+    <form class="form-grid" id="bloque-publicacion" hidden novalidate>
+        <div class="field">
+            <label for="publicaciones-similares">¿Conoces otras publicaciones similares? Enuméralas.</label>
+            <textarea id="publicaciones-similares" name="publicaciones-similares"></textarea>
+        </div>
+        <div class="field">
+            <label for="publicacion-asemejar">¿A qué publicación buscas que se asemeje este proyecto?</label>
+            <textarea id="publicacion-asemejar" name="publicacion-asemejar"></textarea>
+        </div>
+    </form>
+
+    <form class="form-grid" id="bloque-cartel" hidden novalidate>
+        <div class="field">
+            <label for="cartel-referentes">Indícanos referentes para vuestro proyecto y por qué</label>
+            <textarea id="cartel-referentes" name="cartel-referentes"></textarea>
+        </div>
+        <div class="field">
+            <label for="cartel-influencias">¿Qué influencias tenéis en otros campos?</label>
+            <textarea id="cartel-influencias" name="cartel-influencias"></textarea>
+        </div>
+    </form>
+
+    <form class="form-grid" id="bloque-disco" hidden novalidate>
+        <div class="field">
+            <label for="disco-referentes">¿Qué grupos son referentes para vuestro proyecto y por qué?</label>
+            <textarea id="disco-referentes" name="disco-referentes"></textarea>
+        </div>
+        <div class="field">
+            <label for="disco-influencias">¿Qué influencias tenéis en otros campos?</label>
+            <textarea id="disco-influencias" name="disco-influencias"></textarea>
+        </div>
+    </form>
+
+    <div class="page-nav-next">
+        <a href="tipo-proyecto.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="js/state.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/footer.js" defer></script>
+<script src="js/map.js"></script>
+<script>
+    /* ============================================================
+       MAPA DIBUJABLE
+       ============================================================ */
+    const verbenaMap = VerbenaMap.init('mapa-influencia');
+
+    /* ============================================================
+       TABLAS DINÁMICAS DE COMPETIDORES (Competidor / Descripción)
+       Patrón reutilizable: cada lista empieza vacía, el botón
+       "+ Añadir" inserta una nueva fila de 2 campos.
+       ============================================================ */
+    function crearFilaCompetidor(prefix, index) {
+        const row = document.createElement('div');
+        row.className = 'dynamic-table-row';
+
+        const inputCompetidor = document.createElement('input');
+        inputCompetidor.type = 'text';
+        inputCompetidor.id = `${prefix}-nombre-${index}`;
+        inputCompetidor.placeholder = 'Competidor';
+
+        const inputDescripcion = document.createElement('input');
+        inputDescripcion.type = 'text';
+        inputDescripcion.id = `${prefix}-desc-${index}`;
+        inputDescripcion.placeholder = 'Descripción';
+
+        row.appendChild(inputCompetidor);
+        row.appendChild(inputDescripcion);
+        return row;
+    }
+
+    document.querySelectorAll('.btn-add-row').forEach((btn) => {
+        let count = 0;
+        btn.addEventListener('click', () => {
+            count++;
+            const target = document.getElementById(btn.dataset.target);
+            target.appendChild(crearFilaCompetidor(btn.dataset.prefix, count));
+        });
+        // Empezamos cada lista con una fila ya visible
+        btn.click();
+    });
+
+    /* ============================================================
+       BLOQUES CONDICIONALES SEGÚN TIPO DE PROYECTO
+       ============================================================ */
+    const tiposElegidos = VerbenaState.getTiposProyecto().map((t) => t.toUpperCase());
+
+    if (tiposElegidos.includes('PUBLICACIÓN')) {
+        document.getElementById('bloque-publicacion').hidden = false;
+    }
+    if (tiposElegidos.includes('CARTEL')) {
+        document.getElementById('bloque-cartel').hidden = false;
+    }
+    if (tiposElegidos.includes('DISCO')) {
+        document.getElementById('bloque-disco').hidden = false;
+    }
+
+    /* ============================================================
+       GUARDADO AL AVANZAR
+       ============================================================ */
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        if (verbenaMap) {
+            document.getElementById('area-influencia-mapa').value = verbenaMap.getGeoJSON();
+        }
+        VerbenaState.saveAllFieldsOnPage();
+    });
+</script>
+</body>
+</html>

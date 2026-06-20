@@ -2,7 +2,9 @@
    VERBENA — ESTADO COMPARTIDO ENTRE PÁGINAS
    Usa localStorage para que datos introducidos en una página
    (ej. nombre de la empresa) estén disponibles en las páginas
-   siguientes (ej. breadcrumb del header).
+   siguientes (ej. breadcrumb del header), y para acumular TODAS
+   las respuestas del briefing hasta el envío final en
+   06-conclusiones.html (ver ENVÍO ÚNICO AL FINAL más abajo).
 
    Claves usadas:
    - vb_empresa        → texto, de 00-datos.html (campo "Empresa")
@@ -10,6 +12,17 @@
    - vb_tiposProyecto  → array JSON, tipos de proyecto elegidos
                          (se va añadiendo uno por cada vuelta del
                          bucle "¿necesitas otro tipo de proyecto?")
+   - vb_field_<id>     → namespace genérico: CUALQUIER campo de
+                         CUALQUIER formulario se guarda aquí
+                         automáticamente con saveAllFieldsOnPage(),
+                         usando su atributo id como parte de la clave.
+
+   CÓMO AÑADIR UNA PÁGINA DE FORMULARIO NUEVA:
+   Solo hay que llamar a VerbenaState.autoSaveOnNext('id-del-boton-siguiente')
+   una vez, al final de la página. No hace falta listar los campos
+   uno a uno: recoge automáticamente todos los <input>, <textarea>
+   y <select> que tengan un id, dentro de cualquier <form> o del
+   body si no hay <form>.
 ================================================================ */
 
 const VerbenaState = {
@@ -18,6 +31,7 @@ const VerbenaState = {
         nombreProyecto: 'vb_nombreProyecto',
         tiposProyecto: 'vb_tiposProyecto',
     },
+    FIELD_PREFIX: 'vb_field_',
 
     get(key) {
         return localStorage.getItem(key) || '';
@@ -63,8 +77,10 @@ const VerbenaState = {
 
         if (proyectoEl) {
             const proyecto = this.get(this.KEYS.nombreProyecto);
+            const empresa = this.get(this.KEYS.empresa);
+            const esIgualQueEmpresa = proyecto && empresa && proyecto.trim().toLowerCase() === empresa.trim().toLowerCase();
             proyectoEl.textContent = proyecto;
-            proyectoEl.hidden = !proyecto;
+            proyectoEl.hidden = !proyecto || esIgualQueEmpresa;
         }
 
         if (tipoEl) {
@@ -72,6 +88,89 @@ const VerbenaState = {
             tipoEl.textContent = tipos.join(' + ');
             tipoEl.hidden = !tipos.length;
         }
+    },
+
+    /* ============================================================
+       AUTOGUARDADO GENÉRICO DE CAMPOS
+       ============================================================ */
+
+    /* Recoge el valor de un campo del DOM según su tipo. */
+    _readFieldValue(field) {
+        if (field.type === 'checkbox') return field.checked;
+        if (field.type === 'radio') return field.checked ? field.value : null;
+        return field.value;
+    },
+
+    /* Guarda en localStorage todos los campos con id dentro de
+       <main> (inputs, textareas, selects). Ignora campos sin id
+       (no podríamos luego identificarlos) y campos disabled (ya
+       que normalmente significa que están ocultos/no aplican,
+       como "origen-nombre" cuando se marca "aún no tiene nombre"). */
+    saveAllFieldsOnPage() {
+        const root = document.querySelector('main') || document.body;
+        const fields = root.querySelectorAll('input[id], textarea[id], select[id]');
+
+        fields.forEach((field) => {
+            if (field.disabled) return;
+            if (field.dataset.vbExclude === 'true') return;
+            const value = this._readFieldValue(field);
+            if (value === null) return; // radio no marcado
+            localStorage.setItem(this.FIELD_PREFIX + field.id, JSON.stringify(value));
+        });
+    },
+
+    /* Lee de vuelta un campo guardado (útil si quisiéramos
+       restaurar valores al volver atrás en el flujo). */
+    getField(id) {
+        const raw = localStorage.getItem(this.FIELD_PREFIX + id);
+        if (raw === null) return null;
+        try { return JSON.parse(raw); } catch { return raw; }
+    },
+
+    /* Conecta el guardado automático al botón "SIGUIENTE" (o
+       cualquier botón/enlace) de la página actual. Se llama una
+       vez por página, justo antes de cerrar el <body>. */
+    autoSaveOnNext(buttonId) {
+        const btn = document.getElementById(buttonId);
+        if (!btn) return;
+        btn.addEventListener('click', () => this.saveAllFieldsOnPage());
+    },
+
+    /* ============================================================
+       ENVÍO ÚNICO AL FINAL (06-conclusiones.html)
+       Recopila TODO lo guardado (campos individuales + empresa +
+       nombreProyecto + tiposProyecto) en un solo objeto plano,
+       listo para mandar a Apps Script.
+       ============================================================ */
+    collectAllData() {
+        const data = {
+            empresa: this.get(this.KEYS.empresa),
+            nombreProyecto: this.get(this.KEYS.nombreProyecto),
+            tiposProyecto: this.getTiposProyecto().join(' + '),
+        };
+
+        Object.keys(localStorage)
+            .filter((key) => key.startsWith(this.FIELD_PREFIX))
+            .forEach((key) => {
+                const fieldId = key.slice(this.FIELD_PREFIX.length);
+                const raw = localStorage.getItem(key);
+                try {
+                    data[fieldId] = JSON.parse(raw);
+                } catch {
+                    data[fieldId] = raw;
+                }
+            });
+
+        return data;
+    },
+
+    /* Borra todo el estado guardado (llamar tras un envío exitoso,
+       para que un nuevo cliente no arrastre datos del anterior en
+       el mismo navegador). */
+    clearAll() {
+        Object.keys(localStorage)
+            .filter((key) => key.startsWith('vb_'))
+            .forEach((key) => localStorage.removeItem(key));
     },
 };
 

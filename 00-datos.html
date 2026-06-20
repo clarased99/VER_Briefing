@@ -60,6 +60,7 @@
 <script src="js/footer.js" defer></script>
 <script>
     document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
         VerbenaState.set(VerbenaState.KEYS.empresa, document.getElementById('empresa').value.trim());
     });
 </script>
