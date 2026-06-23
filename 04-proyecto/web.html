@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 04. Sobre el proyecto (Web)</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-section="04" data-tipo="WEB">
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">04. SOBRE EL PROYECTO</h1>
+    <p class="section-subtitle">WEB</p>
+
+    <form class="form-grid" novalidate>
+
+        <div class="field">
+            <label for="dominio">Nombre del dominio</label>
+            <input type="text" id="dominio" placeholder="ej. miempresa.com">
+        </div>
+
+        <div class="field">
+            <label>¿Hace falta contratar el dominio o ya lo tienes?</label>
+            <div class="checkbox-row">
+                <input type="checkbox" id="dominio-tengo">
+                <label for="dominio-tengo">Ya lo tengo</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="dominio-contratar">
+                <label for="dominio-contratar">Hay que contratarlo</label>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="objetivo-web">¿Cuál es el objetivo principal de la página web?</label>
+            <textarea id="objetivo-web"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="necesidades-web">¿Qué necesidades buscas cubrir con la web? ¿Para qué la necesitas?</label>
+            <textarea id="necesidades-web"></textarea>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="webs-gustan">¿Qué webs te gustan? Aunque no sean de tu sector e indícanos las razones.</label>
+            <textarea id="webs-gustan"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="blog">Blog. ¿Quieres una sección de noticias?</label>
+            <div class="checkbox-row">
+                <input type="checkbox" id="blog-si">
+                <label for="blog-si">Sí, quiero una sección de noticias/blog</label>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="idiomas">Idiomas. ¿Va solo en un idioma o lleva varios?</label>
+            <input type="text" id="idiomas" placeholder="ej. Español e inglés">
+        </div>
+
+    </form>
+
+    <!-- Secciones de la web: tarjetas dinámicas -->
+    <div class="field">
+        <label>¿Qué secciones te gustaría que tuviera tu web? Enuméralas.</label>
+        <div id="secciones-lista"></div>
+        <button type="button" class="btn-add-row" id="btn-add-seccion">+ Añadir sección</button>
+    </div>
+
+    <div class="page-nav-next">
+        <a href="../otro-tipo.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="../js/nav.js" defer></script>
+<script src="../js/state.js"></script>
+<script src="../js/main.js" defer></script>
+<script src="../js/footer.js" defer></script>
+<script>
+    // Checkboxes dominio exclusivos
+    ['dominio-tengo', 'dominio-contratar'].forEach((id) => {
+        document.getElementById(id).addEventListener('change', function () {
+            if (this.checked) {
+                ['dominio-tengo', 'dominio-contratar']
+                    .filter(i => i !== id)
+                    .forEach(i => { document.getElementById(i).checked = false; });
+            }
+        });
+    });
+
+    // Secciones dinámicas
+    const seccionesLista = document.getElementById('secciones-lista');
+    let seccionCount = 0;
+
+    function crearFilaSeccion() {
+        seccionCount++;
+        const row = document.createElement('div');
+        row.className = 'dynamic-table-row';
+
+        const inputNombre = document.createElement('input');
+        inputNombre.type = 'text';
+        inputNombre.id = `seccion-nombre-${seccionCount}`;
+        inputNombre.placeholder = 'Nombre de la sección (ej. Sobre nosotros)';
+
+        const inputContenido = document.createElement('input');
+        inputContenido.type = 'text';
+        inputContenido.id = `seccion-contenido-${seccionCount}`;
+        inputContenido.placeholder = 'Contenido / descripción';
+
+        row.appendChild(inputNombre);
+        row.appendChild(inputContenido);
+        seccionesLista.appendChild(row);
+    }
+
+    document.getElementById('btn-add-seccion').addEventListener('click', () => {
+        crearFilaSeccion();
+        seccionesLista.querySelector('.dynamic-table-row:last-child input').focus();
+    });
+    crearFilaSeccion();
+
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
+    });
+</script>
+</body>
+</html>

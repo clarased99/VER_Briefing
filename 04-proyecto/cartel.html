@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 04. Sobre el proyecto (Cartelería)</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-section="04" data-tipo="CARTEL">
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">04. SOBRE EL PROYECTO</h1>
+    <p class="section-subtitle">CARTELERÍA</p>
+
+    <!-- Fotografía condicional -->
+    <div class="field">
+        <label>¿Necesitas fotografías para el cartel?</label>
+        <div style="display: flex; gap: var(--space-lg);">
+            <div class="checkbox-row">
+                <input type="checkbox" id="foto-cartel-si" name="foto-cartel" value="Sí">
+                <label for="foto-cartel-si">Sí</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="foto-cartel-no" name="foto-cartel" value="No">
+                <label for="foto-cartel-no">No</label>
+            </div>
+        </div>
+    </div>
+
+    <form class="form-grid" id="bloque-foto-cartel" hidden novalidate>
+        <div class="field">
+            <label for="que-foto-cartel">¿Qué necesitas fotografiar?</label>
+            <input type="text" id="que-foto-cartel" placeholder="Productos, espacios, personas, arquitectura...">
+        </div>
+        <div class="field">
+            <label for="objetivos-foto-cartel">¿Qué objetivos quieres conseguir con las fotografías?</label>
+            <textarea id="objetivos-foto-cartel"></textarea>
+        </div>
+        <div class="field">
+            <label for="comunicar-foto-cartel">¿Qué quieres comunicar con estas fotografías?</label>
+            <textarea id="comunicar-foto-cartel"></textarea>
+        </div>
+        <div class="field">
+            <label for="uso-foto-cartel">¿Qué vas a hacer con las fotografías?</label>
+            <input type="text" id="uso-foto-cartel" placeholder="Web, redes, impresión...">
+        </div>
+        <div class="field">
+            <label for="mensaje-foto-cartel">Mensaje clave de las fotografías</label>
+            <input type="text" id="mensaje-foto-cartel">
+        </div>
+        <div class="field">
+            <label for="tono-foto-cartel">¿Qué tono quieres dar a las fotografías?</label>
+            <input type="text" id="tono-foto-cartel">
+        </div>
+    </form>
+
+    <form class="form-grid" novalidate>
+        <div class="field">
+            <label for="comunicar-cartel">¿Qué quieres comunicar con este cartel?</label>
+            <textarea id="comunicar-cartel"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="mensaje-cartel">Mensaje clave (concepto o idea principal)</label>
+            <input type="text" id="mensaje-cartel">
+        </div>
+
+        <div class="field">
+            <label for="tono-cartel">¿Qué tono quieres dar al cartel?</label>
+            <input type="text" id="tono-cartel">
+        </div>
+
+        <div class="field">
+            <label for="aportaciones-cartel">Otras aportaciones que consideres de interés</label>
+            <textarea id="aportaciones-cartel"></textarea>
+        </div>
+    </form>
+
+    <!-- Aplicaciones -->
+    <div class="field">
+        <label>¿Qué aplicaciones necesitas?</label>
+        <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
+            <div class="checkbox-row"><input type="checkbox" id="app-a4"><label for="app-a4">Cartel A4</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="app-a3"><label for="app-a3">Cartel A3</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="app-pantallas"><label for="app-pantallas">Pantallas</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="app-redes"><label for="app-redes">Adaptación a redes</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="app-stories"><label for="app-stories">Adaptación a Stories</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="app-noclaro"><label for="app-noclaro">Aún no lo tengo claro</label></div>
+            <div class="checkbox-row has-otro">
+                <input type="checkbox" id="app-otro-check">
+                <label for="app-otro-check">Otro</label>
+                <div class="otro-field-inline" id="app-otro-wrap">
+                    <input type="text" id="app-otro" placeholder="Especifica...">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-nav-next">
+        <a href="../otro-tipo.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="../js/nav.js" defer></script>
+<script src="../js/state.js"></script>
+<script src="../js/main.js" defer></script>
+<script src="../js/footer.js" defer></script>
+<script>
+    // Foto condicional
+    const fotoChecks = document.querySelectorAll('input[name="foto-cartel"]');
+    const bloquefoto = document.getElementById('bloque-foto-cartel');
+    fotoChecks.forEach((cb) => {
+        cb.addEventListener('change', () => {
+            if (cb.checked) fotoChecks.forEach(c => { if (c !== cb) c.checked = false; });
+            bloquefoto.hidden = !document.getElementById('foto-cartel-si').checked;
+        });
+    });
+
+    const cbOtro = document.getElementById('app-otro-check');
+    const wrapOtro = document.getElementById('app-otro-wrap');
+    cbOtro.addEventListener('change', () => {
+        wrapOtro.classList.toggle('visible', cbOtro.checked);
+        if (!cbOtro.checked) wrapOtro.querySelector('input').value = '';
+    });
+
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
+    });
+</script>
+</body>
+</html>

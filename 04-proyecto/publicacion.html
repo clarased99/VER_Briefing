@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 04. Sobre el proyecto (Publicación)</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-section="04" data-tipo="PUBLICACIÓN">
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">04. SOBRE EL PROYECTO</h1>
+    <p class="section-subtitle">PUBLICACIÓN</p>
+
+    <form class="form-grid" novalidate>
+
+        <div class="field">
+            <label for="tipo-publicacion">¿Qué tipo de publicación es?</label>
+            <div class="checkbox-row"><input type="checkbox" id="pub-libro"><label for="pub-libro">Libro</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-revista"><label for="pub-revista">Revista</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-catalogo"><label for="pub-catalogo">Catálogo</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-fanzine"><label for="pub-fanzine">Fanzine</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-editorial"><label for="pub-editorial">Publicación editorial</label></div>
+            <div class="checkbox-row has-otro">
+                <input type="checkbox" id="pub-otro-check">
+                <label for="pub-otro-check">Otro</label>
+                <div class="otro-field-inline" id="pub-otro-wrap">
+                    <input type="text" id="pub-otro" placeholder="Especifica...">
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="objetivo-publicacion">¿Cuál es el objetivo de la publicación?</label>
+            <textarea id="objetivo-publicacion"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="contenido-publicacion">¿De qué trata la publicación? Resumen del contenido.</label>
+            <textarea id="contenido-publicacion"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="extensión-publicacion">¿Cuántas páginas aproximadamente tendrá?</label>
+            <input type="text" id="extensión-publicacion" placeholder="ej. 80-100 páginas, no lo sé todavía...">
+        </div>
+
+        <div class="field">
+            <label for="formato-publicacion">¿Tienes algún formato o tamaño en mente?</label>
+            <input type="text" id="formato-publicacion" placeholder="ej. A5 apaisado, cuadrado 20x20cm...">
+        </div>
+
+        <div class="field">
+            <label>¿La publicación será en color o en blanco y negro?</label>
+            <div class="checkbox-row"><input type="checkbox" id="pub-color"><label for="pub-color">Color</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-byn"><label for="pub-byn">Blanco y negro</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-mixto"><label for="pub-mixto">Mixto</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-nodecidido"><label for="pub-nodecidido">Aún no lo he decidido</label></div>
+        </div>
+
+        <div class="field">
+            <label for="tiraje-publicacion">¿Cuántos ejemplares necesitas? ¿Tienes ya imprenta o lo gestionamos nosotros?</label>
+            <textarea id="tiraje-publicacion"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="publico-publicacion">¿A quién va dirigida la publicación?</label>
+            <textarea id="publico-publicacion"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="publicaciones-referencia">¿Hay publicaciones que te gusten como referencia? ¿Por qué?</label>
+            <textarea id="publicaciones-referencia"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="texto-publicacion">¿Tienes ya el texto listo o hay que contemplar la redacción en el proyecto?</label>
+            <textarea id="texto-publicacion"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="imagenes-publicacion">¿Tienes las imágenes o fotografías que van en la publicación?</label>
+            <textarea id="imagenes-publicacion" placeholder="Si no las tienes, descríbelas y valoramos si las fotografiamos o ilustramos"></textarea>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="aportaciones-publicacion">Cualquier otro detalle relevante para el proyecto</label>
+            <textarea id="aportaciones-publicacion"></textarea>
+        </div>
+
+    </form>
+
+    <div class="page-nav-next">
+        <a href="../otro-tipo.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="../js/nav.js" defer></script>
+<script src="../js/state.js"></script>
+<script src="../js/main.js" defer></script>
+<script src="../js/footer.js" defer></script>
+<script>
+    const cbOtro = document.getElementById('pub-otro-check');
+    const wrapOtro = document.getElementById('pub-otro-wrap');
+    cbOtro.addEventListener('change', () => {
+        wrapOtro.classList.toggle('visible', cbOtro.checked);
+        if (!cbOtro.checked) wrapOtro.querySelector('input').value = '';
+    });
+
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
+    });
+</script>
+</body>
+</html>

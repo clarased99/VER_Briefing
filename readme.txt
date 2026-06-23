@@ -162,12 +162,12 @@ c) Tras completar "04. Sobre el proyecto", pantalla de bifurcación:
    solo afecta a la sección 04 (y a la pantalla de selección de
    tipo de proyecto), no a las secciones posteriores.
 
-   Flujo completo verificado (ACTUALIZADO):
-   Briefing → 00.Datos → Tipo de proyecto → 01.Datos del proyecto
-   → 02.Público objetivo → 03.Competencia → 04.Sobre el proyecto
-   (tipo elegido) → ¿Necesitas otro tipo de proyecto?
-     ├─ SÍ → Tipo de proyecto (siguiente) → 04 (tipo siguiente)
-     │       → vuelve a preguntar (bucle)
+   Flujo completo verificado (DEFINITIVO):
+   Briefing → 00.Datos → 01.Datos del proyecto → 02.Público
+   objetivo → 03.Competencia → Tipo de proyecto → 04.Sobre el
+   proyecto (tipo elegido) → ¿Necesitas otro tipo de proyecto?
+     ├─ SÍ → Tipo de proyecto → 04 (tipo siguiente) → vuelve
+     │       a preguntar (bucle)
      └─ NO → 05.Datos visuales → 06.Conclusiones → Finalizado
              con éxito
 

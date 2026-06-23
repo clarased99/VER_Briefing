@@ -18,7 +18,7 @@
     <!-- leaflet-image (capturar el mapa como imagen PNG) -->
     <script src="https://unpkg.com/leaflet-image@0.0.4/leaflet-image.js"></script>
 </head>
-<body>
+<body data-section="03">
 
 <header class="page-header">
     <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
@@ -42,7 +42,7 @@
         <input type="hidden" id="area-influencia-mapa">
     </div>
 
-    <form class="form-grid" novalidate>
+    <form class="form-grid" id="bloque-competidores" novalidate>
         <div class="field" style="grid-column: 1 / -1;">
             <label>¿Cuál es tu competencia real?<br>Describe y menciona las empresas que son competencia tuya directa, por tipo de empresa.</label>
             <div id="competencia-real-lista"></div>
@@ -102,13 +102,14 @@
     </form>
 
     <div class="page-nav-next">
-        <a href="tipo-proyecto.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+        <button type="button" class="btn-text" id="btn-siguiente">SIGUIENTE</button>
     </div>
 </main>
 
 <div id="brand-footer-text"></div>
 <div id="brand-footer-logo"></div>
 
+<script src="js/nav.js" defer></script>
 <script src="js/state.js"></script>
 <script src="js/main.js" defer></script>
 <script src="js/footer.js" defer></script>
@@ -150,14 +151,29 @@
             const target = document.getElementById(btn.dataset.target);
             target.appendChild(crearFilaCompetidor(btn.dataset.prefix, count));
         });
-        // Empezamos cada lista con una fila ya visible
-        btn.click();
     });
+
+    // Las filas iniciales se crean solo si el bloque de competidores
+    // no está oculto — se llama después de evaluar la visibilidad.
+    function inicializarFilasCompetidores() {
+        if (!document.getElementById('bloque-competidores').hidden) {
+            document.querySelectorAll('.btn-add-row').forEach((btn) => btn.click());
+        }
+    }
 
     /* ============================================================
        BLOQUES CONDICIONALES SEGÚN TIPO DE PROYECTO
        ============================================================ */
     const tiposElegidos = VerbenaState.getTiposProyecto().map((t) => t.toUpperCase());
+
+    const TIPOS_SIN_COMPETIDORES = ['PUBLICACIÓN', 'CARTEL', 'DISCO'];
+    const ocultarCompetidores = tiposElegidos.every((t) =>
+        TIPOS_SIN_COMPETIDORES.includes(t)
+    );
+
+    if (ocultarCompetidores) {
+        document.getElementById('bloque-competidores').hidden = true;
+    }
 
     if (tiposElegidos.includes('PUBLICACIÓN')) {
         document.getElementById('bloque-publicacion').hidden = false;
@@ -169,14 +185,31 @@
         document.getElementById('bloque-disco').hidden = false;
     }
 
+    inicializarFilasCompetidores();
+
     /* ============================================================
        GUARDADO AL AVANZAR
        ============================================================ */
+    const LABEL_A_SLUG = {
+        'DISCO': 'disco', 'REDES': 'redes', 'PUBLICACIÓN': 'publicacion',
+        'MARCA': 'marca', 'CARTEL': 'cartel', 'WEB': 'web',
+        'NAMING + MARCA': 'naming-marca', 'FOTOGRAFÍA': 'fotografia', 'VÍDEO': 'video',
+    };
+
     document.getElementById('btn-siguiente').addEventListener('click', () => {
         if (verbenaMap) {
             document.getElementById('area-influencia-mapa').value = verbenaMap.getGeoJSON();
         }
         VerbenaState.saveAllFieldsOnPage();
+
+        const tipos = VerbenaState.getTiposProyecto();
+        if (tipos.length > 0) {
+            const slug = LABEL_A_SLUG[tipos[0].toUpperCase()] || tipos[0].toLowerCase();
+            window.location.href = `04-proyecto/${slug}.html`;
+        } else {
+            // Sin tipo elegido (no debería pasar), ir al selector
+            window.location.href = 'tipo-proyecto.html';
+        }
     });
 </script>
 </body>

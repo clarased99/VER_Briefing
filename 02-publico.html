@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body data-section="02">
 
 <header class="page-header">
     <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
@@ -192,13 +192,14 @@
     </form>
 
     <div class="page-nav-next">
-        <a href="03-competencia.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+        <a href="tipo-proyecto.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
     </div>
 </main>
 
 <div id="brand-footer-text"></div>
 <div id="brand-footer-logo"></div>
 
+<script src="js/nav.js" defer></script>
 <script src="js/state.js"></script>
 <script src="js/main.js" defer></script>
 <script src="js/footer.js" defer></script>
@@ -290,22 +291,22 @@
        ============================================================ */
     const GRIDS_IMAGEN = {
         transporte: [
-            { id: 'coche', label: 'Conduce su propio coche', img: '' },
-            { id: 'transporte-publico', label: 'Transporte público', img: '' },
-            { id: 'bicicleta', label: 'Bicicleta', img: '' },
-            { id: 'patinete', label: 'Patinete', img: '' },
+            { id: 'coche', label: 'Conduce su propio coche', img: '/assets/images/coche.png' },
+            { id: 'transporte-publico', label: 'Transporte público', img: '/assets/images/transporte-publico.png' },
+            { id: 'bicicleta', label: 'Bicicleta', img: '/assets/images/bicicleta.png' },
+            { id: 'patinete', label: 'Patinete', img: '/assets/images/patinete.png' },
         ],
         trabajo: [
-            { id: 'oficinas', label: 'Edificio de oficinas', img: '' },
-            { id: 'casa', label: 'En casa', img: '' },
-            { id: 'coworking', label: 'Coworking', img: '' },
-            { id: 'startup', label: 'En una moderna startup', img: '' },
+            { id: 'oficinas', label: 'Edificio de oficinas', img: '/assets/images/oficinas.png' },
+            { id: 'casa', label: 'En casa', img: '/assets/images/casa.png' },
+            { id: 'coworking', label: 'Atención al público', img: '/assets/images/coworking.png' },
+            { id: 'startup', label: 'En una moderna startup o coworking', img: '/assets/images/startup.png' },
         ],
         vacaciones: [
-            { id: 'playa', label: 'Una playa tranquila', img: '' },
-            { id: 'ciudad', label: 'Una ciudad multicultural', img: '' },
-            { id: 'resort', label: 'Un lujoso resort', img: '' },
-            { id: 'montana', label: 'Montaña y aventura', img: '' },
+            { id: 'playa', label: 'Una playa tranquila', img: '/assets/images/playa.png' },
+            { id: 'ciudad', label: 'Una ciudad multicultural', img: '/assets/images/ciudad.png' },
+            { id: 'resort', label: 'Un lujoso resort', img: '/assets/images/resort.png' },
+            { id: 'montana', label: 'Montaña y aventura', img: '/assets/images/montana.png' },
         ],
     };
 
@@ -348,6 +349,7 @@
        ============================================================ */
     document.getElementById('btn-siguiente').addEventListener('click', () => {
         VerbenaState.saveAllFieldsOnPage();
+        VerbenaState.resetTiposProyecto();
     });
 </script>
 </body>

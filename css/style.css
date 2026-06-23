@@ -6,51 +6,54 @@
 
 body.landing {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    height: 100vh;
     overflow: hidden;
-}
-
-.landing__shapes {
     position: relative;
+}
+
+/* Canvas de física ocupa toda la pantalla, detrás de todo */
+.landing__shapes {
+    position: fixed;
+    inset: 0;
     width: 100%;
-    height: 60vh;
-    min-height: 320px;
-    overflow: hidden;
+    height: 100%;
+    z-index: 0;
 }
 
-.physics-shape {
-    position: absolute;
-    top: 0;
-    left: 0;
-    will-change: transform;
-}
-
-.landing__bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    gap: var(--space-md);
-    padding: 0 var(--space-lg) var(--space-xl);
+/* Título arriba a la izquierda, encima del canvas */
+.landing__top {
+    position: fixed;
+    top: var(--space-lg);
+    left: var(--space-lg);
+    z-index: 10;
+    pointer-events: none;
 }
 
 .landing__title {
     font-size: clamp(3rem, 8vw, 5rem);
     font-weight: 400;
     color: var(--color-text);
+    line-height: 1;
+    background: transparent;
+}
+
+/* EMPEZAR justo debajo del título, a la izquierda */
+.landing__start {
+    position: fixed;
+    top: calc(var(--space-lg) + clamp(3rem, 8vw, 5rem) * 1.2);
+    left: var(--space-lg);
+    z-index: 10;
 }
 
 @media (max-width: 768px) {
-    .landing__shapes {
-        height: 50vh;
+    .landing__top {
+        top: var(--space-md);
+        left: var(--space-md);
     }
 
-    .landing__bottom {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0 var(--space-md) var(--space-md);
+    .landing__start {
+        top: calc(var(--space-md) + clamp(3rem, 8vw, 5rem) * 1.2);
+        left: var(--space-md);
     }
 }
 
@@ -70,6 +73,12 @@ body.landing {
 .page-main {
     padding: 0 var(--space-lg) var(--space-lg);
     max-width: var(--content-max-width);
+}
+
+/* Protege el atributo hidden de ser sobrescrito por reglas CSS
+   como .form-grid { display: grid } o .confetti-field etc. */
+[hidden] {
+    display: none !important;
 }
 
 .form-grid {
@@ -97,7 +106,159 @@ body.landing {
 }
 
 
-/* ---------- Mapa dibujable (03. Competencia) ------------------- */
+/* ---------- Overlay de navegación ---------------------------- */
+
+#nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-md) var(--space-lg) var(--space-lg);
+}
+
+#nav-overlay[hidden] {
+    display: none;
+}
+
+.nav-overlay__close {
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 0;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-md);
+    align-self: flex-start;
+    transition: opacity var(--transition-fast);
+}
+
+.nav-overlay__close:hover {
+    opacity: 0.5;
+}
+
+.nav-overlay__lista {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    max-width: 740px;
+}
+
+.nav-overlay__linea {
+    border: none;
+    border-top: var(--border-title) solid var(--color-text);
+    margin: 0;
+}
+
+.nav-overlay__item {
+    padding: 0.3rem var(--space-sm);
+    font-size: var(--text-xl);
+    color: var(--color-text);
+    opacity: 0.35;
+    transition: opacity var(--transition-fast);
+}
+
+.nav-overlay__item--bloqueada {
+    opacity: 0.15;
+    cursor: default !important;
+    pointer-events: none;
+}
+
+.nav-overlay__item[style*="cursor: pointer"]:hover {
+    opacity: 0.6;
+}
+
+.nav-overlay__item--activa {
+    opacity: 1;
+}
+
+/* Tipos de proyecto bajo 04 — fuera de las líneas */
+.nav-overlay__subtipo-item {
+    padding: var(--space-xs) var(--space-sm);
+    padding-left: 5.5rem;
+    font-size: var(--text-xl);
+    opacity: 1;
+    transition: opacity var(--transition-fast);
+}
+
+.nav-overlay__subtipo-item--inactivo {
+    opacity: 0.35;
+}
+
+.nav-overlay__subtipo-item[style*="cursor: pointer"]:hover {
+    opacity: 0.6;
+}
+
+.nav-overlay__footer {
+    margin-top: auto;
+    font-size: var(--text-sm);
+}
+
+.nav-overlay__footer .brand-name {
+    font-weight: 600;
+}
+
+.nav-overlay__footer .brand-suffix {
+    font-weight: 500;
+    margin-left: 0.35em;
+}
+
+@media (max-width: 768px) {
+    .nav-overlay__lista {
+        width: 100%;
+    }
+}
+
+
+/* ---------- Subtítulo de sección (ej. FOTOGRAFÍA bajo 04.) ---- */
+.section-title .section-subtitle {
+    display: none; /* Ya no se usa dentro del h1 */
+}
+
+.section-subtitle {
+    font-size: var(--text-xl);
+    color: var(--color-text);
+    padding-left: 5.5rem;
+    margin-bottom: var(--space-md);
+    font-weight: 400;
+}
+
+/* ---------- Tarjetas de aplicaciones (04. Fotografía) --------- */
+.aplicacion-card {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+}
+
+.aplicacion-card input[type="text"] {
+    width: 100%;
+    background-color: var(--color-input-bg);
+    border: none;
+    padding: var(--space-sm);
+    font-family: var(--font-mono);
+}
+
+.aplicacion-card label {
+    font-size: var(--text-sm);
+    opacity: 0.7;
+    white-space: nowrap;
+}
+
+.aplicacion-card input[type="number"] {
+    background-color: var(--color-input-bg);
+    border: none;
+    padding: var(--space-sm);
+    font-family: var(--font-mono);
+    text-align: center;
+}
 
 .map-container {
     width: 100%;

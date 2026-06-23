@@ -49,4 +49,7 @@
 
     /* Ancho máximo del contenido de las páginas de formulario */
     --content-max-width: 1500px;
+
+    /* Grosor de líneas de título (section-title y menú) */
+    --border-title: 2px;
 }

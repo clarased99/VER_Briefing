@@ -32,6 +32,7 @@ const VerbenaState = {
         tiposProyecto: 'vb_tiposProyecto',
     },
     FIELD_PREFIX: 'vb_field_',
+    PROGRESS_KEY: 'vb_progreso', // Máxima sección alcanzada: '00','01'...
 
     get(key) {
         return localStorage.getItem(key) || '';
@@ -59,6 +60,18 @@ const VerbenaState = {
 
     resetTiposProyecto() {
         localStorage.removeItem(this.KEYS.tiposProyecto);
+    },
+
+    /* Registra hasta qué sección ha llegado el usuario */
+    setProgreso(seccion) {
+        const actual = this.get(this.PROGRESS_KEY);
+        if (!actual || seccion > actual) {
+            localStorage.setItem(this.PROGRESS_KEY, seccion);
+        }
+    },
+
+    getProgreso() {
+        return this.get(this.PROGRESS_KEY) || '00';
     },
 
     /* Rellena automáticamente los breadcrumbs del header en cualquier

@@ -46,6 +46,12 @@ input, textarea, select {
     color: inherit;
 }
 
+/* Garantiza que [hidden] siempre oculte el elemento,
+   independientemente de otras reglas CSS con display */
+[hidden] {
+    display: none !important;
+}
+
 /* Respeta la preferencia de movimiento reducido del usuario */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {

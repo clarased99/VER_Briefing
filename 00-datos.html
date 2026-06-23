@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body data-section="00">
 
 <header class="page-header">
     <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
@@ -48,17 +48,23 @@
     </form>
 
     <div class="page-nav-next">
-        <a href="tipo-proyecto.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+        <a href="01-proyecto.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
     </div>
 </main>
 
 <div id="brand-footer-text"></div>
 <div id="brand-footer-logo"></div>
 
+<script src="js/nav.js" defer></script>
 <script src="js/state.js"></script>
 <script src="js/main.js" defer></script>
 <script src="js/footer.js" defer></script>
 <script>
+    // Al llegar a 00-datos siempre es el inicio de un briefing nuevo.
+    // Limpiamos el estado completo para que un cliente nuevo no arrastre
+    // datos de un recorrido anterior en el mismo navegador.
+    VerbenaState.clearAll();
+
     document.getElementById('btn-siguiente').addEventListener('click', () => {
         VerbenaState.saveAllFieldsOnPage();
         VerbenaState.set(VerbenaState.KEYS.empresa, document.getElementById('empresa').value.trim());

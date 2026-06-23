@@ -1,113 +1,174 @@
 /* ================================================================
    VERBENA — FÍSICA DE CAÍDA EN LA LANDING
-   Usa Matter.js (cargado vía CDN en index.html) para simular la
-   caída de las formas geométricas de marca con gravedad real.
-   Cada forma colisiona con las demás y con los bordes del área
-   de caída, quedando apiladas de forma natural y aleatoria.
-
-   Pensado para poder ampliarse fácilmente: añadir más formas,
-   variar tamaños o colores solo requiere editar la lista
-   SHAPES_CONFIG más abajo.
+   - Secciones de 120° + triángulos, colores aleatorios
+   - MouseConstraint para arrastrar figuras
+   - Fuerza sutil hacia el cursor (efecto Hey Studio, versión suave)
 ================================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('physics-container');
     if (!container || typeof Matter === 'undefined') return;
 
-    const { Engine, Runner, Bodies, Composite, Common } = Matter;
-
-    // -------- Configuración de las formas a soltar --------
-    // Cada entrada: nombre de la forma (debe existir el SVG en
-    // assets/shapes/forma-<nombre>.svg), color CSS, y tamaño relativo.
-    const SHAPES_CONFIG = [
-        { tipo: 'verde',    archivo: 'forma-verde.svg',    color: getCssVar('--color-verde'),    width: 220, height: 99,  vertices: null },
-        { tipo: 'morado',   archivo: 'forma-morada.svg',   color: getCssVar('--color-morado'),   width: 220, height: 193, vertices: 'triangle' },
-        { tipo: 'amarillo', archivo: 'forma-amarilla.svg', color: getCssVar('--color-amarillo'), width: 220, height: 126, vertices: null },
-    ];
+    const {
+        Engine, Render, Runner, Bodies, Composite,
+        Common, Events, Mouse, MouseConstraint
+    } = Matter;
 
     function getCssVar(name) {
         return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     }
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+    const COLORES = [
+        getCssVar('--color-verde'),
+        getCssVar('--color-morado'),
+        getCssVar('--color-amarillo'),
+        getCssVar('--color-azul'),
+        getCssVar('--color-naranja'),
+        getCssVar('--color-rojo'),
+    ];
+
+    function colorAleatorio() {
+        return COLORES[Math.floor(Math.random() * COLORES.length)];
+    }
+
+    const W = window.innerWidth;
+    const H = window.innerHeight;
 
     const engine = Engine.create();
-    const world = engine.world;
+    engine.world.gravity.y = 1;
 
-    // -------- Suelo y paredes invisibles (límites de caída) --------
-    const wallOptions = { isStatic: true, render: { visible: false } };
-    const floor = Bodies.rectangle(width / 2, height + 20, width * 2, 40, wallOptions);
-    const leftWall = Bodies.rectangle(-20, height / 2, 40, height * 2, wallOptions);
-    const rightWall = Bodies.rectangle(width + 20, height / 2, 40, height * 2, wallOptions);
+    const render = Render.create({
+        element: container,
+        engine: engine,
+        options: {
+            width: W,
+            height: H,
+            background: 'transparent',
+            wireframes: false,
+            pixelRatio: 1,
+        },
+    });
 
-    Composite.add(world, [floor, leftWall, rightWall]);
+    render.canvas.style.position = 'absolute';
+    render.canvas.style.top    = '0';
+    render.canvas.style.left   = '0';
+    render.canvas.style.width  = W + 'px';
+    render.canvas.style.height = H + 'px';
 
-    // -------- Crear un cuerpo físico por cada forma --------
-    const bodies = SHAPES_CONFIG.map((shape, i) => {
-        const startX = Common.random(width * 0.2, width * 0.8);
-        const startY = -200 - i * 150; // Las suelta escalonadas en el tiempo/altura
-        const startAngle = Common.random(-0.5, 0.5);
+    // ---- Paredes ----
+    const SUELO_Y = H - 20;
+    const wallOpts = { isStatic: true, render: { visible: false } };
+    Composite.add(engine.world, [
+        Bodies.rectangle(W / 2,  SUELO_Y + 25, W * 2, 50, wallOpts),
+        Bodies.rectangle(-25,    H / 2,         50, H * 2, wallOpts),
+        Bodies.rectangle(W + 25, H / 2,         50, H * 2, wallOpts),
+    ]);
+
+    // ---- Tamaños (+20% sobre la versión anterior) ----
+    const R    = 103;   // radio visual sección
+    const RT   = 120;   // radio triángulo
+    const R_HIT = R * 0.38; // hitbox físico sección
+
+    // ---- Crear formas ----
+    const FORMAS = [];
+
+    for (let i = 0; i < 38; i++) {
+        const color    = colorAleatorio();
+        const startX   = Common.random(W * 0.05, W * 0.95);
+        const startY   = -120 - i * 110;
+        const initAng  = Common.random(-Math.PI, Math.PI);
+        const esTriang = (i + 1) % 3 === 0;
+        const arcStart = Common.random(0, 2 * Math.PI);
+
+        const physOpts = {
+            restitution: 0.3,
+            friction: 0.5,
+            frictionAir: 0.01,
+            angle: initAng,
+            render: { fillStyle: 'transparent', strokeStyle: 'transparent', lineWidth: 0 },
+        };
 
         let body;
-        if (shape.vertices === 'triangle') {
-            // Triángulo aproximado para la física (el SVG real se dibuja encima)
-            body = Bodies.polygon(startX, startY, 3, shape.width / 2, {
-                angle: startAngle,
-                restitution: 0.45,
-                friction: 0.3,
-            });
+        if (esTriang) {
+            body = Bodies.polygon(startX, startY, 3, RT, physOpts);
         } else {
-            // El resto se simulan como cápsulas/rectángulos redondeados
-            body = Bodies.rectangle(startX, startY, shape.width, shape.height, {
-                angle: startAngle,
-                chamfer: { radius: shape.height / 2.2 },
-                restitution: 0.45,
-                friction: 0.3,
-            });
+            body = Bodies.circle(startX, startY, R_HIT, physOpts);
+            body._arcStart = arcStart;
         }
 
-        body.shapeTipo = shape.tipo;
-        return body;
+        body._tipo  = esTriang ? 'triangulo' : 'segmento';
+        body._color = color;
+        FORMAS.push(body);
+    }
+
+    Composite.add(engine.world, FORMAS);
+
+    // ---- MouseConstraint: permite arrastrar figuras ----
+    const mouse = Mouse.create(render.canvas);
+    const mouseConstraint = MouseConstraint.create(engine, {
+        mouse,
+        constraint: {
+            stiffness: 0.2,
+            angularStiffness: 0.1,
+            render: { visible: false },
+        },
     });
+    Composite.add(engine.world, mouseConstraint);
+    render.mouse = mouse;
 
-    Composite.add(world, bodies);
+    // ---- Dibujo custom ----
+    Events.on(render, 'afterRender', () => {
+        const ctx = render.context;
 
-    // -------- Sincronizar cada body físico con un <div> SVG real --------
-    const els = bodies.map((body, i) => {
-        const shape = SHAPES_CONFIG[i];
-        const el = document.createElement('div');
-        el.className = `physics-shape physics-shape--${shape.tipo}`;
-        el.style.width = `${shape.width}px`;
-        el.style.height = `${shape.height}px`;
-        el.style.position = 'absolute';
-        el.style.left = '0';
-        el.style.top = '0';
-        el.style.backgroundColor = shape.color;
-        el.style.webkitMaskImage = `url('assets/shapes/${shape.archivo}')`;
-        el.style.maskImage = `url('assets/shapes/${shape.archivo}')`;
-        el.style.webkitMaskSize = 'contain';
-        el.style.maskSize = 'contain';
-        el.style.webkitMaskRepeat = 'no-repeat';
-        el.style.maskRepeat = 'no-repeat';
-        container.appendChild(el);
-        return el;
-    });
+        FORMAS.forEach((body) => {
+            const { x, y } = body.position;
+            const ang = body.angle;
 
-    const runner = Runner.create();
-    Runner.run(runner, engine);
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(ang);
+            ctx.fillStyle = body._color;
+            ctx.beginPath();
 
-    (function syncPositions() {
-        bodies.forEach((body, i) => {
-            const el = els[i];
-            const shape = SHAPES_CONFIG[i];
-            // El triángulo de Matter.js (Bodies.polygon) nace apuntando hacia
-            // arriba; nuestro SVG real es un triángulo invertido (apunta hacia
-            // abajo), así que sumamos 180° (π rad) solo para esa forma.
-            const visualOffset = shape.vertices === 'triangle' ? Math.PI : 0;
-            el.style.transform =
-                `translate(${body.position.x - shape.width / 2}px, ${body.position.y - shape.height / 2}px) rotate(${body.angle + visualOffset}rad)`;
+            if (body._tipo === 'triangulo') {
+                for (let k = 0; k < 3; k++) {
+                    const a = (k / 3) * 2 * Math.PI - Math.PI / 2;
+                    k === 0
+                        ? ctx.moveTo(RT * Math.cos(a), RT * Math.sin(a))
+                        : ctx.lineTo(RT * Math.cos(a), RT * Math.sin(a));
+                }
+            } else {
+                const a0  = body._arcStart;
+                const a1  = a0 + (2 * Math.PI / 3);
+                const theta = 2 * Math.PI / 3;
+                const aMid  = a0 + theta / 2;
+                const d     = (4 * R / 3) * Math.sin(theta / 2) / (theta - Math.sin(theta));
+                const cx    = -d * Math.cos(aMid);
+                const cy    = -d * Math.sin(aMid);
+
+                ctx.moveTo(cx + R * Math.cos(a0), cy + R * Math.sin(a0));
+                ctx.arc(cx, cy, R, a0, a1, false);
+                ctx.lineTo(cx + R * Math.cos(a0), cy + R * Math.sin(a0));
+            }
+
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
         });
-        requestAnimationFrame(syncPositions);
-    })();
+    });
+
+    Render.run(render);
+    Runner.run(Runner.create(), engine);
+
+    window.addEventListener('resize', () => {
+        const nW = window.innerWidth;
+        const nH = window.innerHeight;
+        render.options.width  = nW;
+        render.options.height = nH;
+        render.canvas.width   = nW;
+        render.canvas.height  = nH;
+        render.canvas.style.width  = nW + 'px';
+        render.canvas.style.height = nH + 'px';
+        Render.lookAt(render, { min: { x: 0, y: 0 }, max: { x: nW, y: nH } });
+    });
 });

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 04. Sobre el proyecto (Naming + Marca)</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-section="04" data-tipo="NAMING + MARCA">
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">04. SOBRE EL PROYECTO</h1>
+    <p class="section-subtitle">NAMING + MARCA</p>
+
+    <form class="form-grid" novalidate>
+
+        <div class="field">
+            <label for="objetivo-naming">¿Cuál es el objetivo principal de este proyecto?</label>
+            <textarea id="objetivo-naming"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="tipo-nombre">¿Qué tipo de nombre buscas?</label>
+            <div class="checkbox-row">
+                <input type="checkbox" id="nombre-descriptivo">
+                <label for="nombre-descriptivo">Descriptivo (explica lo que hace la marca)</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="nombre-evocador">
+                <label for="nombre-evocador">Evocador (sugiere sensaciones o valores)</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="nombre-abstracto">
+                <label for="nombre-abstracto">Abstracto (sin significado literal, original)</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="nombre-fundador">
+                <label for="nombre-fundador">Basado en el nombre del fundador/a</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="nombre-noclaro">
+                <label for="nombre-noclaro">Aún no lo tengo claro</label>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="palabras-clave-naming">¿Qué palabras clave o conceptos asocias a tu marca?</label>
+            <textarea id="palabras-clave-naming" placeholder="Escribe todas las que se te ocurran, sin filtros"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="idioma-nombre">¿En qué idioma o idiomas debe funcionar el nombre?</label>
+            <input type="text" id="idioma-nombre" placeholder="ej. Español, inglés, que funcione en ambos...">
+        </div>
+
+        <div class="field">
+            <label for="evitar-naming">¿Hay algo que quieras evitar en el nombre? (palabras, sonidos, referencias...)</label>
+            <textarea id="evitar-naming"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="nombres-gustan">¿Hay nombres de marcas que te gusten, aunque no sean de tu sector? ¿Por qué?</label>
+            <textarea id="nombres-gustan"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="esencia-naming">¿Cuál es la esencia de tu marca? ¿Qué la hace única?</label>
+            <textarea id="esencia-naming"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="promesa-naming">¿Cuál es la promesa de tu marca hacia el cliente?</label>
+            <textarea id="promesa-naming"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="personalidad-naming">¿Cómo describirías la personalidad de tu marca?</label>
+            <textarea id="personalidad-naming"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="tono-naming">¿Qué tono de comunicación debe tener la marca?</label>
+            <input type="text" id="tono-naming" placeholder="Cercano, formal, técnico, irreverente...">
+        </div>
+
+        <div class="field">
+            <label for="marcas-admira-naming">¿Qué marcas admiras o te inspiran visualmente?</label>
+            <textarea id="marcas-admira-naming"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="marcas-no-naming">¿Hay algún estilo o marca que definitivamente NO quieras que se parezca a la tuya?</label>
+            <textarea id="marcas-no-naming"></textarea>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label>¿Qué aplicaciones necesita la identidad?</label>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
+                <div class="checkbox-row"><input type="checkbox" id="napp-logo"><label for="napp-logo">Logotipo / isotipo</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="napp-papeleria"><label for="napp-papeleria">Papelería corporativa</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="napp-digital"><label for="napp-digital">Aplicaciones digitales</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="napp-packaging"><label for="napp-packaging">Packaging</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="napp-manual"><label for="napp-manual">Manual de marca</label></div>
+                <div class="checkbox-row has-otro">
+                    <input type="checkbox" id="napp-otro-check">
+                    <label for="napp-otro-check">Otra</label>
+                    <div class="otro-field-inline" id="napp-otro-wrap">
+                        <input type="text" id="napp-otro" placeholder="Especifica...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="aportaciones-naming">Cualquier otro detalle que creas que puede ayudarnos</label>
+            <textarea id="aportaciones-naming"></textarea>
+        </div>
+
+    </form>
+
+    <div class="page-nav-next">
+        <a href="../otro-tipo.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="../js/nav.js" defer></script>
+<script src="../js/state.js"></script>
+<script src="../js/main.js" defer></script>
+<script src="../js/footer.js" defer></script>
+<script>
+    const cbOtro = document.getElementById('napp-otro-check');
+    const wrapOtro = document.getElementById('napp-otro-wrap');
+    cbOtro.addEventListener('change', () => {
+        wrapOtro.classList.toggle('visible', cbOtro.checked);
+        if (!cbOtro.checked) wrapOtro.querySelector('input').value = '';
+    });
+
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 04. Sobre el proyecto (Fotografía)</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-section="04" data-tipo="FOTOGRAFÍA">
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">04. SOBRE EL PROYECTO</h1>
+    <p class="section-subtitle">FOTOGRAFÍA</p>
+
+    <!-- ¿Qué necesitas fotografiar? -->
+    <div class="field">
+        <label>¿Qué necesitas fotografiar?</label>
+        <div class="image-grid" id="grid-que-fotografiar" data-single="true"></div>
+        <div class="checkbox-row has-otro">
+            <input type="checkbox" id="que-fotografiar-otro-check">
+            <label for="que-fotografiar-otro-check">Otra cosa</label>
+            <div class="otro-field-inline" id="que-fotografiar-otro-wrap">
+                <input type="text" id="que-fotografiar-otro" placeholder="Especifica...">
+            </div>
+        </div>
+        <input type="hidden" id="que-fotografiar">
+    </div>
+
+    <form class="form-grid" novalidate>
+
+        <div class="field">
+            <label for="necesidades-foto">Define las necesidades que buscas cubrir con la fotografía</label>
+            <textarea id="necesidades-foto"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="objetivos-foto">¿Qué objetivos quieres conseguir con las fotografías?</label>
+            <textarea id="objetivos-foto"></textarea>
+        </div>
+
+        <!-- Uso de las fotografías -->
+        <div class="field">
+            <label>¿Qué vas a hacer con las fotografías?</label>
+            <div class="checkbox-row">
+                <input type="checkbox" id="uso-web">
+                <label for="uso-web">Web</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="uso-redes">
+                <label for="uso-redes">Redes sociales</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="uso-impresion">
+                <label for="uso-impresion">Impresión</label>
+            </div>
+            <div class="checkbox-row has-otro">
+                <input type="checkbox" id="uso-otro-check">
+                <label for="uso-otro-check">Otra cosa</label>
+                <div class="otro-field-inline" id="uso-otro-wrap">
+                    <input type="text" id="uso-otro" placeholder="Especifica...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Resolución condicional -->
+        <div class="field">
+            <label>¿Necesitas que las fotografías tengan una resolución, proporción o tamaño concreto?</label>
+            <div style="display: flex; gap: var(--space-lg); margin-bottom: var(--space-xs);">
+                <div class="checkbox-row">
+                    <input type="checkbox" id="resolucion-si" name="resolucion" value="Sí">
+                    <label for="resolucion-si">Sí</label>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="resolucion-no" name="resolucion" value="No">
+                    <label for="resolucion-no">No</label>
+                </div>
+            </div>
+            <div class="otro-field" id="resolucion-detalle-wrap">
+                <input type="text" id="resolucion-detalle" placeholder="Especifica la resolución, proporción o tamaño...">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="comunicar-foto">¿Qué quieres comunicar con estas fotografías?</label>
+            <input type="text" id="comunicar-foto">
+        </div>
+
+        <div class="field">
+            <label for="mensaje-clave-foto">Mensaje clave, concepto o idea principal de las fotografías</label>
+            <input type="text" id="mensaje-clave-foto">
+        </div>
+
+        <div class="field">
+            <label for="tono-foto">¿Qué tono quieres dar a las fotografías?</label>
+            <input type="text" id="tono-foto">
+        </div>
+
+        <div class="field">
+            <label for="aportaciones-foto">Otras aportaciones que consideres de interés</label>
+            <textarea id="aportaciones-foto"></textarea>
+        </div>
+
+    </form>
+
+    <!-- Selección de estilo visual -->
+    <div class="field">
+        <label>Elige la imagen que más se aproxime a la idea que tienes de tus fotografías.</label>
+        <div class="image-grid" id="grid-estilo-foto"></div>
+        <input type="hidden" id="estilo-foto">
+    </div>
+
+    <!-- Aplicaciones: tarjetas dinámicas -->
+    <div class="field">
+        <label>Escribe aquí las fotografías que crees que te serán útiles para desarrollar tu proyecto.</label>
+        <div id="aplicaciones-lista"></div>
+        <button type="button" class="btn-add-row" id="btn-add-aplicacion">+ Añadir fotografía</button>
+    </div>
+
+    <div class="page-nav-next">
+        <a href="../otro-tipo.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="../js/nav.js" defer></script>
+<script src="../js/state.js"></script>
+<script src="../js/main.js" defer></script>
+<script src="../js/footer.js" defer></script>
+<script>
+    /* ============================================================
+       GRID: ¿Qué necesitas fotografiar?
+       ============================================================ */
+    const QUE_FOTOGRAFIAR = [
+        { id: 'productos',     label: 'Productos',     img: '/assets/images/foto-producto.png' },
+        { id: 'espacios',      label: 'Espacios interiores',      img: '/assets/images/foto-interior.png' },
+        { id: 'personas',      label: 'Personas',      img: '/assets/images/foto-persona.png' },
+        { id: 'arquitectura',  label: 'Espacios exteriores',  img: '/assets/images/foto-exteriores.png' },
+    ];
+
+    const ESTILO_FOTO = [
+        { id: 'moderno',      label: 'Moderno/cosmopolita',   img: '/assets/images/foto-moderna.png' },
+        { id: 'natural',      label: 'Natural/tradicional',   img: '/assets/images/foto-organica.png' },
+        { id: 'historico',    label: 'Neutra/común',       img: '/assets/images/foto-neutra.png' },
+        { id: 'colorida',     label: 'Colorida/artística',    img: '/assets/images/foto-artistica.png' },
+    ];
+
+    function initGrid(containerId, opciones, hiddenInputId, single = true) {
+        const container = document.getElementById(containerId);
+        const hiddenInput = document.getElementById(hiddenInputId);
+        if (!container) return;
+
+        opciones.forEach((opcion) => {
+            const card = document.createElement('button');
+            card.type = 'button';
+            card.className = 'image-card';
+            card.dataset.value = opcion.label;
+            if (opcion.img) card.style.backgroundImage = `url('${opcion.img}')`;
+
+            const label = document.createElement('span');
+            label.className = 'image-card__label';
+            label.textContent = opcion.label;
+            card.appendChild(label);
+
+            card.addEventListener('click', () => {
+                if (single) {
+                    container.querySelectorAll('.image-card').forEach((c) => c.classList.remove('selected'));
+                }
+                card.classList.toggle('selected');
+                if (hiddenInput) {
+                    const seleccionadas = Array.from(container.querySelectorAll('.image-card.selected'))
+                        .map((c) => c.dataset.value);
+                    hiddenInput.value = seleccionadas.join(' + ');
+                }
+            });
+
+            container.appendChild(card);
+        });
+    }
+
+    initGrid('grid-que-fotografiar', QUE_FOTOGRAFIAR, 'que-fotografiar', true);
+    initGrid('grid-estilo-foto', ESTILO_FOTO, 'estilo-foto', true);
+
+    /* ============================================================
+       CHECKBOX "OTRO" INLINE
+       ============================================================ */
+    function initCheckboxOtro(checkboxId) {
+        const checkbox = document.getElementById(checkboxId);
+        const wrap = document.getElementById(checkboxId.replace('-check', '-wrap'));
+        if (!checkbox || !wrap) return;
+        checkbox.addEventListener('change', () => {
+            wrap.classList.toggle('visible', checkbox.checked);
+            if (!checkbox.checked) wrap.querySelector('input').value = '';
+        });
+    }
+
+    ['que-fotografiar-otro-check', 'uso-otro-check'].forEach(initCheckboxOtro);
+
+    /* ============================================================
+       CHECKBOXES EXCLUSIVOS (comportamiento radio) para resolución
+       ============================================================ */
+    const resolucionChecks = document.querySelectorAll('input[name="resolucion"]');
+    const resolucionWrap = document.getElementById('resolucion-detalle-wrap');
+
+    resolucionChecks.forEach((check) => {
+        check.addEventListener('change', () => {
+            if (check.checked) {
+                // Desmarcar el otro
+                resolucionChecks.forEach((c) => { if (c !== check) c.checked = false; });
+            }
+            const esSi = document.getElementById('resolucion-si').checked;
+            resolucionWrap.classList.toggle('visible', esSi);
+            if (!esSi) document.getElementById('resolucion-detalle').value = '';
+        });
+    });
+
+    /* ============================================================
+       TARJETAS DINÁMICAS DE APLICACIONES
+       ============================================================ */
+    const aplicacionesLista = document.getElementById('aplicaciones-lista');
+    let aplicacionCount = 0;
+
+    function crearTarjetaAplicacion() {
+        aplicacionCount++;
+        const card = document.createElement('div');
+        card.className = 'aplicacion-card';
+
+        const inputSujeto = document.createElement('input');
+        inputSujeto.type = 'text';
+        inputSujeto.id = `foto-sujeto-${aplicacionCount}`;
+        inputSujeto.placeholder = 'Fotografías de (sujeto, modelo, habitación...)';
+
+        const labelCantidad = document.createElement('label');
+        labelCantidad.textContent = 'Cantidad';
+        labelCantidad.setAttribute('for', `foto-cantidad-${aplicacionCount}`);
+
+        const inputCantidad = document.createElement('input');
+        inputCantidad.type = 'number';
+        inputCantidad.id = `foto-cantidad-${aplicacionCount}`;
+        inputCantidad.min = '1';
+        inputCantidad.placeholder = '—';
+        inputCantidad.style.width = '5rem';
+
+        // Checkbox "Aún no lo sé"
+        const checkRow = document.createElement('div');
+        checkRow.className = 'checkbox-row';
+        checkRow.style.whiteSpace = 'nowrap';
+
+        const checkNoSe = document.createElement('input');
+        checkNoSe.type = 'checkbox';
+        checkNoSe.id = `foto-nose-${aplicacionCount}`;
+        checkNoSe.checked = false; // Por defecto desmarcado
+
+        const labelNoSe = document.createElement('label');
+        labelNoSe.setAttribute('for', `foto-nose-${aplicacionCount}`);
+        labelNoSe.textContent = 'Aún no lo sé';
+
+        checkNoSe.addEventListener('change', () => {
+            inputCantidad.disabled = checkNoSe.checked;
+            if (checkNoSe.checked) inputCantidad.value = '';
+        });
+
+        // Aplicar estado inicial (habilitado por defecto)
+        inputCantidad.disabled = false;
+
+        checkRow.appendChild(checkNoSe);
+        checkRow.appendChild(labelNoSe);
+
+        card.appendChild(inputSujeto);
+        card.appendChild(labelCantidad);
+        card.appendChild(inputCantidad);
+        card.appendChild(checkRow);
+        aplicacionesLista.appendChild(card);
+    }
+
+    document.getElementById('btn-add-aplicacion').addEventListener('click', () => {
+        crearTarjetaAplicacion();
+        // Focus solo al añadir manualmente, no al cargar la página
+        aplicacionesLista.querySelector('.aplicacion-card:last-child input[type="text"]').focus();
+    });
+    crearTarjetaAplicacion(); // Empieza con una tarjeta visible, sin focus
+
+    /* ============================================================
+       GUARDADO AL AVANZAR
+       ============================================================ */
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
+    });
+</script>
+</body>
+</html>

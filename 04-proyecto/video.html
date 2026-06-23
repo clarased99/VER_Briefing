@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 04. Sobre el proyecto (Vídeo)</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-section="04" data-tipo="VÍDEO">
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">04. SOBRE EL PROYECTO</h1>
+    <p class="section-subtitle">VÍDEO</p>
+
+    <form class="form-grid" novalidate>
+
+        <div class="field">
+            <label for="personas-video">¿Qué personas o sujetos deberán salir en el vídeo?</label>
+            <textarea id="personas-video"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="objetivos-video">¿Qué objetivos queréis conseguir con el vídeo?</label>
+            <textarea id="objetivos-video"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="comunicar-video">¿Qué quieres comunicar con el vídeo?</label>
+            <textarea id="comunicar-video"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="mensaje-clave-video">Mensaje clave del vídeo (concepto o idea principal a comunicar)</label>
+            <input type="text" id="mensaje-clave-video">
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="tono-video">¿Qué tono quieres que tenga tu vídeo?</label>
+            <div class="checkbox-row">
+                <input type="checkbox" id="tono-comico">
+                <label for="tono-comico">Cómico — resalta el lado risueño o ridículo de las cosas</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="tono-emocional">
+                <label for="tono-emocional">Emocional — ataca a las emociones del cliente</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="tono-testimonial">
+                <label for="tono-testimonial">Testimonial — a través de testimonios y opiniones</label>
+            </div>
+            <div class="checkbox-row has-otro">
+                <input type="checkbox" id="tono-otro-check">
+                <label for="tono-otro-check">Otro</label>
+                <div class="otro-field-inline" id="tono-otro-wrap">
+                    <input type="text" id="tono-otro" placeholder="Especifica...">
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="historia-oculta">Lo más interesante es lo que no se ve. ¿Alguna historia "oculta" que merezca la pena contar?</label>
+            <textarea id="historia-oculta"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="aportaciones-video">Otras aportaciones que la empresa considere de interés</label>
+            <textarea id="aportaciones-video"></textarea>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label>¿En qué medios se reproducirá tu vídeo?</label>
+            <div class="checkbox-row">
+                <input type="checkbox" id="medio-web">
+                <label for="medio-web">Web</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="medio-redes">
+                <label for="medio-redes">Redes sociales</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="medio-pantalla">
+                <label for="medio-pantalla">Gran pantalla</label>
+            </div>
+            <div class="checkbox-row has-otro">
+                <input type="checkbox" id="medio-otro-check">
+                <label for="medio-otro-check">Otro</label>
+                <div class="otro-field-inline" id="medio-otro-wrap">
+                    <input type="text" id="medio-otro" placeholder="Especifica...">
+                </div>
+            </div>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="redes-formato">Si el vídeo se reproducirá en redes, ¿en cuáles y tienes alguna preferencia de formato?</label>
+            <textarea id="redes-formato"></textarea>
+        </div>
+
+    </form>
+
+    <div class="page-nav-next">
+        <a href="../otro-tipo.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="../js/nav.js" defer></script>
+<script src="../js/state.js"></script>
+<script src="../js/main.js" defer></script>
+<script src="../js/footer.js" defer></script>
+<script>
+    ['tono-otro-check', 'medio-otro-check'].forEach((id) => {
+        const cb = document.getElementById(id);
+        const wrap = document.getElementById(id.replace('-check', '-wrap'));
+        if (!cb || !wrap) return;
+        cb.addEventListener('change', () => {
+            wrap.classList.toggle('visible', cb.checked);
+            if (!cb.checked) wrap.querySelector('input').value = '';
+        });
+    });
+
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
+    });
+</script>
+</body>
+</html>

@@ -88,9 +88,9 @@
 .section-title {
     font-size: var(--text-xl);
     font-weight: 400;
-    border-top: 3px solid var(--color-text);
-    border-bottom: 3px solid var(--color-text);
-    padding: var(--space-xs) 0;
+    border-top: var(--border-title) solid var(--color-text);
+    border-bottom: var(--border-title) solid var(--color-text);
+    padding: 0.2rem 0;
     margin-bottom: var(--space-md);
 }
 
