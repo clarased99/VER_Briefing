@@ -192,7 +192,7 @@
     </form>
 
     <div class="page-nav-next">
-        <a href="tipo-proyecto.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+        <button type="button" class="btn-text" id="btn-siguiente">SIGUIENTE</button>
     </div>
 </main>
 
@@ -342,6 +342,17 @@
         hiddenInput.type = 'hidden';
         hiddenInput.id = `field-${gridKey}`;
         container.after(hiddenInput);
+
+        // Restaurar selección visual si hay un valor guardado
+        const valorGuardado = VerbenaState.getField(`field-${gridKey}`);
+        if (valorGuardado) {
+            hiddenInput.value = valorGuardado;
+            container.querySelectorAll('.image-card').forEach((c) => {
+                if (c.dataset.value === valorGuardado) {
+                    c.classList.add('selected');
+                }
+            });
+        }
     });
 
     /* ============================================================
@@ -349,7 +360,15 @@
        ============================================================ */
     document.getElementById('btn-siguiente').addEventListener('click', () => {
         VerbenaState.saveAllFieldsOnPage();
-        VerbenaState.resetTiposProyecto();
+        // Si ya hay tipo elegido, el usuario está repasando el flujo
+        // — no volvemos a mostrar el selector, vamos directo a 03
+        if (VerbenaState.getTiposProyecto().length > 0) {
+            window.location.href = '03-competencia.html';
+        } else {
+            // Primera vez: resetear por si acaso y mostrar selector de tipo
+            VerbenaState.resetTiposProyecto();
+            window.location.href = 'tipo-proyecto.html';
+        }
     });
 </script>
 </body>

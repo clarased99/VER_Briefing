@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — ¿Otro tipo de proyecto?</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-section="04">
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">¿NECESITAS OTRO TIPO DE PROYECTO?</h1>
+
+    <div class="otro-tipo-opciones">
+        <button type="button" class="btn-text" id="btn-si">SÍ</button>
+        <button type="button" class="btn-text" id="btn-no">NO</button>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="js/nav.js" defer></script>
+<script src="js/state.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/footer.js" defer></script>
+<script>
+    // SÍ → volver al selector de tipo con ?bucle=1
+    document.getElementById('btn-si').addEventListener('click', () => {
+        window.location.href = 'tipo-proyecto.html?bucle=1';
+    });
+
+    // NO → continuar a 05. Datos visuales
+    document.getElementById('btn-no').addEventListener('click', () => {
+        window.location.href = '05-visuales.html';
+    });
+</script>
+</body>
+</html>

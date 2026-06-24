@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 06. Conclusiones</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-section="06">
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">06. CONCLUSIONES</h1>
+
+    <div class="conclusiones-intro">
+        <p>Cualquier comentario o información que creas que no has podido expresar seguro que nos puede ayudar a tener una idea más exacta. Cuéntanos…</p>
+        <p>Cualquier referencia/inspiración que hayas tenido será bienvenida.</p>
+    </div>
+
+    <div class="field conclusiones-archivos">
+        <div class="archivos-row">
+            <label for="archivos-referencia" class="archivos-placeholder">Sube aquí tus archivos</label>
+            <input type="file" id="archivos-referencia" multiple accept="image/*,.pdf,.zip,.ai,.eps,.sketch,.fig">
+            <button type="button" class="btn-examinar" onclick="document.getElementById('archivos-referencia').click()">EXAMINAR...</button>
+        </div>
+        <p class="archivos-wetransfer">* También puedes enviar un <a href="https://wetransfer.com" target="_blank" rel="noopener">wetransfer</a> a <a href="mailto:hola@colectivoverbena.info">hola@colectivoverbena.info</a></p>
+        <div id="archivos-nombres" class="archivos-nombres"></div>
+    </div>
+
+    <div class="field">
+        <label for="aportacion-adicional">¿Alguna aclaración o aportación adicional?</label>
+        <textarea id="aportacion-adicional" rows="5"></textarea>
+    </div>
+
+    <div class="page-nav-next">
+        <button type="button" class="btn-text" id="btn-enviar">ENVIAR</button>
+    </div>
+
+    <div id="envio-estado" hidden>
+        <p id="envio-mensaje"></p>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="js/nav.js" defer></script>
+<script src="js/state.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/footer.js" defer></script>
+<script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPJ1j2HTmENNFaQL3SBwmRiVskGFJfnhZJrTrlHJSauhTf4UaNImYgV3Jna_XSFrZqbg/exec';
+
+    /* Mostrar nombres de archivos seleccionados */
+    document.getElementById('archivos-referencia').addEventListener('change', function () {
+        const nombres = document.getElementById('archivos-nombres');
+        nombres.innerHTML = Array.from(this.files)
+            .map(f => `<span class="archivo-nombre">${f.name}</span>`)
+            .join('');
+    });
+
+    /* Envío final */
+    document.getElementById('btn-enviar').addEventListener('click', () => {
+        try { VerbenaState.saveAllFieldsOnPage(); } catch(e) { console.error('saveAll', e); }
+
+        try {
+            const CAMPOS_IMAGEN = ['textura','colores','formas','imagen-1','imagen-2','imagen-3','imagen-4','imagen-5','imagen-6'];
+            const imgs = CAMPOS_IMAGEN
+                .map(id => VerbenaState.getField(id))
+                .filter(Boolean)
+                .flatMap(val => val.split(' + '))
+                .filter(val => val.includes('=IMAGE(') || val.startsWith('http'));
+            sessionStorage.setItem('vb_moodboard', JSON.stringify(imgs));
+        } catch(e) { console.error('moodboard', e); }
+
+        try {
+            const datos = VerbenaState.collectAllData();
+            const blob = new Blob([JSON.stringify(datos)], { type: 'text/plain' });
+            navigator.sendBeacon(APPS_SCRIPT_URL, blob);
+        } catch(e) { console.error('sendBeacon', e); }
+
+        try { VerbenaState.clearAll(); } catch(e) { console.error('clearAll', e); }
+
+        console.log('Redirigiendo a final.html...');
+        window.location.href = 'final.html';
+    });
+</script>
+</body>
+</html>

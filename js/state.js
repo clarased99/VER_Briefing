@@ -62,7 +62,20 @@ const VerbenaState = {
         localStorage.removeItem(this.KEYS.tiposProyecto);
     },
 
-    /* Registra hasta qué sección ha llegado el usuario */
+    LABEL_A_SLUG: {
+        'DISCO': 'disco', 'REDES': 'redes', 'PUBLICACIÓN': 'publicacion',
+        'MARCA': 'marca', 'CARTEL': 'cartel', 'WEB': 'web',
+        'NAMING + MARCA': 'naming-marca', 'FOTOGRAFÍA': 'fotografia', 'VÍDEO': 'video',
+    },
+
+    /* Devuelve la URL del 04 del primer tipo elegido, o null si no hay. */
+    getUrlPrimerTipo(base = '') {
+        const tipos = this.getTiposProyecto();
+        if (!tipos.length) return null;
+        const slug = this.LABEL_A_SLUG[tipos[0].toUpperCase()];
+        if (!slug) return null;
+        return `${base}04-proyecto/${slug}.html`;
+    },
     setProgreso(seccion) {
         const actual = this.get(this.PROGRESS_KEY);
         if (!actual || seccion > actual) {
@@ -140,9 +153,34 @@ const VerbenaState = {
         try { return JSON.parse(raw); } catch { return raw; }
     },
 
-    /* Conecta el guardado automático al botón "SIGUIENTE" (o
-       cualquier botón/enlace) de la página actual. Se llama una
-       vez por página, justo antes de cerrar el <body>. */
+    /* Restaura en el DOM todos los campos guardados para esta página.
+       Llamar al cargar la página para que el usuario vea sus respuestas
+       si vuelve atrás. */
+    restoreAllFieldsOnPage() {
+        const root = document.querySelector('main') || document.body;
+        const fields = root.querySelectorAll('input[id], textarea[id], select[id]');
+
+        fields.forEach((field) => {
+            if (field.dataset.vbExclude === 'true') return;
+            const raw = localStorage.getItem(this.FIELD_PREFIX + field.id);
+            if (raw === null) return;
+
+            try {
+                const value = JSON.parse(raw);
+                if (field.type === 'checkbox') {
+                    field.checked = !!value;
+                    // Disparar change para activar lógicas condicionales
+                    field.dispatchEvent(new Event('change'));
+                } else if (field.type === 'radio') {
+                    field.checked = field.value === value;
+                } else {
+                    field.value = value || '';
+                }
+            } catch {
+                field.value = raw || '';
+            }
+        });
+    },
     autoSaveOnNext(buttonId) {
         const btn = document.getElementById(buttonId);
         if (!btn) return;
@@ -189,4 +227,5 @@ const VerbenaState = {
 
 document.addEventListener('DOMContentLoaded', () => {
     VerbenaState.renderBreadcrumbs();
+    VerbenaState.restoreAllFieldsOnPage();
 });

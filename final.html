@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — ¡Muchas gracias!</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="final-page">
+
+<div id="moodboard-container" aria-hidden="true"></div>
+
+<div class="final-overlay">
+    <div class="final-breadcrumb">
+        <span id="final-empresa"></span>
+        <span id="final-proyecto"></span>
+    </div>
+    <h1 class="final-titulo">¡MUCHAS GRACIAS!</h1>
+    <p class="final-texto">Toda esta información nos vendrá de perlas<br>para conocer tu proyecto y darle forma.<br>Seguimos en contacto.</p>
+    <span class="final-tipo" id="final-tipo"></span>
+</div>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="js/state.js"></script>
+<script src="js/footer.js" defer></script>
+<script>
+    /* ============================================================
+       LEER DATOS GUARDADOS
+       ============================================================ */
+    const empresa  = VerbenaState.get(VerbenaState.KEYS.empresa);
+    const proyecto = VerbenaState.get(VerbenaState.KEYS.nombreProyecto);
+    const tipos    = VerbenaState.getTiposProyecto();
+
+    if (empresa)  document.getElementById('final-empresa').textContent  = empresa;
+    if (proyecto && proyecto !== empresa) document.getElementById('final-proyecto').textContent = proyecto;
+    if (tipos.length) document.getElementById('final-tipo').textContent = tipos.join(' + ');
+
+    /* ============================================================
+       RECOPILAR IMÁGENES ELEGIDAS EN 05-VISUALES
+       Solo las que son URLs reales (no fórmulas =IMAGE())
+       ============================================================ */
+    // Leer imágenes guardadas en sessionStorage por 06-conclusiones
+    function extraerUrl(valor) {
+        if (!valor) return null;
+        const match = valor.match(/=IMAGE\("([^"]+)"\)/);
+        if (match) return match[1];
+        if (valor.startsWith('http') || valor.startsWith('/assets')) return valor;
+        return null;
+    }
+
+    const raw = sessionStorage.getItem('vb_moodboard');
+    let imagenesBase = raw ? JSON.parse(raw).map(extraerUrl).filter(Boolean) : [];
+
+    // Duplicar para tener más elementos rebotando
+    const imagenesElegidas = imagenesBase.length > 0
+        ? [...imagenesBase, ...imagenesBase, ...imagenesBase]
+        : [];
+
+    /* ============================================================
+       EFECTO DVD — rebote por la pantalla
+       ============================================================ */
+    const container = document.getElementById('moodboard-container');
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+
+    // Si no hay imágenes elegidas, mostrar placeholders de color
+    const COLORES_FALLBACK = [
+        'var(--color-verde)','var(--color-morado)','var(--color-amarillo)',
+        'var(--color-azul)','var(--color-naranja)','var(--color-rojo)',
+    ];
+
+    const ELEMENTOS = imagenesElegidas.length > 0
+        ? imagenesElegidas.map((url, i) => ({ tipo: 'img', url, size: 140 + (i % 3) * 40 }))
+        : COLORES_FALLBACK.map((color, i) => ({ tipo: 'color', color, size: 120 + (i % 3) * 30 }));
+
+    const dvdItems = ELEMENTOS.map((el, i) => {
+        const div = document.createElement('div');
+        div.className = 'dvd-item';
+
+        if (el.tipo === 'img') {
+            const img = document.createElement('img');
+            img.src = el.url;
+            img.alt = '';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            div.appendChild(img);
+        } else {
+            div.style.backgroundColor = el.color;
+        }
+
+        div.style.width  = el.size + 'px';
+        div.style.height = el.size + 'px';
+
+        container.appendChild(div);
+
+        // Posición y velocidad iniciales aleatorias
+        const vMax = 1.5;
+        return {
+            el: div,
+            x: Math.random() * (W - el.size),
+            y: Math.random() * (H - el.size),
+            vx: (Math.random() * vMax + 0.5) * (Math.random() > 0.5 ? 1 : -1),
+            vy: (Math.random() * vMax + 0.5) * (Math.random() > 0.5 ? 1 : -1),
+            size: el.size,
+        };
+    });
+
+    function animate() {
+        const W = window.innerWidth;
+        const H = window.innerHeight;
+
+        dvdItems.forEach((item) => {
+            item.x += item.vx;
+            item.y += item.vy;
+
+            if (item.x <= 0)             { item.x = 0;             item.vx = Math.abs(item.vx); }
+            if (item.x >= W - item.size) { item.x = W - item.size; item.vx = -Math.abs(item.vx); }
+            if (item.y <= 0)             { item.y = 0;             item.vy = Math.abs(item.vy); }
+            if (item.y >= H - item.size) { item.y = H - item.size; item.vy = -Math.abs(item.vy); }
+
+            item.el.style.transform = `translate(${item.x}px, ${item.y}px)`;
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+</script>
+</body>
+</html>

@@ -193,8 +193,26 @@
         });
     }
 
-    initGrid('grid-que-fotografiar', QUE_FOTOGRAFIAR, 'que-fotografiar', true);
-    initGrid('grid-estilo-foto', ESTILO_FOTO, 'estilo-foto', true);
+    function initGridConRestore(containerId, opciones, hiddenInputId, single) {
+        initGrid(containerId, opciones, hiddenInputId, single);
+        // Restaurar selección visual
+        const valorGuardado = VerbenaState.getField(hiddenInputId);
+        if (valorGuardado) {
+            const container = document.getElementById(containerId);
+            const hiddenInput = document.getElementById(hiddenInputId);
+            if (hiddenInput) hiddenInput.value = valorGuardado;
+            if (container) {
+                container.querySelectorAll('.image-card').forEach((c) => {
+                    valorGuardado.split(' + ').forEach(v => {
+                        if (c.dataset.value === v) c.classList.add('selected');
+                    });
+                });
+            }
+        }
+    }
+
+    initGridConRestore('grid-que-fotografiar', QUE_FOTOGRAFIAR, 'que-fotografiar', true);
+    initGridConRestore('grid-estilo-foto', ESTILO_FOTO, 'estilo-foto', true);
 
     /* ============================================================
        CHECKBOX "OTRO" INLINE

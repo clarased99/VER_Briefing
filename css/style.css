@@ -216,7 +216,111 @@ body.landing {
 }
 
 
-/* ---------- Subtítulo de sección (ej. FOTOGRAFÍA bajo 04.) ---- */
+/* ---------- Grid de checkboxes (adjetivos) -------------------- */
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-xs) var(--space-md);
+    margin-top: var(--space-xs);
+}
+
+.field-hint {
+    font-size: var(--text-sm);
+    opacity: 0.6;
+    margin-bottom: var(--space-xs);
+}
+
+/* ---------- Grid de imágenes variantes ----------------------- */
+.image-grid--5 {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.image-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.image-grid--8 {
+    grid-template-columns: repeat(8, 1fr);
+}
+
+@media (max-width: 768px) {
+    .image-grid--5,
+    .image-grid--4,
+    .image-grid--8 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Variante sin texto (texturas): borde gris en hover, negro al seleccionar */
+.image-card--no-label {
+    border: none;
+    outline: none;
+}
+
+.image-card--no-label:hover {
+    border: 2px solid var(--color-border);
+}
+
+.image-card--no-label .image-card__label {
+    display: none;
+}
+
+.image-card--no-label.selected {
+    border: 2px solid var(--color-text);
+}
+
+/* ---------- Deslizadores de personalidad --------------------- */
+.sliders-personalidad {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: var(--space-xs);
+}
+
+.slider-field {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.slider-label--left {
+    text-align: right;
+}
+
+.slider-label--right {
+    text-align: left;
+}
+
+.slider-field input[type="range"] {
+    width: 200px;
+    accent-color: var(--color-text);
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .slider-field {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+    }
+
+    .slider-label--left {
+        text-align: left;
+    }
+
+    .slider-field input[type="range"] {
+        width: 100%;
+    }
+}
+.otro-tipo-opciones {
+    display: flex;
+    gap: var(--space-xl);
+    margin-top: var(--space-lg);
+}
+
+.otro-tipo-opciones .btn-text {
+    font-size: var(--text-xl);
+}
 .section-title .section-subtitle {
     display: none; /* Ya no se usa dentro del h1 */
 }
@@ -430,4 +534,247 @@ body.landing {
         padding: 0 var(--space-md);
     }
 }
+}
+
+#grid-formas .image-card {
+    background-color: white;
+}
+
+#grid-texturas .image-card,
+#grid-colores .image-card {
+    background-color: transparent;
+    overflow: hidden;
+    outline: none;
+}
+
+.image-card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.visuales-imagen-section {
+    margin-top: var(--space-xl);
+}
+
+.visuales-imagen-title {
+    font-size: var(--text-xl);
+    font-weight: 400;
+    margin-bottom: var(--space-xs);
+}
+
+.visuales-imagen-subtitle {
+    font-size: var(--text-base);
+    opacity: 0.7;
+    margin-bottom: var(--space-lg);
+}
+
+.visuales-imagen-intro {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-md);
+}
+
+.visuales-imagen-bloque {
+    margin-bottom: var(--space-lg);
+}
+
+.visuales-imagen-bloque label {
+    display: block;
+    margin-bottom: var(--space-sm);
+}
+
+.visuales-imagen-num {
+    display: block;
+    font-size: var(--text-base);
+    opacity: 0.5;
+    margin-bottom: var(--space-xs);
+}
+
+/* ---------- Bifurcación ¿otro tipo de proyecto? -------------- */
+.otro-tipo-opciones {
+    display: flex;
+    gap: var(--space-xl);
+    margin-top: var(--space-lg);
+}
+
+.otro-tipo-opciones .btn-text {
+    font-size: var(--text-xl);
+}
+
+/* ---------- 06. Conclusiones ---------------------------------- */
+.conclusiones-intro {
+    margin-bottom: var(--space-lg);
+}
+
+.conclusiones-intro p {
+    margin-bottom: var(--space-sm);
+}
+
+.conclusiones-archivos {
+    margin-bottom: var(--space-md);
+}
+
+.archivos-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    background-color: var(--color-input-bg);
+    padding: var(--space-sm) var(--space-md);
+}
+
+.archivos-placeholder {
+    flex: 1;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+/* Ocultar el input file nativo */
+.archivos-row input[type="file"] {
+    display: none;
+}
+
+.btn-examinar {
+    background: none;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    cursor: pointer;
+    text-decoration: underline;
+    white-space: nowrap;
+    transition: opacity var(--transition-fast);
+}
+
+.btn-examinar:hover {
+    opacity: 0.5;
+}
+
+.archivos-wetransfer {
+    font-size: var(--text-sm);
+    margin-top: var(--space-xs);
+    opacity: 0.7;
+}
+
+.archivos-wetransfer a {
+    text-decoration: underline;
+    color: var(--color-text);
+}
+
+.archivos-nombres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+}
+
+.archivo-nombre {
+    font-size: var(--text-sm);
+    background-color: var(--color-input-bg);
+    padding: 2px var(--space-xs);
+}
+
+/* ---------- Pantalla final (gracias) -------------------------- */
+body.final-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.final-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: var(--space-lg);
+}
+
+.final-content {
+    max-width: 600px;
+}
+
+.final-titulo {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 400;
+    margin-bottom: var(--space-md);
+}
+
+.final-texto {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-sm);
+}
+
+.final-texto--secundario {
+    opacity: 0.6;
+    font-size: var(--text-base);
+}
+
+.final-texto a {
+    text-decoration: underline;
+    color: var(--color-text);
+}
+
+/* ---------- Pantalla final — moodboard DVD -------------------- */
+body.final-page {
+    min-height: 100vh;
+    overflow: hidden;
+    background: var(--color-bg);
+}
+
+#moodboard-container {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+}
+
+.dvd-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+    overflow: hidden;
+}
+
+.final-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    pointer-events: none;
+}
+
+.final-breadcrumb {
+    position: fixed;
+    top: var(--space-lg);
+    left: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: var(--text-sm);
+    text-align: left;
+}
+
+.final-titulo {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-md);
+    mix-blend-mode: multiply;
+}
+
+.final-texto {
+    font-size: var(--text-base);
+    line-height: 1.6;
+    mix-blend-mode: multiply;
+}
+
+.final-tipo {
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    font-size: var(--text-sm);
 }

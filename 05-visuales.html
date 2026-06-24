@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbena — 05. Datos visuales</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-section="05">
+
+<header class="page-header">
+    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="breadcrumbs">
+        <span id="breadcrumb-empresa" hidden></span>
+        <span id="breadcrumb-tipo" hidden></span>
+        <span id="breadcrumb-proyecto" hidden></span>
+    </div>
+</header>
+
+<main class="page-main">
+    <h1 class="section-title">05. DATOS VISUALES</h1>
+
+    <div class="field">
+        <label>¿Existe ya una identidad visual definida?</label>
+        <div style="display: flex; gap: var(--space-lg);">
+            <div class="checkbox-row">
+                <input type="checkbox" id="identidad-si" name="identidad" value="Sí">
+                <label for="identidad-si">Sí</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="identidad-no" name="identidad" value="No">
+                <label for="identidad-no">No</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="field" id="bloque-fidelidad" hidden>
+        <label>¿Cómo de fiel debe ser el proyecto a esta identidad?</label>
+        <div class="slider-field">
+            <span class="slider-label slider-label--left">Totalmente independiente</span>
+            <input type="range" id="fidelidad" min="0" max="10" value="5" step="1">
+            <span class="slider-label slider-label--right">Completamente fiel</span>
+        </div>
+        <p class="field-hint">* Si hay un manual o documento que recoja la identidad puedes adjuntarlo en el apartado final del cuestionario o enviarlo por correo.</p>
+    </div>
+
+    <div class="field">
+        <label>Elige máximo 5 adjetivos que definan tu proyecto</label>
+        <div class="checkbox-grid" id="adjetivos-grid"></div>
+        <input type="hidden" id="adjetivos">
+    </div>
+
+    <form class="form-grid" novalidate>
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="aspectos-personalidad">¿Qué aspectos de la personalidad del proyecto es importante reflejar?</label>
+            <textarea id="aspectos-personalidad"></textarea>
+        </div>
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="caracteristicas-proyecto">¿Qué características debe reflejar el proyecto? Sensaciones, actitudes, emociones…</label>
+            <textarea id="caracteristicas-proyecto"></textarea>
+        </div>
+    </form>
+
+    <div class="field">
+        <label>Si este proyecto fuera una persona, ¿cómo sería? Física, intelectual, emocional y/o espiritualmente</label>
+        <div class="dynamic-table-row" style="grid-template-columns: 160px 1fr; margin-bottom: var(--space-xs);">
+            <span style="padding: var(--space-sm); opacity: 0.6; background: var(--color-input-bg);">Físicamente</span>
+            <input type="text" id="persona-fisico">
+        </div>
+        <div class="dynamic-table-row" style="grid-template-columns: 160px 1fr; margin-bottom: var(--space-xs);">
+            <span style="padding: var(--space-sm); opacity: 0.6; background: var(--color-input-bg);">Intelectualmente</span>
+            <input type="text" id="persona-intelectual">
+        </div>
+        <div class="dynamic-table-row" style="grid-template-columns: 160px 1fr; margin-bottom: var(--space-xs);">
+            <span style="padding: var(--space-sm); opacity: 0.6; background: var(--color-input-bg);">Emocionalmente</span>
+            <input type="text" id="persona-emocional">
+        </div>
+        <div class="dynamic-table-row" style="grid-template-columns: 160px 1fr;">
+            <span style="padding: var(--space-sm); opacity: 0.6; background: var(--color-input-bg);">Espiritualmente</span>
+            <input type="text" id="persona-espiritual">
+        </div>
+    </div>
+
+    <form class="form-grid" novalidate>
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="persona-mensaje">Si este proyecto fuera una persona, ¿qué nos estaría diciendo?</label>
+            <textarea id="persona-mensaje"></textarea>
+        </div>
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="frase-corta">Describe tu proyecto en una frase corta.</label>
+            <input type="text" id="frase-corta" maxlength="280" placeholder="Máx. 280 caracteres">
+        </div>
+    </form>
+
+    <div class="field">
+        <label>¿Qué marcas te inspiran? Nombra al menos tres. No importa que sean de diferentes campos. Todo suma.</label>
+        <div id="marcas-inspiran-lista" class="dynamic-grid-3">
+            <input type="text" id="marca-inspira-1" placeholder="Marca 1">
+            <input type="text" id="marca-inspira-2" placeholder="Marca 2">
+            <input type="text" id="marca-inspira-3" placeholder="Marca 3">
+            <button type="button" class="btn-add" id="btn-add-marca-inspira" aria-label="Añadir otra marca">+</button>
+        </div>
+    </div>
+
+    <div class="field">
+        <label>¿Cómo es la personalidad del proyecto?</label>
+        <div class="sliders-personalidad" id="sliders-personalidad"></div>
+    </div>
+
+    <div class="visuales-imagen-section">
+        <h2 class="visuales-imagen-title">UNA IMAGEN VALE MÁS...</h2>
+        <p class="visuales-imagen-subtitle">Aquí te proponemos un juego visual. En cada caso elige la imagen que más se aproxime a la idea que tienes de tu proyecto.</p>
+
+        <div class="field visuales-imagen-bloque">
+            <label>¿Qué tipo de textura asocias intuitivamente al proyecto?</label>
+            <div class="image-grid image-grid--8" id="grid-texturas"></div>
+            <input type="hidden" id="textura">
+        </div>
+
+        <div class="field visuales-imagen-bloque">
+            <label>¿Qué colores se te vienen a la mente cuando piensas en tu proyecto?</label>
+            <div class="image-grid image-grid--8" id="grid-colores"></div>
+            <input type="hidden" id="colores">
+        </div>
+
+        <div class="field visuales-imagen-bloque">
+            <label>¿Qué formas se te vienen a la mente cuando piensas en tu proyecto?</label>
+            <div class="image-grid image-grid--4" id="grid-formas"></div>
+            <input type="hidden" id="formas">
+        </div>
+
+        <div id="imagen-preguntas"></div>
+    </div>
+
+    <div class="page-nav-next">
+        <a href="06-conclusiones.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
+    </div>
+</main>
+
+<div id="brand-footer-text"></div>
+<div id="brand-footer-logo"></div>
+
+<script src="js/nav.js" defer></script>
+<script src="js/state.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/footer.js" defer></script>
+<script>
+    // Identidad visual
+    const identidadChecks = document.querySelectorAll('input[name="identidad"]');
+    identidadChecks.forEach((cb) => {
+        cb.addEventListener('change', () => {
+            if (cb.checked) identidadChecks.forEach(c => { if (c !== cb) c.checked = false; });
+            document.getElementById('bloque-fidelidad').hidden = !document.getElementById('identidad-si').checked;
+        });
+    });
+
+    // Adjetivos
+    const ADJETIVOS = ['Divertida','Cool','Agresiva','Leal','Gama alta','Ostentosa','Fuerte','Inteligente','Antigua','Audaz','Fashion','Irreverente','Mágica','Sexy','Clara','Humana','Experta','Estratégica','Sofisticada','Imaginativa','Inquieta','Cálida','Accesible'];
+    const adjetivosGrid = document.getElementById('adjetivos-grid');
+    const adjetivosHidden = document.getElementById('adjetivos');
+
+    function actualizarAdjetivos() {
+        const sel = Array.from(adjetivosGrid.querySelectorAll('input[type="checkbox"]:checked'));
+        const otroTxt = document.getElementById('adj-otro-texto');
+        adjetivosHidden.value = sel.map(c => c.value === 'Otro' && otroTxt?.value ? otroTxt.value.trim() : c.value).join(' + ');
+    }
+
+    ADJETIVOS.forEach((adj) => {
+        const row = document.createElement('div'); row.className = 'checkbox-row';
+        const cb = document.createElement('input'); cb.type = 'checkbox';
+        cb.id = `adj-${adj.toLowerCase().replace(/[^a-z]/g,'')}`;
+        cb.value = adj; cb.dataset.vbExclude = 'true';
+        cb.addEventListener('change', () => {
+            if (adjetivosGrid.querySelectorAll('input:checked').length > 5) { cb.checked = false; return; }
+            actualizarAdjetivos();
+        });
+        const lbl = document.createElement('label'); lbl.setAttribute('for', cb.id); lbl.textContent = adj;
+        row.appendChild(cb); row.appendChild(lbl); adjetivosGrid.appendChild(row);
+    });
+
+    const rowOtro = document.createElement('div'); rowOtro.className = 'checkbox-row has-otro';
+    const cbOtro = document.createElement('input'); cbOtro.type = 'checkbox'; cbOtro.id = 'adj-otro'; cbOtro.value = 'Otro'; cbOtro.dataset.vbExclude = 'true';
+    const lblOtro = document.createElement('label'); lblOtro.setAttribute('for','adj-otro'); lblOtro.textContent = 'Otro:';
+    const otroWrap = document.createElement('div'); otroWrap.className = 'otro-field-inline';
+    const otroInput = document.createElement('input'); otroInput.type = 'text'; otroInput.id = 'adj-otro-texto'; otroInput.placeholder = 'Especifica...';
+    otroInput.addEventListener('input', actualizarAdjetivos);
+    cbOtro.addEventListener('change', () => {
+        if (adjetivosGrid.querySelectorAll('input:checked').length > 5) { cbOtro.checked = false; return; }
+        otroWrap.classList.toggle('visible', cbOtro.checked);
+        if (!cbOtro.checked) otroInput.value = '';
+        actualizarAdjetivos();
+    });
+    otroWrap.appendChild(otroInput);
+    rowOtro.appendChild(cbOtro); rowOtro.appendChild(lblOtro); rowOtro.appendChild(otroWrap);
+    adjetivosGrid.appendChild(rowOtro);
+
+    // Marcas que inspiran
+    const marcasLista = document.getElementById('marcas-inspiran-lista');
+    const btnAddMarca = document.getElementById('btn-add-marca-inspira');
+    let marcaCount = 3;
+    btnAddMarca.addEventListener('click', () => {
+        marcaCount++;
+        const input = document.createElement('input');
+        input.type = 'text'; input.id = `marca-inspira-${marcaCount}`; input.placeholder = `Marca ${marcaCount}`;
+        marcasLista.insertBefore(input, btnAddMarca);
+        input.focus();
+    });
+
+    // Deslizadores de personalidad
+    const EJES = [['LOCAL','INTERNACIONAL'],['CONCEPTUAL','LITERAL'],['ACCESIBLE','EXCLUSIVA'],['SENCILLA','COMPLEJA'],['AMIGABLE','CORPORATIVA'],['NATURAL','URBANA'],['INFANTIL','ADULTA'],['ECOLÓGICA','INDIFERENTE AL MEDIO AMBIENTE'],['CLÁSICA','MODERNA'],['SERIA','DIVERTIDA'],['ESTABLE','DINÁMICA']];
+    const slidersContainer = document.getElementById('sliders-personalidad');
+    EJES.forEach(([izq, der]) => {
+        const id = `slider-${izq.toLowerCase().replace(/[^a-z]/g,'')}`;
+        const wrap = document.createElement('div'); wrap.className = 'slider-field';
+        const lIzq = document.createElement('span'); lIzq.className = 'slider-label slider-label--left'; lIzq.textContent = izq;
+        const input = document.createElement('input'); input.type='range'; input.id=id; input.min='0'; input.max='10'; input.value='5'; input.step='1';
+        const lDer = document.createElement('span'); lDer.className = 'slider-label slider-label--right'; lDer.textContent = der;
+        wrap.appendChild(lIzq); wrap.appendChild(input); wrap.appendChild(lDer);
+        slidersContainer.appendChild(wrap);
+    });
+
+    // Grids de imagen
+    const BASE_URL = 'https://project-epbwl.vercel.app/assets/images/';
+    function imageFormula(f) { return `=IMAGE("${BASE_URL}${f}")`; }
+
+    function initImageGrid(containerId, opciones, hiddenId, multi, noLabel) {
+        const container = document.getElementById(containerId);
+        const hidden = document.getElementById(hiddenId);
+        if (!container || !hidden) return;
+        opciones.forEach((op) => {
+            const card = document.createElement('button'); card.type='button';
+            card.className = noLabel ? 'image-card image-card--no-label' : 'image-card';
+            card.dataset.value = op.label;
+            if (op.img) {
+                const img = document.createElement('img');
+                img.src = op.img;
+                img.alt = '';
+                img.className = 'image-card__img';
+                card.appendChild(img);
+            }
+            const lbl = document.createElement('span'); lbl.className='image-card__label'; lbl.textContent=op.label;
+            card.appendChild(lbl);
+            card.addEventListener('click', () => {
+                if (!multi) container.querySelectorAll('.image-card').forEach(c=>c.classList.remove('selected'));
+                card.classList.toggle('selected');
+                hidden.value = Array.from(container.querySelectorAll('.image-card.selected')).map(c=>c.dataset.value).join(' + ');
+            });
+            container.appendChild(card);
+        });
+        const val = VerbenaState.getField(hiddenId);
+        if (val) { hidden.value=val; container.querySelectorAll('.image-card').forEach(c=>{ if(val.split(' + ').includes(c.dataset.value)) c.classList.add('selected'); }); }
+    }
+
+    const TEXTURAS = [
+        {label:imageFormula('textura-rugosa-aspera.png'),img:'/assets/images/textura-rugosa-aspera.png'},
+        {label:imageFormula('textura-suave-lisa.png'),img:'/assets/images/textura-suave-lisa.png'},
+        {label:imageFormula('textura-organica-natural.png'),img:'/assets/images/textura-organica-natural.png'},
+        {label:imageFormula('textura-metalica-industrial.png'),img:'/assets/images/textura-metalica-industrial.png'},
+        {label:imageFormula('textura-granulada-porosa.png'),img:'/assets/images/textura-granulada-porosa.png'},
+        {label:imageFormula('textura-liquida-fluida.png'),img:'/assets/images/textura-liquida-fluida.png'},
+        {label:imageFormula('textura-brillante-deslizante.png'),img:'/assets/images/textura-brillante-deslizante.png'},
+        {label:imageFormula('textura-puas.png'),img:'/assets/images/textura-puas.png'},
+    ];
+    const COLORES = [
+        {label:imageFormula('colores-azul-apagado.png'),img:'/assets/images/colores-azul-apagado.png'},
+        {label:imageFormula('colores-verde-organico.png'),img:'/assets/images/colores-verde-organico.png'},
+        {label:imageFormula('colores-naranjas-nudes.png'),img:'/assets/images/colores-naranjas-nudes.png'},
+        {label:imageFormula('colores-morado-naranja-retro.png'),img:'/assets/images/colores-morado-naranja-retro.png'},
+        {label:imageFormula('colores-azul-amarillo-verano.png'),img:'/assets/images/colores-azul-amarillo-verano.png'},
+        {label:imageFormula('colores-blanco-negro.png'),img:'/assets/images/colores-blanco-negro.png'},
+        {label:imageFormula('colores-tierra.png'),img:'/assets/images/colores-tierra.png'},
+        {label:imageFormula('colores-neon.png'),img:'/assets/images/colores-neon.png'},
+    ];
+    const FORMAS = [
+        {label:imageFormula('formas-cuadrado.png'),img:'/assets/images/formas-cuadrado.png'},
+        {label:imageFormula('formas-circulo.png'),img:'/assets/images/formas-circulo.png'},
+        {label:imageFormula('formas-organica.png'),img:'/assets/images/formas-organica.png'},
+        {label:imageFormula('formas-explosiva.png'),img:'/assets/images/formas-explosiva.png'},
+    ];
+
+    initImageGrid('grid-texturas', TEXTURAS, 'textura', false, true);
+    initImageGrid('grid-colores',  COLORES,  'colores', false, true);
+    initImageGrid('grid-formas',   FORMAS,   'formas',  false, true);
+
+    // 6 preguntas de imagen (4 opciones cada una, con label visible)
+    const PREGUNTAS_IMAGEN = [1,2,3,4,5,6].map(n => ({
+        id: `imagen-${n}`,
+        pregunta: '¿Qué imagen relacionas más con tu proyecto?',
+        opciones: ['a','b','c','d'].map(l => ({
+            label: imageFormula(`imagen${n}-${l}.png`),
+            img: `/assets/images/imagen${n}-${l}.png`
+        }))
+    }));
+
+    const preguntasContainer = document.getElementById('imagen-preguntas');
+
+    // Título único para todas las preguntas de imagen
+    const tituloImagenes = document.createElement('p');
+    tituloImagenes.className = 'visuales-imagen-intro';
+    tituloImagenes.textContent = 'En cada caso, ¿qué imagen relacionas más con tu proyecto?';
+    preguntasContainer.appendChild(tituloImagenes);
+
+    PREGUNTAS_IMAGEN.forEach((p, i) => {
+        const bloque = document.createElement('div'); bloque.className = 'visuales-imagen-bloque';
+
+        // Número de pregunta: 01. 02. 03...
+        const num = document.createElement('span');
+        num.className = 'visuales-imagen-num';
+        num.textContent = String(i + 1).padStart(2, '0') + '.';
+        bloque.appendChild(num);
+
+        const grid = document.createElement('div'); grid.id = `grid-${p.id}`; grid.className = 'image-grid image-grid--4'; bloque.appendChild(grid);
+        const hidden = document.createElement('input'); hidden.type='hidden'; hidden.id=p.id; bloque.appendChild(hidden);
+        preguntasContainer.appendChild(bloque);
+        initImageGrid(`grid-${p.id}`, p.opciones, p.id, false, true);
+    });
+
+    document.getElementById('btn-siguiente').addEventListener('click', () => {
+        VerbenaState.saveAllFieldsOnPage();
+    });
+</script>
+</body>
+</html>

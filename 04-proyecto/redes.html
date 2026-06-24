@@ -60,7 +60,18 @@
 
         <div class="field">
             <label for="tono-redes">¿Qué tono debe tener la comunicación en redes?</label>
-            <input type="text" id="tono-redes" placeholder="Cercano, profesional, divertido, inspiracional...">
+            <div class="checkbox-row"><input type="checkbox" id="tono-redes-cercano" name="tono-redes" value="Cercano"><label for="tono-redes-cercano">Cercano</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="tono-redes-profesional" name="tono-redes" value="Profesional"><label for="tono-redes-profesional">Profesional</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="tono-redes-divertido" name="tono-redes" value="Divertido"><label for="tono-redes-divertido">Divertido</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="tono-redes-inspiracional" name="tono-redes" value="Inspiracional"><label for="tono-redes-inspiracional">Inspiracional</label></div>
+            <div class="checkbox-row has-otro">
+                <input type="checkbox" id="tono-redes-otro-check" name="tono-redes" value="Otro">
+                <label for="tono-redes-otro-check">Otro</label>
+                <div class="otro-field-inline" id="tono-redes-otro-wrap">
+                    <input type="text" id="tono-redes-otro" placeholder="Especifica...">
+                </div>
+            </div>
+            <input type="hidden" id="tono-redes">
         </div>
 
         <div class="field">
@@ -119,14 +130,34 @@
         if (!cbOtro.checked) wrapOtro.querySelector('input').value = '';
     });
 
-    // Plantillas exclusivas
-    document.querySelectorAll('input[name="plantillas"]').forEach((cb) => {
-        cb.addEventListener('change', function () {
-            if (this.checked) {
-                document.querySelectorAll('input[name="plantillas"]')
-                    .forEach(c => { if (c !== this) c.checked = false; });
+    // Tono: selección única (exclusiva)
+    const tonoChecks = document.querySelectorAll('input[name="tono-redes"]');
+    const tonoConsolidado = document.getElementById('tono-redes');
+    const tonoOtroWrap = document.getElementById('tono-redes-otro-wrap');
+
+    tonoChecks.forEach((cb) => {
+        cb.dataset.vbExclude = 'true';
+        cb.addEventListener('change', () => {
+            if (cb.checked) {
+                tonoChecks.forEach(c => { if (c !== cb) { c.checked = false; } });
+            }
+            const seleccionado = Array.from(tonoChecks).find(c => c.checked);
+            tonoConsolidado.value = seleccionado ? seleccionado.value : '';
+            // Mostrar campo libre si es "Otro"
+            const esOtro = document.getElementById('tono-redes-otro-check').checked;
+            tonoOtroWrap.classList.toggle('visible', esOtro);
+            if (!esOtro) {
+                const otroInput = document.getElementById('tono-redes-otro');
+                if (otroInput) otroInput.value = '';
             }
         });
+    });
+    cb.addEventListener('change', function () {
+        if (this.checked) {
+            document.querySelectorAll('input[name="plantillas"]')
+                .forEach(c => { if (c !== this) c.checked = false; });
+        }
+    });
     });
 
     document.getElementById('btn-siguiente').addEventListener('click', () => {

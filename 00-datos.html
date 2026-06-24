@@ -60,10 +60,18 @@
 <script src="js/main.js" defer></script>
 <script src="js/footer.js" defer></script>
 <script>
-    // Al llegar a 00-datos siempre es el inicio de un briefing nuevo.
-    // Limpiamos el estado completo para que un cliente nuevo no arrastre
-    // datos de un recorrido anterior en el mismo navegador.
-    VerbenaState.clearAll();
+    // Solo limpiamos el estado si venimos de la landing (index.html)
+    // o si no hay referrer (acceso directo). Si venimos del menú o
+    // de navegación interna, conservamos los datos para que el usuario
+    // pueda repasar y corregir sin perder lo rellenado.
+    const referrer = document.referrer;
+    const vieneDeIndex = !referrer
+        || referrer.includes('index.html')
+        || referrer.replace(/\/$/, '') === window.location.origin;
+
+    if (vieneDeIndex) {
+        VerbenaState.clearAll();
+    }
 
     document.getElementById('btn-siguiente').addEventListener('click', () => {
         VerbenaState.saveAllFieldsOnPage();

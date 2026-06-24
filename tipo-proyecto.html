@@ -12,9 +12,6 @@
 <body>
 
 <header class="page-header">
-    <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
-        <span></span><span></span><span></span>
-    </button>
     <div class="breadcrumbs">
         <span id="breadcrumb-empresa" hidden></span>
         <span id="breadcrumb-proyecto" hidden></span>
@@ -94,9 +91,13 @@
         piece.appendChild(label);
 
         piece.addEventListener('click', () => {
-            VerbenaState.addTipoProyecto(tipo.label);
-            // Si venimos del bucle "¿otro tipo?" usamos ?bucle=1 en la URL
             const esBucle = new URLSearchParams(window.location.search).get('bucle') === '1';
+            if (!esBucle) {
+                // Primera pasada: resetear siempre para evitar acumulación
+                // si el usuario navega hacia atrás y elige otro tipo
+                VerbenaState.resetTiposProyecto();
+            }
+            VerbenaState.addTipoProyecto(tipo.label);
             const destino = esBucle
                 ? `04-proyecto/${tipo.slug}.html`
                 : '03-competencia.html';
