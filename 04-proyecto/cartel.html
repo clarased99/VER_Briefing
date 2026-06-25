@@ -51,12 +51,28 @@
             <textarea id="objetivos-foto-cartel"></textarea>
         </div>
         <div class="field">
-            <label for="comunicar-foto-cartel">¿Qué quieres comunicar con estas fotografías?</label>
-            <textarea id="comunicar-foto-cartel"></textarea>
-        </div>
-        <div class="field">
             <label for="uso-foto-cartel">¿Qué vas a hacer con las fotografías?</label>
             <input type="text" id="uso-foto-cartel" placeholder="Web, redes, impresión...">
+        </div>
+        <div class="field">
+            <label>¿Necesitas que las fotografías tengan una resolución, proporción o tamaño concreto?</label>
+            <div style="display: flex; gap: var(--space-lg);">
+                <div class="checkbox-row">
+                    <input type="checkbox" id="resolucion-foto-cartel-si" name="resolucion-foto-cartel" value="Sí">
+                    <label for="resolucion-foto-cartel-si">Sí</label>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="resolucion-foto-cartel-no" name="resolucion-foto-cartel" value="No">
+                    <label for="resolucion-foto-cartel-no">No</label>
+                </div>
+            </div>
+            <div class="otro-field" id="resolucion-foto-cartel-wrap">
+                <input type="text" id="resolucion-foto-cartel-detalle" placeholder="Especifica la resolución, proporción o tamaño...">
+            </div>
+        </div>
+        <div class="field">
+            <label for="comunicar-foto-cartel">¿Qué quieres comunicar con estas fotografías?</label>
+            <textarea id="comunicar-foto-cartel"></textarea>
         </div>
         <div class="field">
             <label for="mensaje-foto-cartel">Mensaje clave de las fotografías</label>
@@ -65,6 +81,10 @@
         <div class="field">
             <label for="tono-foto-cartel">¿Qué tono quieres dar a las fotografías?</label>
             <input type="text" id="tono-foto-cartel">
+        </div>
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="aportaciones-foto-cartel">Otras aportaciones que consideres de interés</label>
+            <textarea id="aportaciones-foto-cartel"></textarea>
         </div>
     </form>
 
@@ -130,6 +150,19 @@
         cb.addEventListener('change', () => {
             if (cb.checked) fotoChecks.forEach(c => { if (c !== cb) c.checked = false; });
             bloquefoto.hidden = !document.getElementById('foto-cartel-si').checked;
+        });
+    });
+
+    // Resolución condicional dentro del bloque foto
+    const resolucionCartelChecks = document.querySelectorAll('input[name="resolucion-foto-cartel"]');
+    const resolucionCartelWrap = document.getElementById('resolucion-foto-cartel-wrap');
+    resolucionCartelChecks.forEach((cb) => {
+        cb.addEventListener('change', () => {
+            if (cb.checked) resolucionCartelChecks.forEach(c => { if (c !== cb) c.checked = false; });
+            resolucionCartelWrap.classList.toggle('visible', document.getElementById('resolucion-foto-cartel-si').checked);
+            if (!document.getElementById('resolucion-foto-cartel-si').checked) {
+                document.getElementById('resolucion-foto-cartel-detalle').value = '';
+            }
         });
     });
 

@@ -193,26 +193,8 @@
         });
     }
 
-    function initGridConRestore(containerId, opciones, hiddenInputId, single) {
-        initGrid(containerId, opciones, hiddenInputId, single);
-        // Restaurar selección visual
-        const valorGuardado = VerbenaState.getField(hiddenInputId);
-        if (valorGuardado) {
-            const container = document.getElementById(containerId);
-            const hiddenInput = document.getElementById(hiddenInputId);
-            if (hiddenInput) hiddenInput.value = valorGuardado;
-            if (container) {
-                container.querySelectorAll('.image-card').forEach((c) => {
-                    valorGuardado.split(' + ').forEach(v => {
-                        if (c.dataset.value === v) c.classList.add('selected');
-                    });
-                });
-            }
-        }
-    }
-
-    initGridConRestore('grid-que-fotografiar', QUE_FOTOGRAFIAR, 'que-fotografiar', true);
-    initGridConRestore('grid-estilo-foto', ESTILO_FOTO, 'estilo-foto', true);
+    initGrid('grid-que-fotografiar', QUE_FOTOGRAFIAR, 'que-fotografiar', true);
+    initGrid('grid-estilo-foto', ESTILO_FOTO, 'estilo-foto', true);
 
     /* ============================================================
        CHECKBOX "OTRO" INLINE
@@ -306,12 +288,56 @@
         aplicacionesLista.appendChild(card);
     }
 
+    // Guardar lista de aplicaciones al cambiar
+    function guardarAplicaciones() {
+        const items = Array.from(aplicacionesLista.querySelectorAll('.aplicacion-card')).map((card, i) => ({
+            sujeto: card.querySelector('input[type="text"]')?.value || '',
+            cantidad: card.querySelector('input[type="number"]')?.value || '',
+            noSe: card.querySelector('input[type="checkbox"]')?.checked || false,
+        }));
+        VerbenaState.saveDynamicList('foto-aplicaciones', items);
+    }
+
+    // Restaurar lista de aplicaciones
+    function restaurarAplicaciones() {
+        const items = VerbenaState.getDynamicList('foto-aplicaciones');
+        if (items.length === 0) { crearTarjetaAplicacion(); return; }
+        items.forEach((item) => {
+            crearTarjetaAplicacion();
+            const card = aplicacionesLista.querySelector('.aplicacion-card:last-child');
+            if (card) {
+                const inpSujeto = card.querySelector('input[type="text"]');
+                const inpCantidad = card.querySelector('input[type="number"]');
+                const cbNoSe = card.querySelector('input[type="checkbox"]');
+                if (inpSujeto) inpSujeto.value = item.sujeto;
+                if (cbNoSe) { cbNoSe.checked = item.noSe; cbNoSe.dispatchEvent(new Event('change')); }
+                if (inpCantidad && !item.noSe) inpCantidad.value = item.cantidad;
+            }
+        });
+    }
+
+    function guardarCount() {
+        const n = aplicacionesLista.querySelectorAll('.aplicacion-card').length;
+        localStorage.setItem('vb_dyn_foto-count', n);
+    }
+
+    aplicacionesLista.addEventListener('input', () => { guardarAplicaciones(); guardarCount(); });
+    aplicacionesLista.addEventListener('change', () => { guardarAplicaciones(); guardarCount(); });
+
     document.getElementById('btn-add-aplicacion').addEventListener('click', () => {
         crearTarjetaAplicacion();
-        // Focus solo al añadir manualmente, no al cargar la página
         aplicacionesLista.querySelector('.aplicacion-card:last-child input[type="text"]').focus();
+        guardarAplicaciones();
+        guardarCount();
     });
-    crearTarjetaAplicacion(); // Empieza con una tarjeta visible, sin focus
+
+    // Restaurar: primero crear el número correcto de tarjetas,
+    // luego restoreAllFieldsOnPage las rellena por ID automáticamente
+    const savedCount = parseInt(localStorage.getItem('vb_dyn_foto-count') || '1', 10);
+    for (let i = 0; i < savedCount; i++) {
+        crearTarjetaAplicacion();
+    }
+    VerbenaState.restoreAllFieldsOnPage();
 
     /* ============================================================
        GUARDADO AL AVANZAR

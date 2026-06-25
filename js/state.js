@@ -76,6 +76,19 @@ const VerbenaState = {
         if (!slug) return null;
         return `${base}04-proyecto/${slug}.html`;
     },
+    /* Guarda una lista dinámica (array de objetos) bajo una clave */
+    saveDynamicList(key, items) {
+        localStorage.setItem('vb_dyn_' + key, JSON.stringify(items));
+    },
+
+    /* Recupera una lista dinámica */
+    getDynamicList(key) {
+        try {
+            const raw = localStorage.getItem('vb_dyn_' + key);
+            return raw ? JSON.parse(raw) : [];
+        } catch { return []; }
+    },
+
     setProgreso(seccion) {
         const actual = this.get(this.PROGRESS_KEY);
         if (!actual || seccion > actual) {
@@ -228,4 +241,19 @@ const VerbenaState = {
 document.addEventListener('DOMContentLoaded', () => {
     VerbenaState.renderBreadcrumbs();
     VerbenaState.restoreAllFieldsOnPage();
+
+    // ---- Autosave ------------------------------------------------
+    // Guarda al detectar cualquier cambio en inputs/textareas/selects,
+    // incluyendo los generados dinámicamente.
+    // Cubre navegación por menú, flechas del navegador, o cierre accidental.
+
+    const main = document.querySelector('main');
+    if (!main) return;
+
+    // Guardar en cualquier cambio de valor
+    main.addEventListener('input',  () => VerbenaState.saveAllFieldsOnPage(), { passive: true });
+    main.addEventListener('change', () => VerbenaState.saveAllFieldsOnPage(), { passive: true });
+
+    // Guardar también al salir de la página (por si acaso)
+    window.addEventListener('beforeunload', () => VerbenaState.saveAllFieldsOnPage());
 });

@@ -24,9 +24,14 @@ body.landing {
 .landing__top {
     position: fixed;
     top: var(--space-lg);
-    left: var(--space-lg);
     z-index: 10;
     pointer-events: none;
+    /* Alineado con el margen izquierdo del contenido */
+    width: 100%;
+    max-width: var(--content-max-width);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 var(--space-lg);
 }
 
 .landing__title {
@@ -41,19 +46,23 @@ body.landing {
 .landing__start {
     position: fixed;
     top: calc(var(--space-lg) + clamp(3rem, 8vw, 5rem) * 1.2);
-    left: var(--space-lg);
     z-index: 10;
+    width: 100%;
+    max-width: var(--content-max-width);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 var(--space-lg);
 }
 
 @media (max-width: 768px) {
     .landing__top {
         top: var(--space-md);
-        left: var(--space-md);
+        padding: 0 var(--space-md);
     }
 
     .landing__start {
         top: calc(var(--space-md) + clamp(3rem, 8vw, 5rem) * 1.2);
-        left: var(--space-md);
+        padding: 0 var(--space-md);
     }
 }
 
@@ -68,11 +77,16 @@ body.landing {
     flex-wrap: wrap;
     gap: var(--space-sm);
     padding: var(--space-md) var(--space-lg);
+    max-width: var(--content-max-width);
+    width: 100%;
+    margin: 0 auto;
 }
 
 .page-main {
     padding: 0 var(--space-lg) var(--space-lg);
     max-width: var(--content-max-width);
+    width: 100%;
+    margin: 0 auto;
 }
 
 /* Protege el atributo hidden de ser sobrescrito por reglas CSS
@@ -491,7 +505,6 @@ body.landing {
 
 #brand-footer-text {
     position: fixed;
-    left: var(--space-lg);
     bottom: var(--space-md);
     z-index: 100;
     pointer-events: none;
@@ -499,20 +512,24 @@ body.landing {
     line-height: 1;
     display: flex;
     align-items: flex-end;
+    width: 100%;
+    max-width: var(--content-max-width);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 var(--space-lg);
 }
 
 #brand-footer-text .brand-name {
-    font-weight: 600; /* Semibold */
+    font-weight: 600;
 }
 
 #brand-footer-text .brand-suffix {
-    font-weight: 500; /* Medium */
+    font-weight: 500;
     margin-left: 0.35em;
 }
 
 #brand-footer-logo {
     position: fixed;
-    left: 0;
     bottom: var(--space-md);
     z-index: 100;
     pointer-events: none;
@@ -521,11 +538,15 @@ body.landing {
     width: 100%;
     max-width: var(--content-max-width);
     padding: 0 var(--space-lg);
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 @media (max-width: 768px) {
     #brand-footer-text {
         left: var(--space-md);
+        transform: none;
+        padding-left: 0;
         bottom: var(--space-sm);
     }
 
@@ -533,7 +554,6 @@ body.landing {
         bottom: var(--space-sm);
         padding: 0 var(--space-md);
     }
-}
 }
 
 #grid-formas .image-card {

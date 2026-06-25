@@ -23,19 +23,19 @@
     --color-border: #b0b0b0;
 
     /* Colores de acento por sección / tipo de proyecto */
-    --color-verde: #75c2a6;     /* 03. Competencia */
-    --color-morado: #9e87d9;    /* 04. Sobre el proyecto / Marca / Web */
-    --color-amarillo: #f5fa4d;  /* 06. Conclusiones / Cartel */
-    --color-azul: #7aadf2;      /* 02. Público objetivo / Naming+Marca */
-    --color-naranja: #ff6e14;   /* Disco */
-    --color-rojo: #f0564c;      /* 00/01. Datos / Redes / Fotografía */
+    --color-verde: #00b797;     /* 03. Competencia */
+    --color-morado: #8a80d0;    /* 04. Sobre el proyecto / Marca / Web */
+    --color-amarillo: #ffec00;  /* 06. Conclusiones / Cartel */
+    --color-azul: #00a4eb;      /* 02. Público objetivo / Naming+Marca */
+    --color-naranja: #ffb1a5;   /* Disco */
+    --color-rojo: #ff5b47;      /* 00/01. Datos / Redes / Fotografía */
 
     /* Espaciado */
     --space-xs: 0.5rem;
     --space-sm: 1rem;
     --space-md: 2rem;
-    --space-lg: 4rem;
-    --space-xl: 6rem;
+    --space-lg: 3rem;
+    --space-xl: 5rem;
 
     /* Tamaños tipográficos */
     --text-sm: 0.875rem;

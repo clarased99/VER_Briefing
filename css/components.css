@@ -34,15 +34,15 @@
 }
 
 .brand-mark {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2.3rem;
+    height: 2.3rem;
     flex-shrink: 0;
 }
 
 .brand-mark--logo {
     background-color: var(--color-text);
     aspect-ratio: 1 / 1;
-    height: 1.4rem;
+    height: 1.8rem;
     width: auto;
     -webkit-mask-image: url('../assets/logo/logotipo-simbolo-verbena.svg');
     mask-image: url('../assets/logo/logotipo-simbolo-verbena.svg');
@@ -262,6 +262,8 @@
 .image-card {
     position: relative;
     background-color: var(--color-input-bg);
+    background-size: cover;
+    background-position: center;
     aspect-ratio: 1;
     cursor: pointer;
     border: none;

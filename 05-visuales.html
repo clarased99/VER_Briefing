@@ -174,7 +174,7 @@
         const row = document.createElement('div'); row.className = 'checkbox-row';
         const cb = document.createElement('input'); cb.type = 'checkbox';
         cb.id = `adj-${adj.toLowerCase().replace(/[^a-z]/g,'')}`;
-        cb.value = adj; cb.dataset.vbExclude = 'true';
+        cb.value = adj;
         cb.addEventListener('change', () => {
             if (adjetivosGrid.querySelectorAll('input:checked').length > 5) { cb.checked = false; return; }
             actualizarAdjetivos();
@@ -184,7 +184,7 @@
     });
 
     const rowOtro = document.createElement('div'); rowOtro.className = 'checkbox-row has-otro';
-    const cbOtro = document.createElement('input'); cbOtro.type = 'checkbox'; cbOtro.id = 'adj-otro'; cbOtro.value = 'Otro'; cbOtro.dataset.vbExclude = 'true';
+    const cbOtro = document.createElement('input'); cbOtro.type = 'checkbox'; cbOtro.id = 'adj-otro'; cbOtro.value = 'Otro';
     const lblOtro = document.createElement('label'); lblOtro.setAttribute('for','adj-otro'); lblOtro.textContent = 'Otro:';
     const otroWrap = document.createElement('div'); otroWrap.className = 'otro-field-inline';
     const otroInput = document.createElement('input'); otroInput.type = 'text'; otroInput.id = 'adj-otro-texto'; otroInput.placeholder = 'Especifica...';
@@ -199,16 +199,41 @@
     rowOtro.appendChild(cbOtro); rowOtro.appendChild(lblOtro); rowOtro.appendChild(otroWrap);
     adjetivosGrid.appendChild(rowOtro);
 
+    // Restaurar adjetivos seleccionados (se crean dinámicamente, no en DOMContentLoaded)
+    adjetivosGrid.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+        const raw = localStorage.getItem('vb_field_' + cb.id);
+        if (raw === 'true' || raw === true) {
+            cb.checked = true;
+            cb.dispatchEvent(new Event('change'));
+        }
+    });
+
     // Marcas que inspiran
     const marcasLista = document.getElementById('marcas-inspiran-lista');
     const btnAddMarca = document.getElementById('btn-add-marca-inspira');
     let marcaCount = 3;
+
     btnAddMarca.addEventListener('click', () => {
         marcaCount++;
         const input = document.createElement('input');
         input.type = 'text'; input.id = `marca-inspira-${marcaCount}`; input.placeholder = `Marca ${marcaCount}`;
         marcasLista.insertBefore(input, btnAddMarca);
         input.focus();
+        localStorage.setItem('vb_dyn_marcas-count', marcaCount);
+    });
+
+    // Restaurar campos extra de marcas
+    const savedMarcasCount = parseInt(localStorage.getItem('vb_dyn_marcas-count') || '3', 10);
+    while (marcaCount < savedMarcasCount) {
+        marcaCount++;
+        const input = document.createElement('input');
+        input.type = 'text'; input.id = `marca-inspira-${marcaCount}`; input.placeholder = `Marca ${marcaCount}`;
+        marcasLista.insertBefore(input, btnAddMarca);
+    }
+    // Rellenar valores en todos los campos de marcas
+    marcasLista.querySelectorAll('input[type="text"]').forEach((el) => {
+        const val = VerbenaState.getField(el.id);
+        if (val) el.value = val;
     });
 
     // Deslizadores de personalidad

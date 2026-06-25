@@ -144,21 +144,56 @@
         return row;
     }
 
+    const LISTAS_COMPETIDORES = [
+        { btnTarget: 'competencia-real-lista',         prefix: 'comp-real' },
+        { btnTarget: 'competencia-aspiracional-lista',  prefix: 'comp-aspiracional' },
+        { btnTarget: 'competencia-referente-lista',     prefix: 'comp-referente' },
+    ];
+
+    // Counters por lista
+    const contadores = {};
+
+    function guardarCount(prefix) {
+        localStorage.setItem('vb_dyn_comp-count-' + prefix, contadores[prefix] || 1);
+    }
+
     document.querySelectorAll('.btn-add-row').forEach((btn) => {
-        let count = 0;
+        const prefix = btn.dataset.prefix;
+        contadores[prefix] = contadores[prefix] || 0;
         btn.addEventListener('click', () => {
-            count++;
+            contadores[prefix]++;
             const target = document.getElementById(btn.dataset.target);
-            target.appendChild(crearFilaCompetidor(btn.dataset.prefix, count));
+            target.appendChild(crearFilaCompetidor(prefix, contadores[prefix]));
+            guardarCount(prefix);
         });
     });
 
-    // Las filas iniciales se crean solo si el bloque de competidores
-    // no está oculto — se llama después de evaluar la visibilidad.
     function inicializarFilasCompetidores() {
-        if (!document.getElementById('bloque-competidores').hidden) {
-            document.querySelectorAll('.btn-add-row').forEach((btn) => btn.click());
-        }
+        const bloque = document.getElementById('bloque-competidores');
+        if (bloque.hidden) return;
+
+        LISTAS_COMPETIDORES.forEach(({ btnTarget, prefix }) => {
+            const lista = document.getElementById(btnTarget);
+            if (!lista) return;
+
+            // Si ya hay filas, no crear más (venimos del historial del navegador)
+            if (lista.querySelector('.dynamic-table-row')) return;
+
+            const savedCount = parseInt(localStorage.getItem('vb_dyn_comp-count-' + prefix) || '1', 10);
+            contadores[prefix] = savedCount;
+
+            for (let i = 1; i <= savedCount; i++) {
+                lista.appendChild(crearFilaCompetidor(prefix, i));
+            }
+        });
+
+        // Rellenar los valores guardados
+        VerbenaState.restoreAllFieldsOnPage();
+
+        // Guardar al cambiar
+        document.getElementById('bloque-competidores').addEventListener('input', () => {
+            LISTAS_COMPETIDORES.forEach(({ prefix }) => guardarCount(prefix));
+        });
     }
 
     /* ============================================================
@@ -190,26 +225,13 @@
     /* ============================================================
        GUARDADO AL AVANZAR
        ============================================================ */
-    const LABEL_A_SLUG = {
-        'DISCO': 'disco', 'REDES': 'redes', 'PUBLICACIÓN': 'publicacion',
-        'MARCA': 'marca', 'CARTEL': 'cartel', 'WEB': 'web',
-        'NAMING + MARCA': 'naming-marca', 'FOTOGRAFÍA': 'fotografia', 'VÍDEO': 'video',
-    };
-
     document.getElementById('btn-siguiente').addEventListener('click', () => {
         if (verbenaMap) {
             document.getElementById('area-influencia-mapa').value = verbenaMap.getGeoJSON();
         }
         VerbenaState.saveAllFieldsOnPage();
-
-        const tipos = VerbenaState.getTiposProyecto();
-        if (tipos.length > 0) {
-            const slug = LABEL_A_SLUG[tipos[0].toUpperCase()] || tipos[0].toLowerCase();
-            window.location.href = `04-proyecto/${slug}.html`;
-        } else {
-            // Sin tipo elegido (no debería pasar), ir al selector
-            window.location.href = 'tipo-proyecto.html';
-        }
+        const destino = VerbenaState.getUrlPrimerTipo() || 'tipo-proyecto.html';
+        window.location.href = destino;
     });
 </script>
 </body>

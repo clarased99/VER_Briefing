@@ -2,7 +2,6 @@
    VERBENA — FÍSICA DE CAÍDA EN LA LANDING
    - Secciones de 120° + triángulos, colores aleatorios
    - MouseConstraint para arrastrar figuras
-   - Fuerza sutil hacia el cursor (efecto Hey Studio, versión suave)
 ================================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -65,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ]);
 
     // ---- Tamaños (+20% sobre la versión anterior) ----
-    const R    = 103;   // radio visual sección
-    const RT   = 120;   // radio triángulo
+    const R    = 200;   // radio visual sección
+    const RT   = 235;   // radio triángulo
     const R_HIT = R * 0.38; // hitbox físico sección
 
     // ---- Crear formas ----

@@ -27,12 +27,12 @@ Color base (texto/UI neutra):
   Negro/Gris oscuro   #606060
 
 Colores de sección/acento (uno por categoría temática):
-  Verde      #75c2a6   → 03. Competencia
-  Morado     #9e87d9   → 04. Sobre el proyecto / Marca / Web
-  Amarillo   #f5fa4d   → 06. Conclusiones / Cartel
-  Azul       #7aadf2   → 02. Público objetivo / Naming+Marca
-  Naranja    #ff6e14   → Disco
-  Rojo       #f0564c   → 01. Datos del proyecto (hover/activo) / Redes / Fotografía
+  Verde      #00b797   → 03. Competencia
+  Morado     #8a80d0   → 04. Sobre el proyecto / Marca / Web
+  Amarillo   #ffec00   → 06. Conclusiones / Cartel
+  Azul       #00a4eb   → 02. Público objetivo / Naming+Marca
+  Naranja    #ffb1a5   → Disco
+  Rojo       #ff5b47   → 01. Datos del proyecto (hover/activo) / Redes / Fotografía
 
 Nota de uso observada en wireframes:
   Cada sección del menú principal (00–06) y cada "tipo de proyecto"

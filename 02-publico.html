@@ -248,6 +248,27 @@
     const btnAddModa = document.getElementById('btn-add-moda');
     let modaCount = 2;
 
+    function guardarModa() {
+        const vals = Array.from(modaLista.querySelectorAll('input[type="text"]')).map(i => i.value);
+        VerbenaState.saveDynamicList('publico-moda', vals);
+    }
+
+    function restaurarModa() {
+        const vals = VerbenaState.getDynamicList('publico-moda');
+        if (!vals.length) return;
+        const existentes = modaLista.querySelectorAll('input[type="text"]');
+        existentes.forEach((el, i) => { if (vals[i] !== undefined) el.value = vals[i]; });
+        for (let i = existentes.length; i < vals.length; i++) {
+            modaCount++;
+            const input = document.createElement('input');
+            input.type = 'text'; input.id = `moda-${modaCount}`; input.placeholder = `Marca ${modaCount}`;
+            input.value = vals[i] || '';
+            modaLista.insertBefore(input, btnAddModa);
+        }
+    }
+
+    modaLista.addEventListener('input', guardarModa);
+
     btnAddModa.addEventListener('click', () => {
         modaCount++;
         const input = document.createElement('input');
@@ -256,6 +277,22 @@
         input.placeholder = `Marca ${modaCount}`;
         modaLista.insertBefore(input, btnAddModa);
         input.focus();
+        guardarModa();
+        localStorage.setItem('vb_dyn_moda-count', modaCount);
+    });
+
+    // Restaurar: crear el número correcto de campos y rellenar valores
+    const savedModaCount = parseInt(localStorage.getItem('vb_dyn_moda-count') || '2', 10);
+    while (modaCount < savedModaCount) {
+        modaCount++;
+        const input = document.createElement('input');
+        input.type = 'text'; input.id = `moda-${modaCount}`; input.placeholder = `Marca ${modaCount}`;
+        modaLista.insertBefore(input, btnAddModa);
+    }
+    // Rellenar valores en todos los campos de moda
+    modaLista.querySelectorAll('input[type="text"]').forEach((el) => {
+        const val = VerbenaState.getField(el.id);
+        if (val) el.value = val;
     });
 
     /* ============================================================
@@ -274,10 +311,17 @@
     }
 
     edadCheckboxes.forEach((cb) => {
-        cb.dataset.vbExclude = 'true'; // Evita que se guarden como campos individuales sueltos
         cb.addEventListener('change', actualizarEdadConsolidada);
     });
-    edadConsolidada.id = 'edad'; // Esta sí se guarda, como campo único "edad"
+
+    // Restaurar casillas de edad (después de registrar listeners)
+    edadCheckboxes.forEach((cb) => {
+        const raw = localStorage.getItem('vb_field_' + cb.id);
+        if (raw === 'true') {
+            cb.checked = true;
+            cb.dispatchEvent(new Event('change'));
+        }
+    });
 
     /* ============================================================
        GRIDS DE SELECCIÓN DE IMAGEN

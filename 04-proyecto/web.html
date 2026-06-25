@@ -130,11 +130,36 @@
         seccionesLista.appendChild(row);
     }
 
+    function guardarSecciones() {
+        const items = Array.from(seccionesLista.querySelectorAll('.dynamic-table-row')).map(row => {
+            const inputs = row.querySelectorAll('input');
+            return { nombre: inputs[0]?.value || '', contenido: inputs[1]?.value || '' };
+        });
+        VerbenaState.saveDynamicList('web-secciones', items);
+    }
+
+    function restaurarSecciones() {
+        const items = VerbenaState.getDynamicList('web-secciones');
+        if (items.length === 0) { crearFilaSeccion(); return; }
+        items.forEach(item => {
+            crearFilaSeccion();
+            const row = seccionesLista.querySelector('.dynamic-table-row:last-child');
+            if (row) {
+                const inputs = row.querySelectorAll('input');
+                if (inputs[0]) inputs[0].value = item.nombre;
+                if (inputs[1]) inputs[1].value = item.contenido;
+            }
+        });
+    }
+
+    seccionesLista.addEventListener('input', guardarSecciones);
+
     document.getElementById('btn-add-seccion').addEventListener('click', () => {
         crearFilaSeccion();
         seccionesLista.querySelector('.dynamic-table-row:last-child input').focus();
+        guardarSecciones();
     });
-    crearFilaSeccion();
+    restaurarSecciones();
 
     document.getElementById('btn-siguiente').addEventListener('click', () => {
         VerbenaState.saveAllFieldsOnPage();
