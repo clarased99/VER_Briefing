@@ -36,23 +36,23 @@
         <div class="field">
             <label for="tipo-nombre">¿Qué tipo de nombre buscas?</label>
             <div class="checkbox-row">
-                <input type="checkbox" id="nombre-descriptivo">
+                <input type="checkbox" id="nombre-descriptivo" name="tipo-nombre">
                 <label for="nombre-descriptivo">Descriptivo (explica lo que hace la marca)</label>
             </div>
             <div class="checkbox-row">
-                <input type="checkbox" id="nombre-evocador">
+                <input type="checkbox" id="nombre-evocador" name="tipo-nombre">
                 <label for="nombre-evocador">Evocador (sugiere sensaciones o valores)</label>
             </div>
             <div class="checkbox-row">
-                <input type="checkbox" id="nombre-abstracto">
+                <input type="checkbox" id="nombre-abstracto" name="tipo-nombre">
                 <label for="nombre-abstracto">Abstracto (sin significado literal, original)</label>
             </div>
             <div class="checkbox-row">
-                <input type="checkbox" id="nombre-fundador">
+                <input type="checkbox" id="nombre-fundador" name="tipo-nombre">
                 <label for="nombre-fundador">Basado en el nombre del fundador/a</label>
             </div>
             <div class="checkbox-row">
-                <input type="checkbox" id="nombre-noclaro">
+                <input type="checkbox" id="nombre-noclaro" name="tipo-nombre">
                 <label for="nombre-noclaro">Aún no lo tengo claro</label>
             </div>
         </div>
@@ -93,8 +93,21 @@
         </div>
 
         <div class="field">
-            <label for="tono-naming">¿Qué tono de comunicación debe tener la marca?</label>
-            <input type="text" id="tono-naming" placeholder="Cercano, formal, técnico, irreverente...">
+            <label>¿Qué tono de comunicación debe tener la marca?</label>
+            <div class="checkbox-row"><input type="checkbox" id="tono-naming-cercano" name="tono-naming" value="Cercano"><label for="tono-naming-cercano">Cercano</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="tono-naming-formal" name="tono-naming" value="Formal"><label for="tono-naming-formal">Formal</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="tono-naming-tecnico" name="tono-naming" value="Técnico"><label for="tono-naming-tecnico">Técnico</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="tono-naming-irreverente" name="tono-naming" value="Irreverente"><label for="tono-naming-irreverente">Irreverente</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="tono-naming-inspiracional" name="tono-naming" value="Inspiracional"><label for="tono-naming-inspiracional">Inspiracional</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="tono-naming-divertido" name="tono-naming" value="Divertido"><label for="tono-naming-divertido">Divertido</label></div>
+            <div class="checkbox-row has-otro">
+                <input type="checkbox" id="tono-naming-otro-check" name="tono-naming" value="Otro">
+                <label for="tono-naming-otro-check">Otro</label>
+                <div class="otro-field-inline" id="tono-naming-otro-wrap">
+                    <input type="text" id="tono-naming-otro" placeholder="Especifica...">
+                </div>
+            </div>
+            <input type="hidden" id="tono-naming">
         </div>
 
         <div class="field">
@@ -150,6 +163,45 @@
     cbOtro.addEventListener('change', () => {
         wrapOtro.classList.toggle('visible', cbOtro.checked);
         if (!cbOtro.checked) wrapOtro.querySelector('input').value = '';
+    });
+
+    // Tipo de nombre: selección única exclusiva
+    document.querySelectorAll('input[name="tipo-nombre"]').forEach((cb) => {
+        cb.addEventListener('change', function () {
+            if (this.checked) {
+                document.querySelectorAll('input[name="tipo-nombre"]')
+                    .forEach(c => { if (c !== this) c.checked = false; });
+            }
+        });
+    });
+
+    // Tono naming: selección única exclusiva
+    const tonoNamingChecks = document.querySelectorAll('input[name="tono-naming"]');
+    const tonoNamingHidden = document.getElementById('tono-naming');
+    const tonoNamingOtroWrap = document.getElementById('tono-naming-otro-wrap');
+
+    tonoNamingChecks.forEach((cb) => {
+        cb.dataset.vbExclude = 'true';
+        cb.addEventListener('change', () => {
+            if (cb.checked) {
+                tonoNamingChecks.forEach(c => { if (c !== cb) c.checked = false; });
+            }
+            const seleccionado = Array.from(tonoNamingChecks).find(c => c.checked);
+            const esOtro = document.getElementById('tono-naming-otro-check').checked;
+            tonoNamingOtroWrap.classList.toggle('visible', esOtro);
+            if (!esOtro && document.getElementById('tono-naming-otro')) {
+                document.getElementById('tono-naming-otro').value = '';
+            }
+            tonoNamingHidden.value = seleccionado
+                ? (seleccionado.value === 'Otro' ? (document.getElementById('tono-naming-otro')?.value?.trim() || 'Otro') : seleccionado.value)
+                : '';
+        });
+    });
+
+    document.getElementById('tono-naming-otro')?.addEventListener('input', () => {
+        if (document.getElementById('tono-naming-otro-check').checked) {
+            tonoNamingHidden.value = document.getElementById('tono-naming-otro').value.trim() || 'Otro';
+        }
     });
 
     document.getElementById('btn-siguiente').addEventListener('click', () => {

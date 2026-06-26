@@ -9,14 +9,7 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Leaflet (mapa) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Leaflet.draw (dibujar polígonos sobre el mapa) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
-    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
-    <!-- leaflet-image (capturar el mapa como imagen PNG) -->
-    <script src="https://unpkg.com/leaflet-image@0.0.4/leaflet-image.js"></script>
+
 </head>
 <body data-section="03">
 
@@ -36,10 +29,7 @@
 
     <div class="field">
         <label>¿Cuál es tu área de influencia?</label>
-        <p class="map-helper-text">Dibuja sobre el mapa la zona o zonas que consideres tu área de influencia. Puedes hacer zoom, buscar una dirección, y marcar más de una zona si lo necesitas.</p>
-        <div id="mapa-influencia" class="map-container"></div>
-        <textarea id="area-influencia-texto" placeholder="Si lo prefieres, también puedes describir aquí tu área de influencia con palabras (ej. &quot;Cangas de Onís y alrededores&quot;, &quot;toda España&quot;, &quot;online, sin límite geográfico&quot;...)"></textarea>
-        <input type="hidden" id="area-influencia-mapa">
+        <textarea id="area-influencia-texto" placeholder="ej. &quot;Cangas de Onís y alrededores&quot;, &quot;toda España&quot;, &quot;online, sin límite geográfico&quot;..."></textarea>
     </div>
 
     <form class="form-grid" id="bloque-competidores" novalidate>
@@ -113,13 +103,8 @@
 <script src="js/state.js"></script>
 <script src="js/main.js" defer></script>
 <script src="js/footer.js" defer></script>
-<script src="js/map.js"></script>
-<script>
-    /* ============================================================
-       MAPA DIBUJABLE
-       ============================================================ */
-    const verbenaMap = VerbenaMap.init('mapa-influencia');
 
+<script>
     /* ============================================================
        TABLAS DINÁMICAS DE COMPETIDORES (Competidor / Descripción)
        Patrón reutilizable: cada lista empieza vacía, el botón
@@ -226,9 +211,6 @@
        GUARDADO AL AVANZAR
        ============================================================ */
     document.getElementById('btn-siguiente').addEventListener('click', () => {
-        if (verbenaMap) {
-            document.getElementById('area-influencia-mapa').value = verbenaMap.getGeoJSON();
-        }
         VerbenaState.saveAllFieldsOnPage();
         const destino = VerbenaState.getUrlPrimerTipo() || 'tipo-proyecto.html';
         window.location.href = destino;

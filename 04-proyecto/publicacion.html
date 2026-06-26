@@ -66,10 +66,10 @@
 
         <div class="field">
             <label>¿La publicación será en color o en blanco y negro?</label>
-            <div class="checkbox-row"><input type="checkbox" id="pub-color"><label for="pub-color">Color</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="pub-byn"><label for="pub-byn">Blanco y negro</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="pub-mixto"><label for="pub-mixto">Mixto</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="pub-nodecidido"><label for="pub-nodecidido">Aún no lo he decidido</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-color" name="pub-color-byn"><label for="pub-color">Color</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-byn" name="pub-color-byn"><label for="pub-byn">Blanco y negro</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-mixto" name="pub-color-byn"><label for="pub-mixto">Mixto</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="pub-nodecidido" name="pub-color-byn"><label for="pub-nodecidido">Aún no lo he decidido</label></div>
         </div>
 
         <div class="field">
@@ -104,6 +104,13 @@
 
     </form>
 
+    <!-- Secciones de la publicación: tarjetas dinámicas (mismo formato que web) -->
+    <div class="field">
+        <label>¿Qué secciones o capítulos te gustaría que tuviera la publicación?</label>
+        <div id="secciones-pub-lista"></div>
+        <button type="button" class="btn-add-row" id="btn-add-seccion-pub">+ Añadir sección</button>
+    </div>
+
     <div class="page-nav-next">
         <a href="../otro-tipo.html" class="btn-text" id="btn-siguiente">SIGUIENTE</a>
     </div>
@@ -123,6 +130,72 @@
         wrapOtro.classList.toggle('visible', cbOtro.checked);
         if (!cbOtro.checked) wrapOtro.querySelector('input').value = '';
     });
+
+    // Color/BN: selección única
+    document.querySelectorAll('input[name="pub-color-byn"]').forEach((cb) => {
+        cb.addEventListener('change', function () {
+            if (this.checked) {
+                document.querySelectorAll('input[name="pub-color-byn"]')
+                    .forEach(c => { if (c !== this) c.checked = false; });
+            }
+        });
+    });
+
+    // Secciones dinámicas de la publicación
+    const seccionesPubLista = document.getElementById('secciones-pub-lista');
+    let seccionPubCount = 0;
+
+    function crearFilaSeccionPub() {
+        seccionPubCount++;
+        const row = document.createElement('div');
+        row.className = 'dynamic-table-row';
+
+        const inputNombre = document.createElement('input');
+        inputNombre.type = 'text';
+        inputNombre.id = `seccion-pub-nombre-${seccionPubCount}`;
+        inputNombre.placeholder = 'Nombre de la sección (ej. Introducción)';
+
+        const inputContenido = document.createElement('input');
+        inputContenido.type = 'text';
+        inputContenido.id = `seccion-pub-contenido-${seccionPubCount}`;
+        inputContenido.placeholder = 'Contenido / descripción';
+
+        row.appendChild(inputNombre);
+        row.appendChild(inputContenido);
+        seccionesPubLista.appendChild(row);
+    }
+
+    function guardarSeccionesPub() {
+        const items = Array.from(seccionesPubLista.querySelectorAll('.dynamic-table-row')).map(row => {
+            const inputs = row.querySelectorAll('input');
+            return { nombre: inputs[0]?.value || '', contenido: inputs[1]?.value || '' };
+        });
+        VerbenaState.saveDynamicList('pub-secciones', items);
+    }
+
+    function restaurarSeccionesPub() {
+        const items = VerbenaState.getDynamicList('pub-secciones');
+        if (items.length === 0) { crearFilaSeccionPub(); return; }
+        items.forEach(item => {
+            crearFilaSeccionPub();
+            const row = seccionesPubLista.querySelector('.dynamic-table-row:last-child');
+            if (row) {
+                const inputs = row.querySelectorAll('input');
+                if (inputs[0]) inputs[0].value = item.nombre;
+                if (inputs[1]) inputs[1].value = item.contenido;
+            }
+        });
+    }
+
+    seccionesPubLista.addEventListener('input', guardarSeccionesPub);
+
+    document.getElementById('btn-add-seccion-pub').addEventListener('click', () => {
+        crearFilaSeccionPub();
+        seccionesPubLista.querySelector('.dynamic-table-row:last-child input').focus();
+        guardarSeccionesPub();
+    });
+
+    restaurarSeccionesPub();
 
     document.getElementById('btn-siguiente').addEventListener('click', () => {
         VerbenaState.saveAllFieldsOnPage();

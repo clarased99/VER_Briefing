@@ -33,18 +33,18 @@
             <textarea id="objetivo-marca"></textarea>
         </div>
 
-        <div class="field">
+        <div class="field" id="field-momento-marca">
             <label for="momento-marca">¿En qué momento se encuentra la marca? ¿Es una marca nueva o tiene recorrido previo?</label>
             <div class="checkbox-row">
-                <input type="checkbox" id="marca-nueva">
+                <input type="checkbox" id="marca-nueva" name="momento-marca">
                 <label for="marca-nueva">Marca nueva, partimos desde cero</label>
             </div>
             <div class="checkbox-row">
-                <input type="checkbox" id="marca-rediseno">
+                <input type="checkbox" id="marca-rediseno" name="momento-marca">
                 <label for="marca-rediseno">Rediseño / actualización de una marca existente</label>
             </div>
             <div class="checkbox-row">
-                <input type="checkbox" id="marca-extension">
+                <input type="checkbox" id="marca-extension" name="momento-marca">
                 <label for="marca-extension">Extensión de una marca ya existente</label>
             </div>
         </div>
@@ -108,9 +108,13 @@
 <script src="../js/main.js" defer></script>
 <script src="../js/footer.js" defer></script>
 <script>
-    // Mostrar campo de marca previa si es rediseño o extensión
-    ['marca-rediseno', 'marca-extension'].forEach((id) => {
-        document.getElementById(id).addEventListener('change', () => {
+    // Momento de la marca: selección única
+    const momentoChecks = document.querySelectorAll('input[name="momento-marca"]');
+    momentoChecks.forEach((cb) => {
+        cb.addEventListener('change', () => {
+            if (cb.checked) {
+                momentoChecks.forEach(c => { if (c !== cb) c.checked = false; });
+            }
             const alguno = document.getElementById('marca-rediseno').checked
                 || document.getElementById('marca-extension').checked;
             document.getElementById('field-marca-previa').hidden = !alguno;

@@ -60,19 +60,6 @@
 <script src="js/main.js" defer></script>
 <script src="js/footer.js" defer></script>
 <script>
-    // Solo limpiamos el estado si venimos de la landing (index.html)
-    // o si no hay referrer (acceso directo). Si venimos del menú o
-    // de navegación interna, conservamos los datos para que el usuario
-    // pueda repasar y corregir sin perder lo rellenado.
-    const referrer = document.referrer;
-    const vieneDeIndex = !referrer
-        || referrer.includes('index.html')
-        || referrer.replace(/\/$/, '') === window.location.origin;
-
-    if (vieneDeIndex) {
-        VerbenaState.clearAll();
-    }
-
     document.getElementById('btn-siguiente').addEventListener('click', () => {
         VerbenaState.saveAllFieldsOnPage();
         VerbenaState.set(VerbenaState.KEYS.empresa, document.getElementById('empresa').value.trim());

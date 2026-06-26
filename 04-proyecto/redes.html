@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verbena — 04. Sobre el proyecto (Redes Sociales)</title>
+    <title>Verbena — 04. Sobre el proyecto (Marca)</title>
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
-<body data-section="04" data-tipo="REDES">
+<body data-section="04" data-tipo="MARCA">
 
 <header class="page-header">
     <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
@@ -24,88 +24,73 @@
 
 <main class="page-main">
     <h1 class="section-title">04. SOBRE EL PROYECTO</h1>
-    <p class="section-subtitle">REDES SOCIALES</p>
+    <p class="section-subtitle">MARCA</p>
 
     <form class="form-grid" novalidate>
 
+        <div class="field">
+            <label for="objetivo-marca">¿Cuál es el objetivo principal de este proyecto de marca?</label>
+            <textarea id="objetivo-marca"></textarea>
+        </div>
+
+        <div class="field" id="field-momento-marca">
+            <label for="momento-marca">¿En qué momento se encuentra la marca? ¿Es una marca nueva o tiene recorrido previo?</label>
+            <div class="checkbox-row">
+                <input type="checkbox" id="marca-nueva" name="momento-marca">
+                <label for="marca-nueva">Marca nueva, partimos desde cero</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="marca-rediseno" name="momento-marca">
+                <label for="marca-rediseno">Rediseño / actualización de una marca existente</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="marca-extension" name="momento-marca">
+                <label for="marca-extension">Extensión de una marca ya existente</label>
+            </div>
+        </div>
+
+        <div class="field" id="field-marca-previa" hidden>
+            <label for="marca-previa-desc">¿Qué tienes actualmente y qué te gustaría conservar o mejorar?</label>
+            <textarea id="marca-previa-desc"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="esencia-marca">¿Cuál es la esencia de tu marca? ¿Qué la hace única?</label>
+            <textarea id="esencia-marca"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="promesa-marca">¿Cuál es la promesa de tu marca hacia el cliente?</label>
+            <textarea id="promesa-marca"></textarea>
+        </div>
+
+        <div class="field">
+            <label for="marcas-no">¿Hay algún estilo visual o marca que definitivamente NO quieras que se parezca a la tuya?</label>
+            <textarea id="marcas-no"></textarea>
+        </div>
+
         <div class="field" style="grid-column: 1 / -1;">
-            <label>¿En qué redes sociales quieres estar presente?</label>
+            <label>¿Qué aplicaciones necesita la identidad de marca?</label>
             <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
-                <div class="checkbox-row"><input type="checkbox" id="red-instagram"><label for="red-instagram">Instagram</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="red-tiktok"><label for="red-tiktok">TikTok</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="red-linkedin"><label for="red-linkedin">LinkedIn</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="red-facebook"><label for="red-facebook">Facebook</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="red-x"><label for="red-x">X (Twitter)</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="red-youtube"><label for="red-youtube">YouTube</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="red-pinterest"><label for="red-pinterest">Pinterest</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-logo"><label for="app-logo">Logotipo / isotipo</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-papeleria"><label for="app-papeleria">Papelería corporativa</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-digital"><label for="app-digital">Aplicaciones digitales</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-senaletica"><label for="app-senaletica">Señalética / espacio físico</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-packaging"><label for="app-packaging">Packaging</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-manual"><label for="app-manual">Manual de marca</label></div>
                 <div class="checkbox-row has-otro">
-                    <input type="checkbox" id="red-otro-check">
-                    <label for="red-otro-check">Otra</label>
-                    <div class="otro-field-inline" id="red-otro-wrap">
-                        <input type="text" id="red-otro" placeholder="Especifica...">
+                    <input type="checkbox" id="app-marca-otro-check">
+                    <label for="app-marca-otro-check">Otra</label>
+                    <div class="otro-field-inline" id="app-marca-otro-wrap">
+                        <input type="text" id="app-marca-otro" placeholder="Especifica...">
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="field">
-            <label for="objetivo-redes">¿Cuál es el objetivo principal de tu presencia en redes?</label>
-            <textarea id="objetivo-redes"></textarea>
-        </div>
-
-        <div class="field">
-            <label for="comunicar-redes">¿Qué quieres comunicar? ¿Qué tipo de contenido quieres publicar?</label>
-            <textarea id="comunicar-redes"></textarea>
-        </div>
-
-        <div class="field">
-            <label for="tono-redes">¿Qué tono debe tener la comunicación en redes?</label>
-            <div class="checkbox-row"><input type="checkbox" id="tono-redes-cercano" name="tono-redes" value="Cercano"><label for="tono-redes-cercano">Cercano</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="tono-redes-profesional" name="tono-redes" value="Profesional"><label for="tono-redes-profesional">Profesional</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="tono-redes-divertido" name="tono-redes" value="Divertido"><label for="tono-redes-divertido">Divertido</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="tono-redes-inspiracional" name="tono-redes" value="Inspiracional"><label for="tono-redes-inspiracional">Inspiracional</label></div>
-            <div class="checkbox-row has-otro">
-                <input type="checkbox" id="tono-redes-otro-check" name="tono-redes" value="Otro">
-                <label for="tono-redes-otro-check">Otro</label>
-                <div class="otro-field-inline" id="tono-redes-otro-wrap">
-                    <input type="text" id="tono-redes-otro" placeholder="Especifica...">
-                </div>
-            </div>
-            <input type="hidden" id="tono-redes">
-        </div>
-
-        <div class="field">
-            <label for="frecuencia-redes">¿Con qué frecuencia quieres publicar?</label>
-            <input type="text" id="frecuencia-redes" placeholder="ej. 3 veces por semana, diariamente...">
-        </div>
-
-        <div class="field">
-            <label for="cuentas-referencia">¿Hay cuentas que te gusten como referencia, aunque no sean de tu sector?</label>
-            <textarea id="cuentas-referencia"></textarea>
-        </div>
-
-        <div class="field">
-            <label for="contenido-existente">¿Tienes ya contenido (fotos, vídeos, textos) o hay que crearlo desde cero?</label>
-            <textarea id="contenido-existente"></textarea>
-        </div>
-
-        <div class="field">
-            <label>¿Necesitas plantillas para gestionar tú mismo las redes después?</label>
-            <div style="display: flex; gap: var(--space-lg);">
-                <div class="checkbox-row">
-                    <input type="checkbox" id="plantillas-si" name="plantillas" value="Sí">
-                    <label for="plantillas-si">Sí</label>
-                </div>
-                <div class="checkbox-row">
-                    <input type="checkbox" id="plantillas-no" name="plantillas" value="No">
-                    <label for="plantillas-no">No</label>
-                </div>
-            </div>
-        </div>
-
         <div class="field" style="grid-column: 1 / -1;">
-            <label for="aportaciones-redes">Cualquier otro detalle que creas relevante</label>
-            <textarea id="aportaciones-redes"></textarea>
+            <label for="aportaciones-marca">Cualquier otro detalle que creas que puede ayudarnos a entender mejor tu marca</label>
+            <textarea id="aportaciones-marca"></textarea>
         </div>
 
     </form>
@@ -123,41 +108,24 @@
 <script src="../js/main.js" defer></script>
 <script src="../js/footer.js" defer></script>
 <script>
-    const cbOtro = document.getElementById('red-otro-check');
-    const wrapOtro = document.getElementById('red-otro-wrap');
+    // Momento de la marca: selección única
+    const momentoChecks = document.querySelectorAll('input[name="momento-marca"]');
+    momentoChecks.forEach((cb) => {
+        cb.addEventListener('change', () => {
+            if (cb.checked) {
+                momentoChecks.forEach(c => { if (c !== cb) c.checked = false; });
+            }
+            const alguno = document.getElementById('marca-rediseno').checked
+                || document.getElementById('marca-extension').checked;
+            document.getElementById('field-marca-previa').hidden = !alguno;
+        });
+    });
+
+    const cbOtro = document.getElementById('app-marca-otro-check');
+    const wrapOtro = document.getElementById('app-marca-otro-wrap');
     cbOtro.addEventListener('change', () => {
         wrapOtro.classList.toggle('visible', cbOtro.checked);
         if (!cbOtro.checked) wrapOtro.querySelector('input').value = '';
-    });
-
-    // Tono: selección única (exclusiva)
-    const tonoChecks = document.querySelectorAll('input[name="tono-redes"]');
-    const tonoConsolidado = document.getElementById('tono-redes');
-    const tonoOtroWrap = document.getElementById('tono-redes-otro-wrap');
-
-    tonoChecks.forEach((cb) => {
-        cb.dataset.vbExclude = 'true';
-        cb.addEventListener('change', () => {
-            if (cb.checked) {
-                tonoChecks.forEach(c => { if (c !== cb) { c.checked = false; } });
-            }
-            const seleccionado = Array.from(tonoChecks).find(c => c.checked);
-            tonoConsolidado.value = seleccionado ? seleccionado.value : '';
-            // Mostrar campo libre si es "Otro"
-            const esOtro = document.getElementById('tono-redes-otro-check').checked;
-            tonoOtroWrap.classList.toggle('visible', esOtro);
-            if (!esOtro) {
-                const otroInput = document.getElementById('tono-redes-otro');
-                if (otroInput) otroInput.value = '';
-            }
-        });
-    });
-    cb.addEventListener('change', function () {
-        if (this.checked) {
-            document.querySelectorAll('input[name="plantillas"]')
-                .forEach(c => { if (c !== this) c.checked = false; });
-        }
-    });
     });
 
     document.getElementById('btn-siguiente').addEventListener('click', () => {
