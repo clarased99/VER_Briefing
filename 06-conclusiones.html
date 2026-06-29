@@ -59,12 +59,14 @@
 <div id="brand-footer-text"></div>
 <div id="brand-footer-logo"></div>
 
+<iframe name="hidden-iframe" style="display:none"></iframe>
+
 <script src="js/nav.js" defer></script>
 <script src="js/state.js"></script>
 <script src="js/main.js" defer></script>
 <script src="js/footer.js" defer></script>
 <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPJ1j2HTmENNFaQL3SBwmRiVskGFJfnhZJrTrlHJSauhTf4UaNImYgV3Jna_XSFrZqbg/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzd7BA3Jy1VGDlwRvvJ6j8V2C-g1QY2HPjmuVKJEb3NxaW_KFUYerobiLZb2_gGf6md/exec';
 
     // ---- Gestión de múltiples archivos ----
     const archivosLista = document.getElementById('archivos-lista');
@@ -137,19 +139,30 @@
             }
         } catch(e) { console.error('archivos', e); }
 
-        // Enviar con fetch como text/plain (requerido por no-cors)
+        // Enviar via form POST oculto (funciona cross-origin sin restricciones CORS)
         try {
             const datos = VerbenaState.collectAllData();
             const bodyStr = JSON.stringify({ datos, archivos });
-            fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
-                body: bodyStr,
-                mode: 'no-cors',
-            });
-            // Esperar a que el GS procese antes de redirigir
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = APPS_SCRIPT_URL;
+            form.target = 'hidden-iframe'; // evita redirigir la página
+            form.style.display = 'none';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'payload';
+            input.value = bodyStr;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+
+            // Esperar a que el GS procese
             await new Promise(resolve => setTimeout(resolve, 4000));
-        } catch(e) { console.error('fetch', e); }
+            document.body.removeChild(form);
+        } catch(e) { console.error('form post', e); }
 
         try { VerbenaState.clearAll(); } catch(e) { console.error('clearAll', e); }
 
