@@ -248,26 +248,7 @@
     const btnAddModa = document.getElementById('btn-add-moda');
     let modaCount = 2;
 
-    function guardarModa() {
-        const vals = Array.from(modaLista.querySelectorAll('input[type="text"]')).map(i => i.value);
-        VerbenaState.saveDynamicList('publico-moda', vals);
-    }
-
-    function restaurarModa() {
-        const vals = VerbenaState.getDynamicList('publico-moda');
-        if (!vals.length) return;
-        const existentes = modaLista.querySelectorAll('input[type="text"]');
-        existentes.forEach((el, i) => { if (vals[i] !== undefined) el.value = vals[i]; });
-        for (let i = existentes.length; i < vals.length; i++) {
-            modaCount++;
-            const input = document.createElement('input');
-            input.type = 'text'; input.id = `moda-${modaCount}`; input.placeholder = `Marca ${modaCount}`;
-            input.value = vals[i] || '';
-            modaLista.insertBefore(input, btnAddModa);
-        }
-    }
-
-    modaLista.addEventListener('input', guardarModa);
+    modaLista.addEventListener('input', () => VerbenaState.saveAllFieldsOnPage());
 
     btnAddModa.addEventListener('click', () => {
         modaCount++;
@@ -277,19 +258,20 @@
         input.placeholder = `Marca ${modaCount}`;
         modaLista.insertBefore(input, btnAddModa);
         input.focus();
-        guardarModa();
         localStorage.setItem('vb_dyn_moda-count', modaCount);
+        VerbenaState.saveAllFieldsOnPage();
     });
 
-    // Restaurar: crear el número correcto de campos y rellenar valores
+    // Restaurar: crear campos extra y rellenar valores por ID
     const savedModaCount = parseInt(localStorage.getItem('vb_dyn_moda-count') || '2', 10);
     while (modaCount < savedModaCount) {
         modaCount++;
         const input = document.createElement('input');
-        input.type = 'text'; input.id = `moda-${modaCount}`; input.placeholder = `Marca ${modaCount}`;
+        input.type = 'text';
+        input.id = `moda-${modaCount}`;
+        input.placeholder = `Marca ${modaCount}`;
         modaLista.insertBefore(input, btnAddModa);
     }
-    // Rellenar valores en todos los campos de moda
     modaLista.querySelectorAll('input[type="text"]').forEach((el) => {
         const val = VerbenaState.getField(el.id);
         if (val) el.value = val;
@@ -358,6 +340,29 @@
         const container = document.getElementById(`grid-${gridKey}`);
         if (!container) return;
 
+        // Input oculto donde se guarda la opción elegida
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.id = `field-${gridKey}`;
+        container.after(hiddenInput);
+
+        // Checkbox "Otro" asociado a este grid (solo transporte y trabajo lo tienen)
+        const otroCheck = document.getElementById(`otro-${gridKey}-check`);
+        const otroInput = document.getElementById(`otro-${gridKey}`);
+
+        function limpiarGrid() {
+            container.querySelectorAll('.image-card').forEach(c => c.classList.remove('selected'));
+            hiddenInput.value = '';
+        }
+
+        function limpiarOtro() {
+            if (otroCheck) {
+                otroCheck.checked = false;
+                otroCheck.dispatchEvent(new Event('change'));
+                if (otroInput) otroInput.value = '';
+            }
+        }
+
         GRIDS_IMAGEN[gridKey].forEach((opcion) => {
             const card = document.createElement('button');
             card.type = 'button';
@@ -371,30 +376,35 @@
             card.appendChild(label);
 
             card.addEventListener('click', () => {
-                container.querySelectorAll('.image-card').forEach((c) => c.classList.remove('selected'));
-                card.classList.add('selected');
-                // Guardamos la selección en un input oculto para que
-                // saveAllFieldsOnPage() la recoja junto al resto de campos.
-                document.getElementById(`field-${gridKey}`).value = opcion.label;
+                const estaSeleccionada = card.classList.contains('selected');
+                // Deseleccionar todas primero
+                limpiarGrid();
+                limpiarOtro();
+                if (!estaSeleccionada) {
+                    // Solo seleccionar si no estaba ya seleccionada (toggle off)
+                    card.classList.add('selected');
+                    hiddenInput.value = opcion.label;
+                }
+                VerbenaState.saveAllFieldsOnPage();
             });
 
             container.appendChild(card);
         });
 
-        // Input oculto donde se guarda la opción de imagen elegida
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.id = `field-${gridKey}`;
-        container.after(hiddenInput);
+        // Cuando se marca "Otro", deseleccionar imagen
+        if (otroCheck) {
+            otroCheck.addEventListener('change', () => {
+                if (otroCheck.checked) limpiarGrid();
+                VerbenaState.saveAllFieldsOnPage();
+            });
+        }
 
-        // Restaurar selección visual si hay un valor guardado
+        // Restaurar selección visual si hay valor guardado
         const valorGuardado = VerbenaState.getField(`field-${gridKey}`);
         if (valorGuardado) {
             hiddenInput.value = valorGuardado;
             container.querySelectorAll('.image-card').forEach((c) => {
-                if (c.dataset.value === valorGuardado) {
-                    c.classList.add('selected');
-                }
+                if (c.dataset.value === valorGuardado) c.classList.add('selected');
             });
         }
     });

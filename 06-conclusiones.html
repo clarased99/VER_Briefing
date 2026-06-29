@@ -31,13 +31,15 @@
     </div>
 
     <div class="field conclusiones-archivos">
-        <div class="archivos-row">
-            <label for="archivos-referencia" class="archivos-placeholder">Sube aquí tus archivos</label>
-            <input type="file" id="archivos-referencia" multiple accept="image/*,.pdf,.zip,.ai,.eps,.sketch,.fig">
-            <button type="button" class="btn-examinar" onclick="document.getElementById('archivos-referencia').click()">EXAMINAR...</button>
+        <div id="archivos-lista">
+            <div class="archivo-fila">
+                <input type="file" class="archivo-input" accept="image/*,.pdf,.zip,.ai,.eps,.sketch,.fig">
+                <button type="button" class="btn-examinar">EXAMINAR...</button>
+                <span class="archivo-nombre-label"></span>
+            </div>
         </div>
+        <button type="button" class="btn-add-row" id="btn-add-archivo">+ Añadir otro archivo</button>
         <p class="archivos-wetransfer">* También puedes enviar un <a href="https://wetransfer.com" target="_blank" rel="noopener">wetransfer</a> a <a href="mailto:hola@colectivoverbena.info">hola@colectivoverbena.info</a></p>
-        <div id="archivos-nombres" class="archivos-nombres"></div>
     </div>
 
     <div class="field">
@@ -64,18 +66,54 @@
 <script>
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPJ1j2HTmENNFaQL3SBwmRiVskGFJfnhZJrTrlHJSauhTf4UaNImYgV3Jna_XSFrZqbg/exec';
 
-    /* Mostrar nombres de archivos seleccionados */
-    document.getElementById('archivos-referencia').addEventListener('change', function () {
-        const nombres = document.getElementById('archivos-nombres');
-        nombres.innerHTML = Array.from(this.files)
-            .map(f => `<span class="archivo-nombre">${f.name}</span>`)
-            .join('');
+    // ---- Gestión de múltiples archivos ----
+    const archivosLista = document.getElementById('archivos-lista');
+
+    function initFilaArchivo(fila) {
+        const input  = fila.querySelector('.archivo-input');
+        const btn    = fila.querySelector('.btn-examinar');
+        const label  = fila.querySelector('.archivo-nombre-label');
+        btn.addEventListener('click', () => input.click());
+        input.addEventListener('change', () => {
+            label.textContent = input.files[0] ? input.files[0].name : '';
+        });
+    }
+
+    // Inicializar la primera fila
+    initFilaArchivo(archivosLista.querySelector('.archivo-fila'));
+
+    document.getElementById('btn-add-archivo').addEventListener('click', () => {
+        const fila = document.createElement('div');
+        fila.className = 'archivo-fila';
+        fila.innerHTML = `
+            <input type="file" class="archivo-input" accept="image/*,.pdf,.zip,.ai,.eps,.sketch,.fig">
+            <button type="button" class="btn-examinar">EXAMINAR...</button>
+            <span class="archivo-nombre-label"></span>
+        `;
+        archivosLista.appendChild(fila);
+        initFilaArchivo(fila);
     });
 
-    /* Envío final */
-    document.getElementById('btn-enviar').addEventListener('click', () => {
+    // ---- Convertir archivo a base64 ----
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload  = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // ---- Envío final ----
+    document.getElementById('btn-enviar').addEventListener('click', async () => {
+        const btnEnviar = document.getElementById('btn-enviar');
+        btnEnviar.textContent = 'ENVIANDO...';
+        btnEnviar.style.opacity = '0.5';
+        btnEnviar.disabled = true;
+
         try { VerbenaState.saveAllFieldsOnPage(); } catch(e) { console.error('saveAll', e); }
 
+        // Recoger imágenes para el moodboard
         try {
             const CAMPOS_IMAGEN = ['textura','colores','formas','imagen-1','imagen-2','imagen-3','imagen-4','imagen-5','imagen-6'];
             const imgs = CAMPOS_IMAGEN
@@ -86,15 +124,35 @@
             sessionStorage.setItem('vb_moodboard', JSON.stringify(imgs));
         } catch(e) { console.error('moodboard', e); }
 
+        // Recoger y convertir archivos a base64
+        const archivos = [];
+        try {
+            const inputs = archivosLista.querySelectorAll('.archivo-input');
+            for (const input of inputs) {
+                if (input.files[0]) {
+                    const file = input.files[0];
+                    const base64 = await fileToBase64(file);
+                    archivos.push({ nombre: file.name, mimeType: file.type || 'application/octet-stream', base64 });
+                }
+            }
+        } catch(e) { console.error('archivos', e); }
+
+        // Enviar con fetch como text/plain (requerido por no-cors)
         try {
             const datos = VerbenaState.collectAllData();
-            const blob = new Blob([JSON.stringify(datos)], { type: 'text/plain' });
-            navigator.sendBeacon(APPS_SCRIPT_URL, blob);
-        } catch(e) { console.error('sendBeacon', e); }
+            const bodyStr = JSON.stringify({ datos, archivos });
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: bodyStr,
+                mode: 'no-cors',
+            });
+            // Esperar a que el GS procese antes de redirigir
+            await new Promise(resolve => setTimeout(resolve, 4000));
+        } catch(e) { console.error('fetch', e); }
 
         try { VerbenaState.clearAll(); } catch(e) { console.error('clearAll', e); }
 
-        console.log('Redirigiendo a final.html...');
         window.location.href = 'final.html';
     });
 </script>
