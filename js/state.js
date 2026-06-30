@@ -213,6 +213,7 @@ const VerbenaState = {
             tiposProyecto: this.getTiposProyecto().join(' + '),
         };
 
+        // Campos individuales (vb_field_*)
         Object.keys(localStorage)
             .filter((key) => key.startsWith(this.FIELD_PREFIX))
             .forEach((key) => {
@@ -222,6 +223,19 @@ const VerbenaState = {
                     data[fieldId] = JSON.parse(raw);
                 } catch {
                     data[fieldId] = raw;
+                }
+            });
+
+        // Listas dinámicas (vb_dyn_*) — se incluyen como JSON string para el GS
+        const DYN_PREFIX = 'vb_dyn_';
+        Object.keys(localStorage)
+            .filter((key) => key.startsWith(DYN_PREFIX))
+            .forEach((key) => {
+                const dynId = key.slice(DYN_PREFIX.length);
+                const raw = localStorage.getItem(key);
+                // Solo incluir si no es un contador (-count)
+                if (!dynId.endsWith('-count')) {
+                    data['dyn_' + dynId] = raw; // raw JSON string, el GS lo parsea
                 }
             });
 
