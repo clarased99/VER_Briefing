@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verbena — 04. Sobre el proyecto (Naming + Marca)</title>
+    <title>Verbena — 04. Sobre el proyecto (Naming)</title>
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/components.css">
@@ -78,16 +78,6 @@
         </div>
 
         <div class="field">
-            <label for="esencia-naming">¿Cuál es la esencia de tu marca? ¿Qué la hace única?</label>
-            <textarea id="esencia-naming"></textarea>
-        </div>
-
-        <div class="field">
-            <label for="promesa-naming">¿Cuál es la promesa de tu marca hacia el cliente?</label>
-            <textarea id="promesa-naming"></textarea>
-        </div>
-
-        <div class="field">
             <label for="personalidad-naming">¿Cómo describirías la personalidad de tu marca?</label>
             <textarea id="personalidad-naming"></textarea>
         </div>
@@ -115,29 +105,6 @@
             <textarea id="marcas-admira-naming"></textarea>
         </div>
 
-        <div class="field">
-            <label for="marcas-no-naming">¿Hay algún estilo o marca que definitivamente NO quieras que se parezca a la tuya?</label>
-            <textarea id="marcas-no-naming"></textarea>
-        </div>
-
-        <div class="field" style="grid-column: 1 / -1;">
-            <label>¿Qué aplicaciones necesita la identidad?</label>
-            <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
-                <div class="checkbox-row"><input type="checkbox" id="napp-logo"><label for="napp-logo">Logotipo / isotipo</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="napp-papeleria"><label for="napp-papeleria">Papelería corporativa</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="napp-digital"><label for="napp-digital">Aplicaciones digitales</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="napp-packaging"><label for="napp-packaging">Packaging</label></div>
-                <div class="checkbox-row"><input type="checkbox" id="napp-manual"><label for="napp-manual">Manual de marca</label></div>
-                <div class="checkbox-row has-otro">
-                    <input type="checkbox" id="napp-otro-check">
-                    <label for="napp-otro-check">Otra</label>
-                    <div class="otro-field-inline" id="napp-otro-wrap">
-                        <input type="text" id="napp-otro" placeholder="Especifica...">
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="field" style="grid-column: 1 / -1;">
             <label for="aportaciones-naming">Cualquier otro detalle que creas que puede ayudarnos</label>
             <textarea id="aportaciones-naming"></textarea>
@@ -158,13 +125,6 @@
 <script src="../js/main.js" defer></script>
 <script src="../js/footer.js" defer></script>
 <script>
-    const cbOtro = document.getElementById('napp-otro-check');
-    const wrapOtro = document.getElementById('napp-otro-wrap');
-    cbOtro.addEventListener('change', () => {
-        wrapOtro.classList.toggle('visible', cbOtro.checked);
-        if (!cbOtro.checked) wrapOtro.querySelector('input').value = '';
-    });
-
     // Tipo de nombre: selección única exclusiva
     document.querySelectorAll('input[name="tipo-nombre"]').forEach((cb) => {
         cb.addEventListener('change', function () {

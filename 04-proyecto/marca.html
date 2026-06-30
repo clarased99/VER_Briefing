@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verbena — 04. Sobre el proyecto (Naming)</title>
+    <title>Verbena — 04. Sobre el proyecto (Marca)</title>
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
-<body data-section="04" data-tipo="NAMING + MARCA">
+<body data-section="04" data-tipo="MARCA">
 
 <header class="page-header">
     <button class="menu-icon" aria-label="Abrir menú de navegación" aria-haspopup="true" aria-expanded="false">
@@ -24,90 +24,78 @@
 
 <main class="page-main">
     <h1 class="section-title">04. SOBRE EL PROYECTO</h1>
-    <p class="section-subtitle">NAMING + MARCA</p>
+    <p class="section-subtitle">MARCA</p>
 
     <form class="form-grid" novalidate>
 
         <div class="field">
-            <label for="objetivo-naming">¿Cuál es el objetivo principal de este proyecto?</label>
-            <textarea id="objetivo-naming"></textarea>
+            <label for="objetivo-marca">¿Cuál es el objetivo principal de este proyecto de marca?</label>
+            <textarea id="objetivo-marca"></textarea>
         </div>
 
-        <div class="field">
-            <label for="tipo-nombre">¿Qué tipo de nombre buscas?</label>
+        <div class="field" id="field-momento-marca">
+            <label for="momento-marca">¿En qué momento se encuentra la marca? ¿Es una marca nueva o tiene recorrido previo?</label>
             <div class="checkbox-row">
-                <input type="checkbox" id="nombre-descriptivo" name="tipo-nombre">
-                <label for="nombre-descriptivo">Descriptivo (explica lo que hace la marca)</label>
-            </div>
-            <div class="checkbox-row">
-                <input type="checkbox" id="nombre-evocador" name="tipo-nombre">
-                <label for="nombre-evocador">Evocador (sugiere sensaciones o valores)</label>
+                <input type="checkbox" id="marca-nueva" name="momento-marca">
+                <label for="marca-nueva">Marca nueva, partimos desde cero</label>
             </div>
             <div class="checkbox-row">
-                <input type="checkbox" id="nombre-abstracto" name="tipo-nombre">
-                <label for="nombre-abstracto">Abstracto (sin significado literal, original)</label>
+                <input type="checkbox" id="marca-rediseno" name="momento-marca">
+                <label for="marca-rediseno">Rediseño / actualización de una marca existente</label>
             </div>
             <div class="checkbox-row">
-                <input type="checkbox" id="nombre-fundador" name="tipo-nombre">
-                <label for="nombre-fundador">Basado en el nombre del fundador/a</label>
-            </div>
-            <div class="checkbox-row">
-                <input type="checkbox" id="nombre-noclaro" name="tipo-nombre">
-                <label for="nombre-noclaro">Aún no lo tengo claro</label>
+                <input type="checkbox" id="marca-extension" name="momento-marca">
+                <label for="marca-extension">Extensión de una marca ya existente</label>
             </div>
         </div>
 
-        <div class="field">
-            <label for="palabras-clave-naming">¿Qué palabras clave o conceptos asocias a tu marca?</label>
-            <textarea id="palabras-clave-naming" placeholder="Escribe todas las que se te ocurran, sin filtros"></textarea>
+        <div class="field" id="field-marca-previa" hidden>
+            <label for="marca-previa-desc">¿Qué tienes actualmente y qué te gustaría conservar o mejorar?</label>
+            <textarea id="marca-previa-desc"></textarea>
         </div>
 
         <div class="field">
-            <label for="idioma-nombre">¿En qué idioma o idiomas debe funcionar el nombre?</label>
-            <input type="text" id="idioma-nombre" placeholder="ej. Español, inglés, que funcione en ambos...">
+            <label for="esencia-marca">¿Cuál es la esencia de tu marca? ¿Qué la hace única?</label>
+            <textarea id="esencia-marca"></textarea>
         </div>
 
         <div class="field">
-            <label for="evitar-naming">¿Hay algo que quieras evitar en el nombre? (palabras, sonidos, referencias...)</label>
-            <textarea id="evitar-naming"></textarea>
+            <label for="valores-marca">¿Cuáles consideras que son los valores de marca de tu empresa?</label>
+            <textarea id="valores-marca"></textarea>
         </div>
 
         <div class="field">
-            <label for="nombres-gustan">¿Hay nombres de marcas que te gusten, aunque no sean de tu sector? ¿Por qué?</label>
-            <textarea id="nombres-gustan"></textarea>
+            <label for="promesa-marca">¿Cuál es la promesa de tu marca hacia el cliente?</label>
+            <textarea id="promesa-marca"></textarea>
         </div>
 
         <div class="field">
-            <label for="personalidad-naming">¿Cómo describirías la personalidad de tu marca?</label>
-            <textarea id="personalidad-naming"></textarea>
-        </div>
-
-        <div class="field">
-            <label>¿Qué tono de comunicación debe tener la marca?</label>
-            <div class="checkbox-row"><input type="checkbox" id="tono-naming-cercano" name="tono-naming" value="Cercano"><label for="tono-naming-cercano">Cercano</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="tono-naming-formal" name="tono-naming" value="Formal"><label for="tono-naming-formal">Formal</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="tono-naming-tecnico" name="tono-naming" value="Técnico"><label for="tono-naming-tecnico">Técnico</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="tono-naming-irreverente" name="tono-naming" value="Irreverente"><label for="tono-naming-irreverente">Irreverente</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="tono-naming-inspiracional" name="tono-naming" value="Inspiracional"><label for="tono-naming-inspiracional">Inspiracional</label></div>
-            <div class="checkbox-row"><input type="checkbox" id="tono-naming-divertido" name="tono-naming" value="Divertido"><label for="tono-naming-divertido">Divertido</label></div>
-            <div class="checkbox-row has-otro">
-                <input type="checkbox" id="tono-naming-otro-check" name="tono-naming" value="Otro">
-                <label for="tono-naming-otro-check">Otro</label>
-                <div class="otro-field-inline" id="tono-naming-otro-wrap">
-                    <input type="text" id="tono-naming-otro" placeholder="Especifica...">
-                </div>
-            </div>
-            <input type="hidden" id="tono-naming">
-        </div>
-
-        <div class="field">
-            <label for="marcas-admira-naming">¿Qué marcas admiras o te inspiran visualmente?</label>
-            <textarea id="marcas-admira-naming"></textarea>
+            <label for="marcas-no">¿Hay algún estilo visual o marca que definitivamente NO quieras que se parezca a la tuya?</label>
+            <textarea id="marcas-no"></textarea>
         </div>
 
         <div class="field" style="grid-column: 1 / -1;">
-            <label for="aportaciones-naming">Cualquier otro detalle que creas que puede ayudarnos</label>
-            <textarea id="aportaciones-naming"></textarea>
+            <label>¿Qué aplicaciones necesita la identidad de marca?</label>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
+                <div class="checkbox-row"><input type="checkbox" id="app-logo"><label for="app-logo">Logotipo / isotipo</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-papeleria"><label for="app-papeleria">Papelería corporativa</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-digital"><label for="app-digital">Aplicaciones digitales</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-senaletica"><label for="app-senaletica">Señalética / espacio físico</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-packaging"><label for="app-packaging">Packaging</label></div>
+                <div class="checkbox-row"><input type="checkbox" id="app-manual"><label for="app-manual">Manual de marca</label></div>
+                <div class="checkbox-row has-otro">
+                    <input type="checkbox" id="app-marca-otro-check">
+                    <label for="app-marca-otro-check">Otra</label>
+                    <div class="otro-field-inline" id="app-marca-otro-wrap">
+                        <input type="text" id="app-marca-otro" placeholder="Especifica...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+            <label for="aportaciones-marca">Cualquier otro detalle que creas que puede ayudarnos a entender mejor tu marca</label>
+            <textarea id="aportaciones-marca"></textarea>
         </div>
 
     </form>
@@ -125,43 +113,24 @@
 <script src="../js/main.js" defer></script>
 <script src="../js/footer.js" defer></script>
 <script>
-    // Tipo de nombre: selección única exclusiva
-    document.querySelectorAll('input[name="tipo-nombre"]').forEach((cb) => {
-        cb.addEventListener('change', function () {
-            if (this.checked) {
-                document.querySelectorAll('input[name="tipo-nombre"]')
-                    .forEach(c => { if (c !== this) c.checked = false; });
-            }
-        });
-    });
-
-    // Tono naming: selección única exclusiva
-    const tonoNamingChecks = document.querySelectorAll('input[name="tono-naming"]');
-    const tonoNamingHidden = document.getElementById('tono-naming');
-    const tonoNamingOtroWrap = document.getElementById('tono-naming-otro-wrap');
-
-    tonoNamingChecks.forEach((cb) => {
-        cb.dataset.vbExclude = 'true';
+    // Momento de la marca: selección única
+    const momentoChecks = document.querySelectorAll('input[name="momento-marca"]');
+    momentoChecks.forEach((cb) => {
         cb.addEventListener('change', () => {
             if (cb.checked) {
-                tonoNamingChecks.forEach(c => { if (c !== cb) c.checked = false; });
+                momentoChecks.forEach(c => { if (c !== cb) c.checked = false; });
             }
-            const seleccionado = Array.from(tonoNamingChecks).find(c => c.checked);
-            const esOtro = document.getElementById('tono-naming-otro-check').checked;
-            tonoNamingOtroWrap.classList.toggle('visible', esOtro);
-            if (!esOtro && document.getElementById('tono-naming-otro')) {
-                document.getElementById('tono-naming-otro').value = '';
-            }
-            tonoNamingHidden.value = seleccionado
-                ? (seleccionado.value === 'Otro' ? (document.getElementById('tono-naming-otro')?.value?.trim() || 'Otro') : seleccionado.value)
-                : '';
+            const alguno = document.getElementById('marca-rediseno').checked
+                || document.getElementById('marca-extension').checked;
+            document.getElementById('field-marca-previa').hidden = !alguno;
         });
     });
 
-    document.getElementById('tono-naming-otro')?.addEventListener('input', () => {
-        if (document.getElementById('tono-naming-otro-check').checked) {
-            tonoNamingHidden.value = document.getElementById('tono-naming-otro').value.trim() || 'Otro';
-        }
+    const cbOtro = document.getElementById('app-marca-otro-check');
+    const wrapOtro = document.getElementById('app-marca-otro-wrap');
+    cbOtro.addEventListener('change', () => {
+        wrapOtro.classList.toggle('visible', cbOtro.checked);
+        if (!cbOtro.checked) wrapOtro.querySelector('input').value = '';
     });
 
     document.getElementById('btn-siguiente').addEventListener('click', () => {
