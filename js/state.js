@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     VerbenaState.restoreAllFieldsOnPage();
 
     // ---- Autosave ------------------------------------------------
-    // Guarda al detectar cualquier cambio en inputs/textareas/selects,
+    // Guardar al detectar cualquier cambio en inputs/textareas/selects,
     // incluyendo los generados dinámicamente.
     // Cubre navegación por menú, flechas del navegador, o cierre accidental.
 
