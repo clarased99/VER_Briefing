@@ -513,3 +513,26 @@
     align-items: center;
     padding: var(--space-md) var(--space-lg);
 }
+/* ---------- Validación de campos obligatorios ---- */
+.field input:invalid.touched,
+.field textarea:invalid.touched {
+    border-color: var(--color-rojo, #ff5b47);
+    background-color: rgba(255, 91, 71, 0.06);
+}
+
+.field-error-msg {
+    display: none;
+    color: var(--color-rojo, #ff5b47);
+    font-family: monospace;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.field-error-msg.visible {
+    display: block;
+}
+
+/* Formas: fondo blanco para que combine con el fondo blanco de las imágenes */
+#grid-formas .image-card {
+    background-color: #ffffff;
+}

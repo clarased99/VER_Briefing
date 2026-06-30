@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const LABEL_A_SLUG = {
                 'DISCO': 'disco', 'REDES': 'redes', 'PUBLICACIÓN': 'publicacion',
                 'MARCA': 'marca', 'CARTEL': 'cartel', 'WEB': 'web',
-                'NAMING + MARCA': 'naming-marca', 'FOTOGRAFÍA': 'fotografia', 'VÍDEO': 'video',
+                'NAMING': 'naming-marca', 'FOTOGRAFÍA': 'fotografia', 'VÍDEO': 'video',
             };
 
             tiposProyecto.forEach((tipo) => {

@@ -29,7 +29,7 @@
     <!-- ¿Qué necesitas fotografiar? -->
     <div class="field">
         <label>¿Qué necesitas fotografiar?</label>
-        <div class="image-grid" id="grid-que-fotografiar" data-single="true"></div>
+        <div class="image-grid" id="grid-que-fotografiar" data-single="false"></div>
         <div class="checkbox-row has-otro">
             <input type="checkbox" id="que-fotografiar-otro-check">
             <label for="que-fotografiar-otro-check">Otra cosa</label>
@@ -193,7 +193,7 @@
         });
     }
 
-    initGrid('grid-que-fotografiar', QUE_FOTOGRAFIAR, 'que-fotografiar', true);
+    initGrid('grid-que-fotografiar', QUE_FOTOGRAFIAR, 'que-fotografiar', false);
     initGrid('grid-estilo-foto', ESTILO_FOTO, 'estilo-foto', true);
 
     /* ============================================================

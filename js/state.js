@@ -65,7 +65,7 @@ const VerbenaState = {
     LABEL_A_SLUG: {
         'DISCO': 'disco', 'REDES': 'redes', 'PUBLICACIÓN': 'publicacion',
         'MARCA': 'marca', 'CARTEL': 'cartel', 'WEB': 'web',
-        'NAMING + MARCA': 'naming-marca', 'FOTOGRAFÍA': 'fotografia', 'VÍDEO': 'video',
+        'NAMING': 'naming-marca', 'FOTOGRAFÍA': 'fotografia', 'VÍDEO': 'video',
     },
 
     /* Devuelve la URL del 04 del primer tipo elegido, o null si no hay. */
@@ -211,6 +211,7 @@ const VerbenaState = {
             empresa: this.get(this.KEYS.empresa),
             nombreProyecto: this.get(this.KEYS.nombreProyecto),
             tiposProyecto: this.getTiposProyecto().join(' + '),
+            tiposProyectoLista: JSON.stringify(this.getTiposProyecto()), // array sin aplastar, para evitar ambigüedad con tipos como "NAMING + MARCA"
         };
 
         // Campos individuales (vb_field_*)
@@ -257,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
     VerbenaState.restoreAllFieldsOnPage();
 
     // ---- Autosave ------------------------------------------------
-    // Guardar al detectar cualquier cambio en inputs/textareas/selects,
+    // Guarda al detectar cualquier cambio en inputs/textareas/selects,
     // incluyendo los generados dinámicamente.
     // Cubre navegación por menú, flechas del navegador, o cierre accidental.
 
