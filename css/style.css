@@ -797,3 +797,25 @@ body.final-page {
     right: var(--space-lg);
     font-size: var(--text-sm);
 }
+/* Aviso de envío en curso (06-conclusiones.html) */
+#envio-estado {
+    margin-top: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-amarillo);
+    border: 2px solid var(--color-text);
+}
+
+#envio-mensaje {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+}
+
+/* Aviso de archivo que supera el límite de tamaño (06-conclusiones.html) */
+.archivo-error {
+    color: var(--color-rojo);
+    font-weight: 600;
+}

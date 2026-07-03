@@ -44,7 +44,7 @@
             </div>
         </div>
         <button type="button" class="btn-add-row" id="btn-add-archivo">+ Añadir otro archivo</button>
-        <p class="archivos-wetransfer">* También puedes enviar un <a href="https://wetransfer.com" target="_blank" rel="noopener">wetransfer</a> a <a href="mailto:hola@colectivoverbena.info">hola@colectivoverbena.info</a></p>
+        <p class="archivos-wetransfer">* Archivos de hasta <span id="limite-mb-texto"></span>MB. Para archivos más pesados, envíalos por <a href="https://wetransfer.com" target="_blank" rel="noopener">WeTransfer</a> a <a href="mailto:hola@colectivoverbena.info">hola@colectivoverbena.info</a></p>
     </div>
 
     <div class="field">
@@ -73,6 +73,12 @@
 <script>
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbziMwlzjwXqhpeeGrmakB-zz8Br0Cwd3IdjK4yfyuqJ2QPuIbP770H3WucqM61xTLk/exec';
 
+    // Límite de tamaño por archivo: por encima de esto, la subida no es fiable
+    // (a partir de ~25MB la petición se cancela). Se pide usar WeTransfer en su lugar.
+    const MAX_FILE_SIZE_MB    = 15;
+    const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+    document.getElementById('limite-mb-texto').textContent = MAX_FILE_SIZE_MB;
+
     // ---- Gestión de múltiples archivos ----
     const archivosLista = document.getElementById('archivos-lista');
 
@@ -82,7 +88,17 @@
         const label  = fila.querySelector('.archivo-nombre-label');
         btn.addEventListener('click', () => input.click());
         input.addEventListener('change', () => {
-            label.textContent = input.files[0] ? input.files[0].name : '';
+            const file = input.files[0];
+            if (file && file.size > MAX_FILE_SIZE_BYTES) {
+                const pesoMB = (file.size / 1024 / 1024).toFixed(1);
+                label.textContent = '';
+                label.classList.add('archivo-error');
+                label.textContent = `"${file.name}" pesa ${pesoMB}MB — supera el límite de ${MAX_FILE_SIZE_MB}MB. Usa WeTransfer para este archivo (ver abajo).`;
+                input.value = ''; // descarta el archivo seleccionado
+                return;
+            }
+            label.classList.remove('archivo-error');
+            label.textContent = file ? file.name : '';
         });
     }
 
@@ -111,12 +127,38 @@
         });
     }
 
+    // ---- Aviso de espera + protección contra cierre accidental ----
+    const envioEstado   = document.getElementById('envio-estado');
+    const envioMensaje  = document.getElementById('envio-mensaje');
+
+    function avisarSalida(e) {
+        e.preventDefault();
+        e.returnValue = ''; // requerido por Chrome/Firefox para mostrar el diálogo nativo
+        return '';
+    }
+
+    function mostrarAviso(texto) {
+        envioMensaje.textContent = texto;
+        envioEstado.hidden = false;
+    }
+
     // ---- Envío final ----
     document.getElementById('btn-enviar').addEventListener('click', async () => {
         const btnEnviar = document.getElementById('btn-enviar');
         btnEnviar.textContent = 'ENVIANDO...';
         btnEnviar.style.opacity = '0.5';
         btnEnviar.disabled = true;
+
+        // ¿Hay archivos adjuntos? Si es así, avisamos de que puede tardar
+        const hayArchivos = Array.from(archivosLista.querySelectorAll('.archivo-input'))
+            .some(input => input.files[0]);
+
+        if (hayArchivos) {
+            mostrarAviso('Estamos subiendo tus archivos. Esto puede tardar varios minutos, por favor espera y no cierres ni recargues esta pestaña.');
+            window.addEventListener('beforeunload', avisarSalida);
+        } else {
+            mostrarAviso('Enviando briefing, un momento...');
+        }
 
         try { VerbenaState.saveAllFieldsOnPage(); } catch(e) { console.error('saveAll', e); }
 
@@ -138,6 +180,12 @@
             for (const input of inputs) {
                 if (input.files[0]) {
                     const file = input.files[0];
+                    // Red de seguridad: no debería llegar aquí un archivo > límite,
+                    // pero por si acaso lo descartamos sin bloquear el resto del envío.
+                    if (file.size > MAX_FILE_SIZE_BYTES) {
+                        console.warn(`Archivo "${file.name}" supera el límite y se omite del envío`);
+                        continue;
+                    }
                     const base64 = await fileToBase64(file);
                     archivos.push({ nombre: file.name, mimeType: file.type || 'application/octet-stream', base64 });
                 }
@@ -169,13 +217,15 @@
             const esperarRespuesta = new Promise(resolve => {
                 hiddenIframe.addEventListener('load', resolve, { once: true });
             });
-            const timeoutSeguridad = new Promise(resolve => setTimeout(resolve, 60000)); // red de seguridad
+            // Red de seguridad ampliada: archivos grandes en conexiones lentas pueden tardar varios minutos
+            const timeoutSeguridad = new Promise(resolve => setTimeout(resolve, 300000)); // 5 min
 
             form.submit();
             await Promise.race([esperarRespuesta, timeoutSeguridad]);
             document.body.removeChild(form);
-
         } catch(e) { console.error('form post', e); }
+
+        window.removeEventListener('beforeunload', avisarSalida);
 
         try { VerbenaState.clearAll(); } catch(e) { console.error('clearAll', e); }
 
