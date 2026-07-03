@@ -83,7 +83,7 @@ body.landing {
 }
 
 .page-main {
-    padding: 0 var(--space-lg) var(--space-lg);
+    padding: 0 var(--space-lg) 8rem;
     max-width: var(--content-max-width);
     width: 100%;
     margin: 0 auto;
