@@ -346,6 +346,13 @@ body.landing {
     margin-bottom: var(--space-md);
     font-weight: 400;
 }
+.section-notice {
+    font-size: var(--text-sm);
+    opacity: 0.6;
+    padding-left: 5.5rem;
+    margin-bottom: var(--space-lg);
+    max-width: 40rem;
+}
 
 /* ---------- Tarjetas de aplicaciones (04. Fotografía) --------- */
 .aplicacion-card {
