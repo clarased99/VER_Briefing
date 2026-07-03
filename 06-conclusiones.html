@@ -162,11 +162,19 @@
 
             form.appendChild(input);
             document.body.appendChild(form);
-            form.submit();
 
-            // Esperar a que el GS procese
-            await new Promise(resolve => setTimeout(resolve, 4000));
+            // Esperar a que el iframe termine de cargar la respuesta real,
+            // en vez de una espera fija (que cancelaba subidas grandes antes de completarse)
+            const hiddenIframe = document.querySelector('iframe[name="hidden-iframe"]');
+            const esperarRespuesta = new Promise(resolve => {
+                hiddenIframe.addEventListener('load', resolve, { once: true });
+            });
+            const timeoutSeguridad = new Promise(resolve => setTimeout(resolve, 60000)); // red de seguridad
+
+            form.submit();
+            await Promise.race([esperarRespuesta, timeoutSeguridad]);
             document.body.removeChild(form);
+
         } catch(e) { console.error('form post', e); }
 
         try { VerbenaState.clearAll(); } catch(e) { console.error('clearAll', e); }
