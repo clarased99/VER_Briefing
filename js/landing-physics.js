@@ -63,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
         Bodies.rectangle(W + 25, H / 2,         50, H * 2, wallOpts),
     ]);
 
-    // ---- Tamaños (+20% sobre la versión anterior) ----
-    const R    = 200;   // radio visual sección
-    const RT   = 235;   // radio triángulo
-    const R_HIT = R * 0.38; // hitbox físico sección
+   // ---- Tamaños (+30% sobre la versión anterior) ----
+const R    = 260;   // radio visual sección
+const RT   = 306;   // radio triángulo
+const R_HIT = R * 0.38; // hitbox físico sección
 
     // ---- Crear formas ----
     const FORMAS = [];
